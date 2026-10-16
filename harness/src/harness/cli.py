@@ -12,7 +12,7 @@ import json
 import sys
 from pathlib import Path
 
-from .core import load_scenarios, record, replay
+from .core import load_scenarios, record, replay, reset_db
 
 OUT = Path("harness/out")
 
@@ -28,43 +28,54 @@ def main(argv=None):
     r.add_argument("--scenarios", type=Path, default=Path("harness/scenarios"))
     r.add_argument("--legacy", required=True)
     r.add_argument("--legacy-db")
+    r.add_argument("--reset", help="shell cmd restoring fixtures before write scenarios; gets $DSN, $HARNESS_SIDE")
     p = sub.add_parser("replay")
     p.add_argument("--scenarios", type=Path, default=Path("harness/scenarios"))
     p.add_argument("--modern", required=True)
     p.add_argument("--modern-db")
+    p.add_argument("--reset", help="shell cmd restoring fixtures before write scenarios; gets $DSN, $HARNESS_SIDE")
     rep = sub.add_parser("report")
     rep.add_argument("--inventory", type=Path, default=Path("docs/loan-inventory.json"))
     a = ap.parse_args(argv)
 
     if a.cmd == "record":
         for sc in _scenarios(a.scenarios):
+            reset_db(sc, a.reset, "legacy", a.legacy_db)
             print("recorded", record(sc, a.legacy, OUT / "golden", a.legacy_db))
     elif a.cmd == "replay":
         allrows = {}
         for sc in _scenarios(a.scenarios):
+            reset_db(sc, a.reset, "modern", a.modern_db)
             rows = replay(sc, a.modern, OUT / "golden", a.modern_db)
             allrows[sc.name] = rows
             for row in rows:
+                if row.get("ui_only"):
+                    continue
                 print(("PASS " if row["match"] else "FAIL ") + f"{sc.name}/{row['step']}",
                       *row["diffs"], sep="\n    ")
         (OUT / "replay.json").write_text(json.dumps(allrows, indent=2))
-        if not all(r["match"] for rows in allrows.values() for r in rows):
+        if not all(r["match"] for rows in allrows.values() for r in rows if not r.get("ui_only")):
             sys.exit(1)
     elif a.cmd == "report":
         inv = json.loads(a.inventory.read_text())
         all_eps = {f"{x['path']}.do#{m}" for x in inv for m in x["methods"]}
         rows = [r for rs in json.loads((OUT / "replay.json").read_text()).values() for r in rs]
+        ui_only = sorted({r["endpoint"] for r in rows if r.get("ui_only")})
+        rows = [r for r in rows if not r.get("ui_only")]
         by_ep: dict[str, bool] = {}
         for r in rows:
             by_ep[r["endpoint"]] = by_ep.get(r["endpoint"], True) and r["match"]
         matched = sorted(e for e, ok in by_ep.items() if ok)
         failed = sorted(e for e, ok in by_ep.items() if not ok)
-        uncovered = sorted(all_eps - by_ep.keys())
+        ui_only = [e for e in ui_only if e not in by_ep]
+        uncovered = sorted(all_eps - by_ep.keys() - set(ui_only))
         md = [
             "# Equivalence report", "",
             f"- Endpoints matched: **{len(matched)} / {len(all_eps)}**",
-            f"- Failing: {len(failed)}", f"- Not yet covered by a scenario: {len(uncovered)}", "",
+            f"- Failing: {len(failed)}", f"- Not yet covered by a scenario: {len(uncovered)}",
+            f"- UI-only (form preview/navigation, no REST equivalent): {len(ui_only)}", "",
             "## Failing", *[f"- `{e}`" for e in failed], "",
+            "## UI-only", *[f"- `{e}`" for e in ui_only], "",
             "## Uncovered", *[f"- `{e}`" for e in uncovered], "",
         ]
         (OUT / "REPORT.md").write_text("\n".join(md))

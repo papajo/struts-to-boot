@@ -1,0 +1,80 @@
+# Disburse an approved loan: get -> load -> preview -> update.
+# Equivalence = DB state after update (payments, trxns, GL postings, schedule, summary, state).
+# Dates are fixed (not "today") so golden and replay write identical rows. Locale en_GB: dd/MM/yyyy.
+name: loan_disburse
+reset: true
+login:
+  legacy: {method: POST, url: /j_spring_security_check, data: {j_username: mifos, j_password: testmifos}}
+  modern: {method: POST, url: /api/auth/login, json: {username: mifos, password: testmifos}}
+vars: {d: "28", m: "02", y: "2011", receipt: "DISB-1"}
+matrix:
+  gan: ["000100000000020", "000100000000011"]   # approved: 100000 w/ fee; 1000 plain
+steps:
+  - id: get
+    endpoint: /loanAccountAction.do#get
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=get&globalAccountNum={gan}
+      capture: {flowKey: 'currentFlowKey=([^&"'']+)', randomNUm: 'randomNUm=([^&"'']+)', accountId: 'accountId=(\d+)'}
+    modern: null
+
+  - id: load
+    endpoint: /loanDisbursementAction.do#load
+    legacy:
+      method: GET
+      url: /loanDisbursementAction.do?method=load&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      capture:
+        flowKey: 'name="currentFlowKey" value="([^"]*)"'
+        amount: 'name="amount"[^>]*value="([^"]*)"'
+      extract:
+        amount: '[id="DisburseLoan.input.paymentAmount"]'
+      fail_if: &err 'error\.message">\s*(<[a-zA-Z]|[^<\s])|Validation Error'
+    modern:
+      method: GET
+      url: /api/loans/{gan}/disbursement
+      extract: {amount: $.amount}
+
+  - id: preview
+    endpoint: /loanDisbursementAction.do#preview
+    legacy:
+      method: POST
+      url: /loanDisbursementAction.do?method=preview&globalAccountNum={gan}
+      data: &form
+        method: preview
+        currentFlowKey: "{flowKey}"
+        accountId: "{accountId}"
+        globalAccountNum: "{gan}"
+        transactionDate: "{d}/{m}/{y}"
+        transactionDateDD: "{d}"
+        transactionDateMM: "{m}"
+        transactionDateYY: "{y}"
+        receiptId: "{receipt}"
+        receiptDate: "{d}/{m}/{y}"
+        receiptDateDD: "{d}"
+        receiptDateMM: "{m}"
+        receiptDateYY: "{y}"
+        paymentTypeId: "1"            # cash
+        paymentModeOfPayment: "1"
+        amount: "{amount}"
+      fail_if: *err
+    modern: null
+
+  - id: update
+    endpoint: /loanDisbursementAction.do#update
+    legacy:
+      method: POST
+      url: /loanDisbursementAction.do?method=update
+      data: {method: update, currentFlowKey: "{flowKey}", accountId: "{accountId}", globalAccountNum: "{gan}"}
+      fail_if: *err
+    modern:
+      method: POST
+      url: /api/loans/{gan}/disbursement
+      json: {transactionDate: "{y}-{m}-{d}", amount: "{amount}", paymentTypeId: 1, receiptId: "{receipt}", receiptDate: "{y}-{m}-{d}"}
+    sql: &db
+      - SELECT account_state_id FROM account WHERE global_account_num='{gan}'
+      - SELECT p.payment_type_id, p.amount, p.receipt_number, p.payment_date, p.receipt_date FROM account_payment p JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY p.payment_id
+      - SELECT t.account_action_id, t.amount, t.action_date, t.installment_id, d.principal_amount, d.interest_amount, d.misc_fee_amount, d.penalty_amount FROM account_trxn t JOIN account a USING(account_id) LEFT JOIN loan_trxn_detail d USING(account_trxn_id) WHERE a.global_account_num='{gan}' ORDER BY t.account_trxn_id
+      - SELECT f.glcode_id, f.debit_credit_flag, SUM(f.posted_amount) FROM financial_trxn f JOIN account_trxn t USING(account_trxn_id) JOIN account a ON a.account_id=t.account_id WHERE a.global_account_num='{gan}' GROUP BY 1,2 ORDER BY 1,2
+      - SELECT s.installment_id, s.action_date, s.principal, s.interest, s.misc_fees, s.principal_paid, s.interest_paid, s.misc_fees_paid, s.payment_status, s.payment_date FROM loan_schedule s JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY s.installment_id
+      - SELECT orig_principal, orig_interest, orig_fees, principal_paid, interest_paid, fees_paid, penalty_paid FROM loan_summary s JOIN account a USING(account_id) WHERE a.global_account_num='{gan}'
+      - SELECT h.old_status, h.new_status FROM account_status_change_history h JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY h.account_status_change_id

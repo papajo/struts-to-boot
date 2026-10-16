@@ -24,6 +24,10 @@ def _server(body_fn, ctype):
             self.end_headers()
             self.wfile.write(b)
 
+        def do_POST(self):
+            self.rfile.read(int(self.headers.get("Content-Length", 0)))
+            self.do_GET()
+
         def log_message(self, *a):
             pass
 
@@ -108,3 +112,39 @@ steps:
 def test_compare_flags_missing_step():
     g = {"s1": {"endpoint": "e", "status": 200, "ms": 1, "values": {}, "sql": []}}
     assert compare(g, {})[0]["diffs"] == ["missing"]
+
+
+def test_write_flow_ui_only_reset_fail_if(tmp_path: Path, capsys):
+    from harness.core import load_scenarios, reset_db
+    ls, lurl = _server(lambda p: '<span id="X.error.message">Bad date</span>' if "preview" in p
+                       else '<input type="hidden" name="currentFlowKey" value="FK9">', "text/html")
+    ms, murl = _server(lambda p: "{}", "application/json")
+    y = tmp_path / "w.yaml"
+    y.write_text("""
+name: w
+reset: true
+steps:
+  - id: load
+    endpoint: a#load
+    legacy: {method: GET, url: /load, capture: {fk: 'name="currentFlowKey" value="([^"]*)"'}}
+    modern: null
+  - id: preview
+    endpoint: a#preview
+    legacy: {method: POST, url: /preview, data: {k: "{fk}"}, fail_if: 'error\\.message">\\s*[^<\\s]'}
+    modern: {method: POST, url: /api, json: {ids: ["{fk}"]}}
+""")
+    try:
+        sc, = load_scenarios(y)
+        marker = tmp_path / "reset.log"
+        reset_db(sc, f"echo $HARNESS_SIDE >> {marker}", "legacy", None)
+        assert marker.read_text().strip() == "legacy"
+        record(sc, lurl, tmp_path / "g")
+        assert "fail_if" in capsys.readouterr().err
+        rows = replay(sc, murl, tmp_path / "g")
+        assert rows[0] == {"step": "load", "endpoint": "a#load", "match": None, "ui_only": True, "diffs": []}
+        assert rows[1]["match"] is False and "golden is invalid" in rows[1]["diffs"][0]
+        with pytest.raises(SystemExit):
+            reset_db(sc, None, "legacy", None)
+    finally:
+        ls.shutdown()
+        ms.shutdown()

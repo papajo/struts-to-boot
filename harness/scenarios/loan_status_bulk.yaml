@@ -1,0 +1,59 @@
+# Bulk status change (Admin > Change account status): load -> searchResults -> update.
+# Approves one pending loan (043) out of the 4 pending in office 2 / officer 2.
+name: loan_status_bulk
+reset: true
+login:
+  legacy: {method: POST, url: /j_spring_security_check, data: {j_username: mifos, j_password: testmifos}}
+  modern: {method: POST, url: /api/auth/login, json: {username: mifos, password: testmifos}}
+vars: {gan: "000100000000043", acct: "43", office: "2", officer: "2", note: "harness: bulk approve"}
+steps:
+  - id: load
+    endpoint: /ChangeAccountStatus.do#load
+    legacy:
+      method: GET
+      url: /ChangeAccountStatus.do?method=load&recordOfficeId=0&recordLoanOfficerId=0
+      capture: {flowKey: 'name="currentFlowKey" value="([^"]*)"'}
+    modern: null
+
+  - id: get_loan_officers
+    endpoint: /ChangeAccountStatus.do#getLoanOfficers
+    legacy:
+      method: POST
+      url: /ChangeAccountStatus.do?method=getLoanOfficers
+      data: {method: getLoanOfficers, currentFlowKey: "{flowKey}", officeId: "{office}"}
+      extract:
+        officers: 'select[name="personnelId"] option[]'
+    modern:
+      method: GET
+      url: /api/offices/{office}/loan-officers
+      extract: {officers: "$[*].name"}
+
+  - id: search_results
+    endpoint: /ChangeAccountStatus.do#searchResults
+    legacy:
+      method: POST
+      url: /ChangeAccountStatus.do?method=searchResults
+      data: {method: searchResults, currentFlowKey: "{flowKey}", officeId: "{office}", personnelId: "{officer}", type: "0", currentStatus: "2"}
+      extract:
+        accounts: 'a[id^="statussearchresults.link.viewLoanAccount"][]'   # verify: one link per loan
+      fail_if: &err 'error\.message">\s*(<[a-zA-Z]|[^<\s])|Validation Error'
+    modern:
+      method: GET
+      url: /api/loans?officeId={office}&loanOfficerId={officer}&status=PENDING_APPROVAL
+      extract: {accounts: "$[*].globalAccountNum"}
+
+  - id: update
+    endpoint: /ChangeAccountStatus.do#update
+    legacy:
+      method: POST
+      url: /ChangeAccountStatus.do?method=update
+      data: {method: update, currentFlowKey: "{flowKey}", "accountRecords[0]": "{acct}", newStatus: "3", comments: "{note}"}
+      fail_if: *err
+    modern:
+      method: POST
+      url: /api/loans/status-changes
+      json: {globalAccountNums: ["{gan}"], newStatus: APPROVED, note: "{note}"}
+    sql:
+      - SELECT global_account_num, account_state_id FROM account WHERE account_type_id=1 AND office_id={office} AND personnel_id={officer} ORDER BY global_account_num
+      - SELECT a.global_account_num, h.old_status, h.new_status FROM account_status_change_history h JOIN account a USING(account_id) WHERE a.account_type_id=1 ORDER BY h.account_status_change_id
+      - SELECT a.global_account_num, n.note FROM account_notes n JOIN account a USING(account_id) ORDER BY n.account_notes_id

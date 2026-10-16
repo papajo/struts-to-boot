@@ -11,3 +11,4 @@ docker compose -f legacy/docker-compose.yml exec -T mysql mysql -umifos -pmifos 
 docker compose -f legacy/docker-compose.yml exec -T mysql mysql -umifos -pmifos mifos -e \
   "select account_state_id state, count(*) loans from account where account_type_id=1 group by 1"
 echo "Restart Mifos so Hibernate caches drop: docker compose -f legacy/docker-compose.yml restart mifos"
+echo "Then snapshot for write-scenario resets: SNAPSHOT=1 legacy/reset.sh"

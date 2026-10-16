@@ -6,3 +6,4 @@ modern/target/
 .idea/
 .DS_Store
 legacy/seed.sql
+legacy/snapshot.sql

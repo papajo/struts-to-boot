@@ -7,7 +7,7 @@ Target: Mifos loan module, 55 endpoints. Success = published numbers, not 100%.
 - [x] Seed data: `legacy/seed.sh` converts Mifos's own `acceptance_dbunit.xml` (27 loans, 5 states) to the live schema via `tools/dbunit2sql.py`. Verified on baseline schema; rerun against HEAD.
 - [x] Read scenarios: `harness/scenarios/loan_read.yaml` — 6 endpoints × 5 fixture loans.
 - [ ] Record golden; replace `# placeholder` selectors using `harness/out/golden/raw/*.html`.
-- [ ] Scenarios for write flows: disburse, repay, status change, reverse disbursal (multi-step: load → preview → update).
+- [x] Write-flow scenarios: `loan_disburse`, `loan_repay`, `loan_reverse_disbursal`, `loan_status_bulk` (reset via `legacy/reset.sh` snapshot; DB-state SQL checks). Unverified until first record — watch `fail_if` WARNs.
 - [ ] Legacy Code Mapper (#2) v0: dependency map Action → service → DAO → tables for the slice. Feeds agent context.
 
 ## Week 2 — Modern skeleton + read endpoints

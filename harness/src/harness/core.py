@@ -9,7 +9,9 @@ every SQL result is equal after normalization.
 from __future__ import annotations
 
 import json
+import os
 import re
+import subprocess
 import sys
 import time
 from dataclasses import dataclass, field
@@ -88,6 +90,7 @@ class Side:
     json: dict | None = None
     extract: dict[str, str] = field(default_factory=dict)
     capture: dict[str, str] = field(default_factory=dict)  # var -> regex (group 1) over raw body
+    fail_if: str | None = None  # regex over raw body that means the app rejected the request (e.g. validation error)
 
 
 def _tmpl(v: Any, vars: dict) -> Any:
@@ -96,6 +99,8 @@ def _tmpl(v: Any, vars: dict) -> Any:
         return re.sub(r"\{(\w+)\}", lambda m: str(vars.get(m[1], m[0])), v)
     if isinstance(v, dict):
         return {k: _tmpl(x, vars) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_tmpl(x, vars) for x in v]
     return v
 
 
@@ -104,7 +109,7 @@ class Step:
     id: str
     endpoint: str  # inventory key, e.g. "/loanAccountAction.do#get"
     legacy: Side
-    modern: Side
+    modern: Side | None  # None = UI-only step (form preview/navigation); recorded for chaining, not compared
     sql: list[str] = field(default_factory=list)
 
 
@@ -114,6 +119,7 @@ class Scenario:
     steps: list[Step]
     login: dict | None = None  # {"legacy": Side-ish, "modern": Side-ish}
     vars: dict = field(default_factory=dict)
+    reset: bool = False  # run the --reset command before this scenario (write flows)
 
 
 def load_scenarios(path: Path) -> list[Scenario]:
@@ -121,15 +127,28 @@ def load_scenarios(path: Path) -> list[Scenario]:
     raw = yaml.safe_load(path.read_text())
     steps = [
         Step(id=s["id"], endpoint=s["endpoint"],
-             legacy=Side(**s["legacy"]), modern=Side(**s["modern"]), sql=s.get("sql", []))
+             legacy=Side(**s["legacy"]), modern=Side(**s["modern"]) if s.get("modern") else None,
+             sql=s.get("sql", []))
         for s in raw["steps"]
     ]
     base_vars = raw.get("vars", {})
+    reset = bool(raw.get("reset", False))
     matrix = raw.get("matrix") or {}
     if not matrix:
-        return [Scenario(raw["name"], steps, raw.get("login"), dict(base_vars))]
+        return [Scenario(raw["name"], steps, raw.get("login"), dict(base_vars), reset)]
     (key, values), = matrix.items()  # single-axis matrix keeps names readable
-    return [Scenario(f"{raw['name']}__{v}", steps, raw.get("login"), {**base_vars, key: v}) for v in values]
+    return [Scenario(f"{raw['name']}__{v}", steps, raw.get("login"), {**base_vars, key: v}, reset)
+            for v in values]
+
+
+def reset_db(sc: Scenario, cmd: str | None, which: str, dsn: str | None) -> None:
+    """Restore fixtures before a write scenario so legacy and modern start from identical state."""
+    if not sc.reset:
+        return
+    if not cmd:
+        raise SystemExit(f"{sc.name} mutates data: pass --reset CMD (e.g. legacy/seed.sh)")
+    env = {**os.environ, "HARNESS_SIDE": which, **({"DSN": dsn} if dsn else {})}
+    subprocess.run(cmd, shell=True, check=True, env=env)
 
 
 def load_scenario(path: Path) -> Scenario:
@@ -171,8 +190,10 @@ def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
     results = {}
     for st in sc.steps:
         tpl = st.legacy if which == "legacy" else st.modern
+        if tpl is None:  # UI-only step has no modern counterpart
+            continue
         side = Side(tpl.method, _tmpl(tpl.url, vars), _tmpl(tpl.data, vars), _tmpl(tpl.json, vars),
-                    tpl.extract, tpl.capture)
+                    tpl.extract, tpl.capture, tpl.fail_if)
         t0 = time.perf_counter()
         r = _send(sess, base, side)
         ms = round((time.perf_counter() - t0) * 1000, 1)
@@ -180,6 +201,11 @@ def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
             m = re.search(rx, r.text)
             if m:
                 vars[var] = m.group(1)
+            else:
+                print(f"WARN {sc.name}/{st.id}: capture '{var}' matched nothing", file=sys.stderr)
+        rejected = bool(side.fail_if and re.search(side.fail_if, r.text))
+        if rejected:
+            print(f"WARN {sc.name}/{st.id}: response matches fail_if (request rejected)", file=sys.stderr)
         if raw_dir is not None:
             raw_dir.mkdir(parents=True, exist_ok=True)
             ext = "html" if which == "legacy" else "json"
@@ -194,6 +220,8 @@ def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
         results[st.id] = {
             "endpoint": st.endpoint,
             "status": r.status_code,
+            "rejected": rejected,
+            "ui_only": st.modern is None,
             "ms": ms,
             "values": _jsonable(values),
             "sql": _jsonable(_run_sql(dsn, [_tmpl(q, vars) for q in st.sql])),
@@ -212,11 +240,16 @@ def record(sc: Scenario, base: str, out: Path, dsn: str | None = None) -> Path:
 def compare(golden: dict, actual: dict) -> list[dict]:
     rows = []
     for sid, g in golden.items():
+        if g.get("ui_only"):
+            rows.append({"step": sid, "endpoint": g["endpoint"], "match": None, "ui_only": True, "diffs": []})
+            continue
         a = actual.get(sid)
         if a is None:
             rows.append({"step": sid, "endpoint": g["endpoint"], "match": False, "diffs": ["missing"]})
             continue
         diffs = []
+        if g.get("rejected"):
+            diffs.append("golden is invalid: legacy rejected this step (fix scenario, re-record)")
         if (g["status"] < 400) != (a["status"] < 400):
             diffs.append(f"status legacy={g['status']} modern={a['status']}")
         for k, gv in g["values"].items():

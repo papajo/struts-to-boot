@@ -1,0 +1,61 @@
+# Admin > Reverse loan disbursal: search -> load -> preview -> update.
+# Loan returns to Approved; disbursal + payments are reversed (adjustment trxns).
+name: loan_reverse_disbursal
+reset: true
+login:
+  legacy: {method: POST, url: /j_spring_security_check, data: {j_username: mifos, j_password: testmifos}}
+  modern: {method: POST, url: /api/auth/login, json: {username: mifos, password: testmifos}}
+vars: {note: "harness: reverse disbursal"}
+matrix:
+  gan: ["000100000000041", "000100000000037"]   # active/good with 1 payment
+steps:
+  - id: search
+    endpoint: /reverseloandisbaction.do#search
+    legacy:
+      method: GET
+      url: /reverseloandisbaction.do?method=search&recordOfficeId=1&recordLoanOfficerId=1
+      capture: {flowKey: 'name="currentFlowKey" value="([^"]*)"'}
+    modern: null
+
+  - id: load
+    endpoint: /reverseloandisbaction.do#load
+    legacy:
+      method: POST
+      url: /reverseloandisbaction.do
+      data: {method: load, currentFlowKey: "{flowKey}", searchString: "{gan}"}
+      extract:
+        cells: 'form table table td.fontnormal[]'   # verify: payments table (date, amount) from raw HTML
+      fail_if: &err 'error\.message">\s*(<[a-zA-Z]|[^<\s])|Validation Error'
+    modern:
+      method: GET
+      url: /api/loans/{gan}/disbursal-reversal
+      extract: {cells: "$.cells[*]"}
+
+  - id: preview
+    endpoint: /reverseloandisbaction.do#preview
+    legacy:
+      method: POST
+      url: /reverseloandisbaction.do
+      data: {method: preview, currentFlowKey: "{flowKey}", note: "{note}"}
+      fail_if: *err
+    modern: null
+
+  - id: update
+    endpoint: /reverseloandisbaction.do#update
+    legacy:
+      method: POST
+      url: /reverseloandisbaction.do
+      data: {method: update, currentFlowKey: "{flowKey}"}
+      fail_if: *err
+    modern:
+      method: POST
+      url: /api/loans/{gan}/disbursal-reversal
+      json: {note: "{note}"}
+    sql:
+      - SELECT account_state_id FROM account WHERE global_account_num='{gan}'
+      - SELECT t.account_action_id, t.amount, t.installment_id, t.comments, d.principal_amount, d.interest_amount, d.misc_fee_amount FROM account_trxn t JOIN account a USING(account_id) LEFT JOIN loan_trxn_detail d USING(account_trxn_id) WHERE a.global_account_num='{gan}' ORDER BY t.account_trxn_id
+      - SELECT f.glcode_id, f.debit_credit_flag, SUM(f.posted_amount) FROM financial_trxn f JOIN account_trxn t USING(account_trxn_id) JOIN account a ON a.account_id=t.account_id WHERE a.global_account_num='{gan}' GROUP BY 1,2 ORDER BY 1,2
+      - SELECT s.installment_id, s.principal_paid, s.interest_paid, s.misc_fees_paid, s.payment_status FROM loan_schedule s JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY s.installment_id
+      - SELECT principal_paid, interest_paid, fees_paid FROM loan_summary s JOIN account a USING(account_id) WHERE a.global_account_num='{gan}'
+      - SELECT h.old_status, h.new_status FROM account_status_change_history h JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY h.account_status_change_id
+      - SELECT n.note FROM account_notes n JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY n.account_notes_id

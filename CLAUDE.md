@@ -19,10 +19,11 @@ python3 tools/inventory.py legacy-src --json docs/loan-inventory.json --md docs/
 # legacy app
 cd legacy && docker compose up --build           # :8080/mifos (first start runs Liquibase)
 legacy/seed.sh                                    # load loan fixtures, then restart mifos
+SNAPSHOT=1 legacy/reset.sh                        # snapshot post-seed DB (needs mysql client)
 # harness
 cd harness && python3 -m venv .venv && .venv/bin/pip install -e '.[test]' && .venv/bin/pytest -q
-harness record --legacy http://localhost:8080/mifos --legacy-db mysql://mifos:mifos@localhost:3306/mifos
-harness replay --modern http://localhost:8081   --modern-db mysql://mifos:mifos@localhost:3307/mifos
+harness record --legacy http://localhost:8080/mifos --legacy-db mysql://mifos:mifos@localhost:3306/mifos --reset legacy/reset.sh
+harness replay --modern http://localhost:8081   --modern-db mysql://mifos:mifos@localhost:3307/mifos --reset legacy/reset.sh
 harness report
 # modern (once scaffolded)
 cd modern && ./mvnw verify && ./mvnw spring-boot:run   # :8081
@@ -35,4 +36,5 @@ cd modern && ./mvnw verify && ./mvnw spring-boot:run   # :8081
 - Business logic stays in the legacy service/domain layer semantics; port it, don't "improve" it. Equivalence beats elegance.
 - Modern REST: `/api/loans/...`, JSON camelCase, money as string decimals, dates ISO-8601.
 - Kafka: emit domain events on state changes only (`loan.disbursed`, `loan.repaid`, `loan.status-changed`, `loan.disbursal-reversed`).
+- Scenarios: write flows set `reset: true` (DB restored from snapshot before each side); fixed dates, never "today". Form preview/navigation steps use `modern: null` (UI-only, not counted). Equivalence for writes = `sql:` checks; exclude timestamps/created dates from SELECTs.
 - Commits: `<endpoint key or area>: <what>`.

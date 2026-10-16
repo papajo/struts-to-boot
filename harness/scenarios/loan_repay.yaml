@@ -1,0 +1,85 @@
+# Full early repayment: get -> loadRepayment -> preview -> makeRepayment.
+# Repay amount is computed by Mifos as of server "today"; fixtures matured in 2011, so it is
+# date-independent now (verify: golden amount must be identical across two record runs).
+name: loan_repay
+reset: true
+login:
+  legacy: {method: POST, url: /j_spring_security_check, data: {j_username: mifos, j_password: testmifos}}
+  modern: {method: POST, url: /api/auth/login, json: {username: mifos, password: testmifos}}
+vars: {d: "01", m: "06", y: "2011", receipt: "REPAY-1"}
+matrix:
+  gan: ["000100000000039", "000100000000040", "000100000000010"]   # active/good, 100000/100000/1000, 1 payment each
+steps:
+  - id: get
+    endpoint: /loanAccountAction.do#get
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=get&globalAccountNum={gan}
+      capture: {flowKey: 'currentFlowKey=([^&"'']+)', randomNUm: 'randomNUm=([^&"'']+)', accountId: 'accountId=(\d+)'}
+    modern: null
+
+  - id: load
+    endpoint: /repayLoanAction.do#loadRepayment
+    legacy:
+      method: GET
+      url: /repayLoanAction.do?method=loadRepayment&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      capture:
+        flowKey: 'name="currentFlowKey" value="([^"]*)"'
+        amount: 'name="amount" value="([^"]*)"'
+        repaymentAmount: 'name="repaymentAmount" value="([^"]*)"'
+        waivedAmount: 'name="waivedAmount" value="([^"]*)"'
+      extract:
+        amount: 'input[name="amount"]'
+        repayment_amount: 'input[name="repaymentAmount"]'
+        waived_amount: 'input[name="waivedAmount"]'
+      fail_if: &err 'error\.message">\s*(<[a-zA-Z]|[^<\s])|Validation Error'
+    modern:
+      method: GET
+      url: /api/loans/{gan}/repayment-quote
+      extract: {amount: $.amount, repayment_amount: $.repaymentAmount, waived_amount: $.waivedAmount}
+
+  - id: preview
+    endpoint: /repayLoanAction.do#preview
+    legacy:
+      method: POST
+      url: /repayLoanAction.do?method=preview&globalAccountNum={gan}
+      data:
+        method: preview
+        currentFlowKey: "{flowKey}"
+        globalAccountNum: "{gan}"
+        amount: "{amount}"
+        repaymentAmount: "{repaymentAmount}"
+        waivedAmount: "{waivedAmount}"
+        waiverInterest: "false"
+        dateOfPayment: "{d}/{m}/{y}"
+        dateOfPaymentDD: "{d}"
+        dateOfPaymentMM: "{m}"
+        dateOfPaymentYY: "{y}"
+        receiptNumber: "{receipt}"
+        receiptDate: "{d}/{m}/{y}"
+        receiptDateDD: "{d}"
+        receiptDateMM: "{m}"
+        receiptDateYY: "{y}"
+        paymentTypeId: "1"
+      fail_if: *err
+    modern: null
+
+  - id: make_repayment
+    endpoint: /repayLoanAction.do#makeRepayment
+    legacy:
+      method: POST
+      url: /repayLoanAction.do?method=makeRepayment&globalAccountNum={gan}
+      data: {method: makeRepayment, currentFlowKey: "{flowKey}", globalAccountNum: "{gan}", accountId: "{accountId}", paymentTypeId: "1"}
+      fail_if: *err
+    modern:
+      method: POST
+      url: /api/loans/{gan}/repayment
+      json: {paymentDate: "{y}-{m}-{d}", paymentTypeId: 1, receiptNumber: "{receipt}", receiptDate: "{y}-{m}-{d}", waiveInterest: false}
+    sql:
+      - SELECT account_state_id, closed_date FROM account WHERE global_account_num='{gan}'
+      - SELECT p.payment_type_id, p.amount, p.receipt_number, p.payment_date, p.receipt_date FROM account_payment p JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY p.payment_id
+      - SELECT t.account_action_id, t.amount, t.action_date, t.installment_id, d.principal_amount, d.interest_amount, d.misc_fee_amount, d.penalty_amount FROM account_trxn t JOIN account a USING(account_id) LEFT JOIN loan_trxn_detail d USING(account_trxn_id) WHERE a.global_account_num='{gan}' ORDER BY t.account_trxn_id
+      - SELECT f.glcode_id, f.debit_credit_flag, SUM(f.posted_amount) FROM financial_trxn f JOIN account_trxn t USING(account_trxn_id) JOIN account a ON a.account_id=t.account_id WHERE a.global_account_num='{gan}' GROUP BY 1,2 ORDER BY 1,2
+      - SELECT s.installment_id, s.principal, s.interest, s.misc_fees, s.principal_paid, s.interest_paid, s.misc_fees_paid, s.payment_status, s.payment_date FROM loan_schedule s JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY s.installment_id
+      - SELECT principal_paid, interest_paid, fees_paid, penalty_paid FROM loan_summary s JOIN account a USING(account_id) WHERE a.global_account_num='{gan}'
+      - SELECT h.old_status, h.new_status FROM account_status_change_history h JOIN account a USING(account_id) WHERE a.global_account_num='{gan}' ORDER BY h.account_status_change_id
