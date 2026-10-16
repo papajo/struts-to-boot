@@ -10,13 +10,22 @@
   <profiles>
     <profile>
       <id>extras</id>
+      <!-- Pentaho omni group: pentaho-* reporting libs, spring-mobile 1.0.0.M3, struts-legacy,
+           strutstest, jakarta-oro, yuicompressor plugin. Verified by legacy/check-deps.py. -->
       <repositories>
         <repository>
-          <!-- pentaho-* reporting libs -->
           <id>pentaho</id>
-          <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
+          <url>https://nexus.pentaho.org/content/groups/omni/</url>
+          <snapshots><enabled>false</enabled></snapshots>
         </repository>
       </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>pentaho-plugins</id>
+          <url>https://nexus.pentaho.org/content/groups/omni/</url>
+          <snapshots><enabled>false</enabled></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
     </profile>
   </profiles>
   <activeProfiles><activeProfile>extras</activeProfile></activeProfiles>
