@@ -61,7 +61,7 @@ for r in trees.values():
 
 
 def fetch(url: str, n: int) -> bytes | None:
-    req = urllib.request.Request(url, headers={"User-Agent": "Apache-Maven/3.8", "Range": f"bytes=0-{n}"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Apache-Maven/3.8"})
     try:
         with urllib.request.urlopen(req, timeout=20) as resp:
             return resp.read(n)
@@ -70,18 +70,18 @@ def fetch(url: str, n: int) -> bytes | None:
 
 
 def check(gav):
-    """A repo 'has' an artifact only if it serves a real POM *and* a real jar (zip magic).
+    """A repo 'has' an artifact only if it serves a real POM *and* (unless packaging=pom) a real jar.
     Some dead repos answer 200 with an HTML notice for every path."""
     g, a, v = gav
     base_path = f"{g.replace('.', '/')}/{a}/{v}/{a}-{v}"
     for name, base in REPOS.items():
-        pom = fetch(base + base_path + ".pom", 512)
-        if not pom or b"<project" not in pom:
+        pom = fetch(base + base_path + ".pom", 200_000)  # license headers push <project> far down
+        if not pom or b"<project" not in pom or pom.lstrip()[:15].lower().startswith((b"<!doctype html", b"<html")):
             continue
+        if b"<packaging>pom</packaging>" in pom:
+            return gav, name
         jar = fetch(base + base_path + ".jar", 4)
         if jar and jar.startswith(b"PK"):
-            return gav, name
-        if b"<packaging>pom</packaging>" in (fetch(base + base_path + ".pom", 20000) or b""):
             return gav, name
     return gav, None
 
