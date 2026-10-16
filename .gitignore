@@ -9,3 +9,5 @@ legacy/seed.sql
 legacy/snapshot.sql
 mapper/.venv/
 mapper/out/
+legacy/vendor/
+legacy/.cache/

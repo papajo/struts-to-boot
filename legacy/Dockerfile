@@ -5,14 +5,20 @@ WORKDIR /src
 COPY . .
 COPY --from=cfg settings.xml /root/.m2/settings.xml
 COPY --from=cfg patch-poms.py /tmp/patch-poms.py
+# jars on no live repo, pulled from the released 2.6.4 war by legacy/vendor-jars.sh (run it first)
+COPY --from=cfg vendor/ /vendor/
 # maven.mifos.org is dead; settings.xml mirrors it to Central.
 # 1. drop build-only plugins that existed only on that repo (pseudoloc, settings-sanitizer, findbugs SNAPSHOT)
-# 2. install the BIRT jars shipped in reporting-libs/ (mifos-reporting depends on them)
+# 2. install vendored jars (vendor/manifest.tsv) and the BIRT jars shipped in reporting-libs/
 # 3. build the war. Cache mount keeps downloaded deps across retries (bump id= to discard a poisoned cache);
 #    -C fails on checksum mismatch so a repo serving HTML for jars is caught at download time.
-ENV MVN="mvn -B -C -s /root/.m2/settings.xml -DskipTests -Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
+ENV MVN="mvn -B -C -s /root/.m2/settings.xml -DskipTests -Dmaven.test.skip=true -Dmaven.compiler.source=1.8 -Dmaven.compiler.target=1.8"
 RUN python3 /tmp/patch-poms.py /src || (apt-get update -qq && apt-get install -y -qq python3 >/dev/null && python3 /tmp/patch-poms.py /src)
 RUN --mount=type=cache,id=m2-v2,target=/root/.m2/repository \
+    test -s /vendor/manifest.tsv || { echo "run legacy/vendor-jars.sh first" >&2; exit 1; }; \
+    while IFS="$(printf '\t')" read -r f g a v; do \
+      $MVN -q install:install-file -Dfile=/vendor/$f -DgroupId=$g -DartifactId=$a -Dversion=$v -Dpackaging=jar -DgeneratePom=true || exit 1; \
+    done < /vendor/manifest.tsv && \
     $MVN -pl reporting-libs -am install && $MVN -pl war -am package
 
 FROM jetty:9.4-jre8

@@ -55,9 +55,15 @@ for r in trees.values():
             v = sub(d.findtext(NS + "version")) or managed.get((g, a), "")
             if a in reactor or a in DEAD or v.endswith("2.3.2-SNAPSHOT") or not v or "${" in v or g.startswith("org.mifos.birtlibs"):
                 continue
-            if d.findtext(NS + "scope") == "system":
+            if d.findtext(NS + "scope") in ("system", "test"):  # test deps are stripped by patch-poms.py
                 continue
-            wanted.add((g, a, v))
+            if a == "yuicompressor-maven-plugin" and v == "0.9":
+                v = "1.5.1"  # bumped by patch-poms.py
+            wanted.add((g, a, v, sub(d.findtext(NS + "classifier") or "")))
+vendored = set()
+man = Path(__file__).resolve().parent / "vendor" / "manifest.tsv"
+if man.exists():
+    vendored = {tuple(l.split("\t")[1:4]) for l in man.read_text().splitlines() if l.strip()}
 
 
 def fetch(url: str, n: int) -> bytes | None:
@@ -69,10 +75,13 @@ def fetch(url: str, n: int) -> bytes | None:
         return None
 
 
-def check(gav):
+def check(gavc):
     """A repo 'has' an artifact only if it serves a real POM *and* (unless packaging=pom) a real jar.
     Some dead repos answer 200 with an HTML notice for every path."""
-    g, a, v = gav
+    g, a, v, c = gavc
+    gav = (g, a, v)
+    if gav in vendored:
+        return gav, "vendored"
     base_path = f"{g.replace('.', '/')}/{a}/{v}/{a}-{v}"
     for name, base in REPOS.items():
         pom = fetch(base + base_path + ".pom", 200_000)  # license headers push <project> far down
@@ -80,7 +89,7 @@ def check(gav):
             continue
         if b"<packaging>pom</packaging>" in pom:
             return gav, name
-        jar = fetch(base + base_path + ".jar", 4)
+        jar = fetch(base + base_path + (f"-{c}" if c else "") + ".jar", 4)
         if jar and jar.startswith(b"PK"):
             return gav, name
     return gav, None

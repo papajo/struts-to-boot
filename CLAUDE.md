@@ -18,6 +18,8 @@ AI-assisted migration of the Mifos **loan module** (Struts 1.2) to Spring Boot 3
 # inventory
 python3 tools/inventory.py legacy-src --json docs/loan-inventory.json --md docs/loan-inventory.md
 # legacy app
+legacy/vendor-jars.sh                             # once: jars on no live repo, from released 2.6.4 war
+python3 legacy/check-deps.py                      # every declared artifact resolvable? (0 missing)
 cd legacy && docker compose up --build           # :8080/mifos (first start runs Liquibase)
 legacy/seed.sh                                    # load loan fixtures, then restart mifos
 SNAPSHOT=1 legacy/reset.sh                        # snapshot post-seed DB (needs mysql client)
