@@ -12,6 +12,8 @@ Also:
   - AspectJ 1.6.11 can't read Java 8 class files ("Invalid byte tag in constant pool: 18"):
     aspectj-maven-plugin 1.4 -> 1.11 (ajc 1.8.13), aspectjrt/aspectjweaver 1.6.11 -> 1.8.13,
     and drop its test-compile goal (tests are skipped and their deps stripped)
+  - native2ascii-maven-plugin 1.0-alpha-1 calls sun.tools.native2ascii.Main, which lives in the JDK's
+    tools.jar and isn't on the plugin classpath: add tools.jar as a system-scoped plugin dependency
 Run inside the Docker build on a copy of the source; the submodule stays untouched.
 """
 import re
@@ -24,6 +26,10 @@ DEP = re.compile(r"[ \t]*<dependency>(?:(?!<dependency>).)*?</dependency>[ \t]*\
 AJ_PLUGIN = re.compile(r"(<artifactId>aspectj-maven-plugin</artifactId>\s*<version>)1\.4(</version>)")
 AJ_LIB = re.compile(r"(<artifactId>aspectj(?:rt|weaver)</artifactId>\s*<version>)1\.6\.11(</version>)")
 AJ_TEST = re.compile(r"\s*<goal>test-compile</goal>")
+N2A = re.compile(r"(<artifactId>native2ascii-maven-plugin</artifactId>\s*<version>1\.0-alpha-1</version>)(?!\s*<dependencies>)")
+N2A_DEPS = ("\\1\n                <dependencies><dependency><groupId>com.sun</groupId><artifactId>tools</artifactId>"
+            "<version>1.8</version><scope>system</scope><systemPath>${java.home}/../lib/tools.jar</systemPath>"
+            "</dependency></dependencies>")
 YUI = re.compile(r"(<artifactId>yuicompressor-maven-plugin</artifactId>\s*<version>)0\.9(</version>)")
 
 root = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
@@ -42,8 +48,9 @@ for pom in sorted(root.rglob("pom.xml")):
     if aj:
         new = AJ_TEST.sub("", new)
     new, ajl = AJ_LIB.subn(r"\g<1>1.8.13\2", new)
+    new, n2a = N2A.subn(N2A_DEPS, new)
     if new != text:
         pom.write_text(new)
         total += removed
-        print(f"{pom.relative_to(root)}: -{removed} plugin(s), -{tdeps} test dep(s){', yuicompressor 1.5.1' if yui else ''}{', aspectj plugin 1.11' if aj else ''}{f', aspectj libs 1.8.13 x{ajl}' if ajl else ''}")
+        print(f"{pom.relative_to(root)}: -{removed} plugin(s), -{tdeps} test dep(s){', yuicompressor 1.5.1' if yui else ''}{', aspectj plugin 1.11' if aj else ''}{f', aspectj libs 1.8.13 x{ajl}' if ajl else ''}{', native2ascii +tools.jar' if n2a else ''}")
 print(f"patch-poms: {total} plugin(s) removed")
