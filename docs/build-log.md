@@ -9,3 +9,4 @@
 | 2026-10-16 | `mifos-rest`: ajc "Invalid byte tag in constant pool: 18" (AspectJ 1.6.11 can't read Java 8 rt.jar) — 14/18 modules built | patch-poms: aspectj-maven-plugin 1.4 → 1.11 (ajc 1.8.13), aspectjrt/weaver 1.6.11 → 1.8.13, drop ajc test-compile |
 | 2026-10-16 | `mifos-webapp`: native2ascii "Error starting Sun's native2ascii" — 15/18 modules built | patch-poms adds JDK `tools.jar` (system scope) as native2ascii plugin dependency |
 | 2026-10-16 | `mifos-war`: release assembly wants `appdomain/target/applicationConfiguration.custom.properties` (output of stripped settings-sanitizer) — 17/18 built | Dockerfile copies the default properties there; runtime stage copies `mifos-TEMP-nonexec.war` (plain webapp) instead of `*.war` (two wars → COPY would fail) |
+| 2026-10-16 | **Build green (18/18).** Container start: `bind: address already in use` on 8080 (oldbox) | host ports configurable: `MIFOS_PORT`, `MYSQL_PORT` (defaults 8080/3306) |

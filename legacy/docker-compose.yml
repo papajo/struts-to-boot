@@ -8,7 +8,7 @@ services:
       MYSQL_USER: mifos
       MYSQL_PASSWORD: mifos
     command: --max_connections=300 --innodb_file_per_table=1 --lower_case_table_names=1
-    ports: ["3306:3306"]
+    ports: ["${MYSQL_PORT:-3306}:3306"]
     volumes:
       - ../legacy-src/db/src/main/resources/sql/base-schema.sql:/docker-entrypoint-initdb.d/1-schema.sql:ro
       - ../legacy-src/db/src/main/resources/sql/base-data.sql:/docker-entrypoint-initdb.d/2-data.sql:ro
@@ -21,7 +21,7 @@ services:
       additional_contexts:
         cfg: .
     depends_on: [mysql]
-    ports: ["8080:8080"]
+    ports: ["${MIFOS_PORT:-8080}:8080"]
     environment:
       MIFOS_CONF: /mifos-conf
     volumes:
