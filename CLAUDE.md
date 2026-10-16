@@ -6,6 +6,7 @@ AI-assisted migration of the Mifos **loan module** (Struts 1.2) to Spring Boot 3
 - Legacy: Mifos (`legacy-src/`, submodule of mifos/head), Struts 1.2.7, Hibernate 3, Spring 3, JSP, MySQL 5.7, Jetty, Java 6 → built at 1.8
 - Modern: Spring Boot 3.x, Java 21, Spring Web + springdoc-openapi, Spring Data JPA, Spring Kafka, Flyway, Testcontainers. **Same MySQL schema** as legacy (no data migration in scope).
 - Harness: Python 3.10+ (`harness/`): requests, BeautifulSoup, jsonpath-ng, PyMySQL, pytest
+- Code Mapper (`mapper/`, capstone #2): Python, tree-sitter-java, SQLite, MCP SDK 2.x (`MCPServer`)
 - Infra: Docker Compose (`legacy/docker-compose.yml`)
 
 ## Scope
@@ -25,6 +26,11 @@ cd harness && python3 -m venv .venv && .venv/bin/pip install -e '.[test]' && .ve
 harness record --legacy http://localhost:8080/mifos --legacy-db mysql://mifos:mifos@localhost:3306/mifos --reset legacy/reset.sh
 harness replay --modern http://localhost:8081   --modern-db mysql://mifos:mifos@localhost:3307/mifos --reset legacy/reset.sh
 harness report
+# code mapper (index once per legacy-src change; agents use it via MCP)
+cd mapper && python3 -m venv .venv && .venv/bin/pip install -e '.[test]' && .venv/bin/pytest -q && cd ..
+mapper/.venv/bin/mapper index legacy-src && mapper/.venv/bin/mapper eval
+mapper/.venv/bin/mapper context '/loanDisbursementAction.do#update'   # agent context for one endpoint
+mapper/.venv/bin/mapper serve                                          # MCP over stdio
 # modern (once scaffolded)
 cd modern && ./mvnw verify && ./mvnw spring-boot:run   # :8081
 ```
@@ -37,4 +43,6 @@ cd modern && ./mvnw verify && ./mvnw spring-boot:run   # :8081
 - Modern REST: `/api/loans/...`, JSON camelCase, money as string decimals, dates ISO-8601.
 - Kafka: emit domain events on state changes only (`loan.disbursed`, `loan.repaid`, `loan.status-changed`, `loan.disbursal-reversed`).
 - Scenarios: write flows set `reset: true` (DB restored from snapshot before each side); fixed dates, never "today". Form preview/navigation steps use `modern: null` (UI-only, not counted). Equivalence for writes = `sql:` checks; exclude timestamps/created dates from SELECTs.
+- Agent migration runs start from `mapper context <endpoint>` (+ golden recording), not from grepping. Log its token count in metrics.csv notes.
+- Mapper tests use the synthetic codebase in `mapper/tests/fixture/`; add a case there for every resolution bug fixed.
 - Commits: `<endpoint key or area>: <what>`.

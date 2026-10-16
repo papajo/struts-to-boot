@@ -7,3 +7,5 @@ modern/target/
 .DS_Store
 legacy/seed.sql
 legacy/snapshot.sql
+mapper/.venv/
+mapper/out/

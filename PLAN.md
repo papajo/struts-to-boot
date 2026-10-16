@@ -8,7 +8,8 @@ Target: Mifos loan module, 55 endpoints. Success = published numbers, not 100%.
 - [x] Read scenarios: `harness/scenarios/loan_read.yaml` — 6 endpoints × 5 fixture loans.
 - [ ] Record golden; replace `# placeholder` selectors using `harness/out/golden/raw/*.html`.
 - [x] Write-flow scenarios: `loan_disburse`, `loan_repay`, `loan_reverse_disbursal`, `loan_status_bulk` (reset via `legacy/reset.sh` snapshot; DB-state SQL checks). Unverified until first record — watch `fail_if` WARNs.
-- [ ] Legacy Code Mapper (#2) v0: dependency map Action → service → DAO → tables for the slice. Feeds agent context.
+- [x] Legacy Code Mapper (#2) v0 (`mapper/`): call graph + Struts + Hibernate + rules → SQLite, MCP server, AnchorMesh manifest. 94.7% call resolution; 18× smaller context per endpoint; `docs/mapper-eval.md`.
+- [ ] Mapper v1: PL/SQL + Informatica adapters on a public codebase; Spring XML bean wiring; hbm cascade.
 
 ## Week 2 — Modern skeleton + read endpoints
 - [ ] `modern/` Spring Boot 3, JPA entities for loan tables (generated from schema, reviewed), OpenAPI spec.

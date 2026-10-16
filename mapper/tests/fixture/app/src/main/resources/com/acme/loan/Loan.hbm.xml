@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.acme.loan.LoanBO" table="loan_account">
+    <set name="payments" table="account_payment"><key column="account_id"/></set>
+  </class>
+  <class name="com.acme.loan.PaymentEntity" table="account_payment"/>
+  <query name="loan.findByGlobalAccountNum"><![CDATA[from LoanBO l where l.gan = :gan]]></query>
+</hibernate-mapping>

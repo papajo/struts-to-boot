@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+  <form-beans><form-bean name="loanForm" type="com.acme.loan.LoanForm"/></form-beans>
+  <action-mappings>
+    <action path="/loanAction" type="com.acme.loan.LoanAction" name="loanForm" parameter="method">
+      <forward name="update_success" path="/pages/loan/details.jsp"/>
+      <forward name="get_success" path="/pages/loan/view.jsp"/>
+    </action>
+  </action-mappings>
+</struts-config>
