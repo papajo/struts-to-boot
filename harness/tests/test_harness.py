@@ -71,6 +71,40 @@ def test_record_replay_end_to_end(tmp_path: Path, modern_rate, expect):
         ms.shutdown()
 
 
+def test_capture_and_matrix(tmp_path: Path):
+    seen = []
+
+    def legacy(path):
+        seen.append(path)
+        return '<a href="x.do?currentFlowKey=FK123&x=1">n</a><span id="v">7</span>'
+
+    ls, lurl = _server(legacy, "text/html")
+    y = tmp_path / "s.yaml"
+    y.write_text("""
+name: m
+matrix: {gan: ["A1", "B2"]}
+steps:
+  - id: first
+    endpoint: e#get
+    legacy: {method: GET, url: "/get?g={gan}", capture: {fk: "currentFlowKey=([^&\\"]+)"}, extract: {v: "#v"}}
+    modern: {method: GET, url: /x}
+  - id: second
+    endpoint: e#next
+    legacy: {method: GET, url: "/next?g={gan}&k={fk}"}
+    modern: {method: GET, url: /y}
+""")
+    try:
+        from harness.core import load_scenarios
+        scs = load_scenarios(y)
+        assert [s.name for s in scs] == ["m__A1", "m__B2"]
+        for sc in scs:
+            record(sc, lurl, tmp_path / "g")
+        assert "/next?g=A1&k=FK123" in seen and "/next?g=B2&k=FK123" in seen
+        assert (tmp_path / "g" / "raw" / "m__A1.first.html").exists()
+    finally:
+        ls.shutdown()
+
+
 def test_compare_flags_missing_step():
     g = {"s1": {"endpoint": "e", "status": 200, "ms": 1, "values": {}, "sql": []}}
     assert compare(g, {})[0]["diffs"] == ["missing"]

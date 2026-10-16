@@ -5,3 +5,4 @@ harness/out/
 modern/target/
 .idea/
 .DS_Store
+legacy/seed.sql

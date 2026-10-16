@@ -12,13 +12,13 @@ import json
 import sys
 from pathlib import Path
 
-from .core import load_scenario, record, replay
+from .core import load_scenarios, record, replay
 
 OUT = Path("harness/out")
 
 
 def _scenarios(d: Path):
-    return [load_scenario(p) for p in sorted(d.glob("*.yaml"))]
+    return [sc for p in sorted(d.glob("*.yaml")) for sc in load_scenarios(p)]
 
 
 def main(argv=None):

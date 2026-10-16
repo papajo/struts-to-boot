@@ -1,0 +1,111 @@
+# Read-only loan endpoints, run once per fixture loan (matrix).
+# Fixtures come from legacy/seed.sql (acceptance_dbunit.xml):
+#   000100000000039 active/good, fee + payment, 10 inst
+#   000100000000012 active/bad standing
+#   000100000000042 group loan, active
+#   000100000000020 approved (not disbursed), fee
+#   000100000000043 pending approval
+# Legacy selectors marked `# verify` are from JSP source; confirm against harness/out/golden/raw/*.html
+# after the first record and tighten. Modern JSONPaths define the REST contract (modern/openapi.yaml).
+name: loan_read
+login:
+  legacy: {method: POST, url: /j_spring_security_check, data: {j_username: mifos, j_password: testmifos}}
+  modern: {method: POST, url: /api/auth/login, json: {username: mifos, password: testmifos}}
+matrix:
+  gan: ["000100000000039", "000100000000012", "000100000000042", "000100000000020", "000100000000043"]
+steps:
+  - id: get
+    endpoint: /loanAccountAction.do#get
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=get&globalAccountNum={gan}
+      capture:
+        flowKey: 'currentFlowKey=([^&"'']+)'
+        randomNUm: 'randomNUm=([^&"'']+)'
+        accountId: 'accountId=(\d+)'
+      extract:
+        interest_rate: '[id="loanaccountdetail.text.interestRate"]'
+        currency: '[id="loanaccountdetail.text.currency"]'
+        external_id: '[id="loanaccountdetail.text.externalid"]'
+        disbursal_date: '[id="loanaccountdetail.details.disbursaldate"]'
+        freq_of_inst: '[id="LoanAccountDetail.text.freq_of_inst"]'
+        collateral_type: '[id="loanaccountdetail.text.collateraltype"]'
+        summary_cells: '#loanSummaryTable td[]'   # verify: includes label cells?
+    modern:
+      method: GET
+      url: /api/loans/{gan}
+      extract:
+        interest_rate: $.interestRate
+        currency: $.currency
+        external_id: $.externalId
+        disbursal_date: $.disbursalDate
+        freq_of_inst: $.installmentFrequency
+        collateral_type: $.collateralType
+        summary_cells: $.summary.cells[*]
+
+  - id: installment_details
+    endpoint: /loanAccountAction.do#getInstallmentDetails
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=getInstallmentDetails&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      extract:
+        installment_cells: '#loanInstallmentTable td[]'
+    modern:
+      method: GET
+      url: /api/loans/{gan}/installments/next
+      extract:
+        installment_cells: $.cells[*]
+
+  - id: all_activity
+    endpoint: /loanAccountAction.do#getAllActivity
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=getAllActivity&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      extract:
+        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
+    modern:
+      method: GET
+      url: /api/loans/{gan}/activity
+      extract:
+        rows: $.rows[*]
+
+  - id: repayment_schedule
+    endpoint: /loanAccountAction.do#getLoanRepaymentSchedule
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=getLoanRepaymentSchedule&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      extract:
+        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
+    modern:
+      method: GET
+      url: /api/loans/{gan}/schedule
+      extract:
+        rows: $.rows[*]
+
+  - id: original_schedule
+    endpoint: /loanAccountAction.do#viewOriginalSchedule
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=viewOriginalSchedule&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      extract:
+        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
+    modern:
+      method: GET
+      url: /api/loans/{gan}/schedule/original
+      extract:
+        rows: $.rows[*]
+
+  - id: status_history
+    endpoint: /loanAccountAction.do#viewStatusHistory
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=viewStatusHistory&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      extract:
+        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
+    modern:
+      method: GET
+      url: /api/loans/{gan}/status-history
+      extract:
+        rows: $.rows[*]
+    sql:
+      - SELECT COUNT(*) FROM account_status_change_history h JOIN account a ON a.account_id=h.account_id WHERE a.global_account_num='{gan}'

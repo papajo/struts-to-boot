@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 import time
 from dataclasses import dataclass, field
 from decimal import Decimal, InvalidOperation
@@ -86,6 +87,16 @@ class Side:
     data: dict | None = None
     json: dict | None = None
     extract: dict[str, str] = field(default_factory=dict)
+    capture: dict[str, str] = field(default_factory=dict)  # var -> regex (group 1) over raw body
+
+
+def _tmpl(v: Any, vars: dict) -> Any:
+    """Fill {var} placeholders in strings/dicts; unknown vars are left as-is."""
+    if isinstance(v, str):
+        return re.sub(r"\{(\w+)\}", lambda m: str(vars.get(m[1], m[0])), v)
+    if isinstance(v, dict):
+        return {k: _tmpl(x, vars) for k, x in v.items()}
+    return v
 
 
 @dataclass
@@ -102,16 +113,27 @@ class Scenario:
     name: str
     steps: list[Step]
     login: dict | None = None  # {"legacy": Side-ish, "modern": Side-ish}
+    vars: dict = field(default_factory=dict)
 
 
-def load_scenario(path: Path) -> Scenario:
+def load_scenarios(path: Path) -> list[Scenario]:
+    """One YAML may expand to several scenarios via `matrix: {var: [v1, v2]}`."""
     raw = yaml.safe_load(path.read_text())
     steps = [
         Step(id=s["id"], endpoint=s["endpoint"],
              legacy=Side(**s["legacy"]), modern=Side(**s["modern"]), sql=s.get("sql", []))
         for s in raw["steps"]
     ]
-    return Scenario(name=raw["name"], steps=steps, login=raw.get("login"))
+    base_vars = raw.get("vars", {})
+    matrix = raw.get("matrix") or {}
+    if not matrix:
+        return [Scenario(raw["name"], steps, raw.get("login"), dict(base_vars))]
+    (key, values), = matrix.items()  # single-axis matrix keeps names readable
+    return [Scenario(f"{raw['name']}__{v}", steps, raw.get("login"), {**base_vars, key: v}) for v in values]
+
+
+def load_scenario(path: Path) -> Scenario:
+    return load_scenarios(path)[0]
 
 
 # ---------------------------------------------------------------- execution
@@ -140,18 +162,33 @@ def _run_sql(dsn: str | None, queries: list[str]) -> list[Any]:
         conn.close()
 
 
-def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None) -> dict:
+def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
+             raw_dir: Path | None = None) -> dict:
     sess = requests.Session()
     if sc.login and which in sc.login:
-        _send(sess, base, Side(**sc.login[which])).raise_for_status()
+        _send(sess, base, Side(**_tmpl(sc.login[which], sc.vars))).raise_for_status()
+    vars = dict(sc.vars)
     results = {}
     for st in sc.steps:
-        side = st.legacy if which == "legacy" else st.modern
+        tpl = st.legacy if which == "legacy" else st.modern
+        side = Side(tpl.method, _tmpl(tpl.url, vars), _tmpl(tpl.data, vars), _tmpl(tpl.json, vars),
+                    tpl.extract, tpl.capture)
         t0 = time.perf_counter()
         r = _send(sess, base, side)
         ms = round((time.perf_counter() - t0) * 1000, 1)
+        for var, rx in side.capture.items():
+            m = re.search(rx, r.text)
+            if m:
+                vars[var] = m.group(1)
+        if raw_dir is not None:
+            raw_dir.mkdir(parents=True, exist_ok=True)
+            ext = "html" if which == "legacy" else "json"
+            (raw_dir / f"{sc.name}.{st.id}.{ext}").write_text(r.text)
         if which == "legacy":
             values = extract_html(r.text, side.extract)
+            for k, v in values.items():
+                if v in (None, []):
+                    print(f"WARN {sc.name}/{st.id}: selector for '{k}' matched nothing", file=sys.stderr)
         else:
             values = extract_json(r.json() if r.content else None, side.extract)
         results[st.id] = {
@@ -159,15 +196,16 @@ def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None) -> dic
             "status": r.status_code,
             "ms": ms,
             "values": _jsonable(values),
-            "sql": _jsonable(_run_sql(dsn, st.sql)),
+            "sql": _jsonable(_run_sql(dsn, [_tmpl(q, vars) for q in st.sql])),
         }
     return results
 
 
 def record(sc: Scenario, base: str, out: Path, dsn: str | None = None) -> Path:
+    """Writes golden values to out/<name>.json and raw legacy HTML to out/raw/ (for writing selectors)."""
     out.mkdir(parents=True, exist_ok=True)
     f = out / f"{sc.name}.json"
-    f.write_text(json.dumps(run_side(sc, "legacy", base, dsn), indent=2))
+    f.write_text(json.dumps(run_side(sc, "legacy", base, dsn, raw_dir=out / "raw"), indent=2))
     return f
 
 
