@@ -1,0 +1,23 @@
+<settings>
+  <mirrors>
+    <!-- maven.mifos.org no longer resolves. Route it to Central; extras go in m2-overrides. -->
+    <mirror>
+      <id>mifos-dead-to-central</id>
+      <mirrorOf>maven-repository.mifos.org,mifos-releases,mifos-snapshots</mirrorOf>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </mirror>
+  </mirrors>
+  <profiles>
+    <profile>
+      <id>extras</id>
+      <repositories>
+        <repository>
+          <!-- pentaho-* reporting libs -->
+          <id>pentaho</id>
+          <url>https://repo.orl.eng.hitachivantara.com/artifactory/pnt-mvn/</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+  <activeProfiles><activeProfile>extras</activeProfile></activeProfiles>
+</settings>

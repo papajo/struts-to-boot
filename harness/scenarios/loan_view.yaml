@@ -1,0 +1,30 @@
+# Template scenario. Selectors are real element ids from loanaccountdetail.jsp;
+# modern JSONPaths assume the REST contract in modern/openapi.yaml (to be written).
+# Account number 000100000000002 is a placeholder — set after seeding test data.
+name: loan_view
+login:
+  legacy: {method: POST, url: /j_spring_security_check, data: {j_username: mifos, j_password: testmifos}}
+  modern: {method: POST, url: /api/auth/login, json: {username: mifos, password: testmifos}}
+steps:
+  - id: get_loan_detail
+    endpoint: /loanAccountAction.do#get
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=get&globalAccountNum=000100000000002
+      extract:
+        interest_rate: '[id="loanaccountdetail.text.interestRate"]'
+        currency: '[id="loanaccountdetail.text.currency"]'
+        external_id: '[id="loanaccountdetail.text.externalid"]'
+        disbursal_date: '[id="loanaccountdetail.details.disbursaldate"]'
+        summary_cells: '#loanSummaryTable td[]'
+    modern:
+      method: GET
+      url: /api/loans/000100000000002
+      extract:
+        interest_rate: $.interestRate
+        currency: $.currency
+        external_id: $.externalId
+        disbursal_date: $.disbursalDate
+        summary_cells: $.summary.cells[*]
+    sql:
+      - SELECT account_state_id FROM account WHERE global_account_num = '000100000000002'

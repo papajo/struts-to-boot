@@ -1,0 +1,269 @@
+[
+  {
+    "config": "accounts-struts-config.xml",
+    "path": "/ChangeAccountStatus",
+    "class": "org.mifos.accounts.loan.struts.action.AccountStatusAction",
+    "source": "application/src/main/java/org/mifos/accounts/loan/struts/action/AccountStatusAction.java",
+    "loc": 167,
+    "form": "accountStatusActionForm",
+    "form_class": "org.mifos.accounts.loan.struts.actionforms.AccountStatusActionForm",
+    "scope": "session",
+    "dispatch_param": "method",
+    "methods": [
+      "load",
+      "searchResults",
+      "update",
+      "getLoanOfficers",
+      "validate"
+    ],
+    "forwards": {
+      "changeAccountStatus_success": "/pages/application/loan/jsp/changeaccountstatus.jsp",
+      "changeAccountStatusSearch_success": "/pages/application/loan/jsp/statussearchresults.jsp",
+      "changeAccountStatusConfirmation_success": "/pages/application/loan/jsp/confirmation.jsp",
+      "noresultfound": "/pages/application/loan/jsp/nosearchresult.jsp"
+    },
+    "jsps": [
+      "/pages/application/loan/jsp/changeaccountstatus.jsp",
+      "/pages/application/loan/jsp/confirmation.jsp",
+      "/pages/application/loan/jsp/nosearchresult.jsp",
+      "/pages/application/loan/jsp/statussearchresults.jsp"
+    ]
+  },
+  {
+    "config": "accounts-struts-config.xml",
+    "path": "/loanDisbursementAction",
+    "class": "org.mifos.accounts.loan.struts.action.LoanDisbursementAction",
+    "source": "application/src/main/java/org/mifos/accounts/loan/struts/action/LoanDisbursementAction.java",
+    "loc": 261,
+    "form": "loanDisbursementActionForm",
+    "form_class": "org.mifos.accounts.loan.struts.actionforms.LoanDisbursementActionForm",
+    "scope": "session",
+    "dispatch_param": "method",
+    "methods": [
+      "load",
+      "preview",
+      "previous",
+      "update",
+      "validate",
+      "captureQuestionResponses",
+      "editQuestionResponses"
+    ],
+    "forwards": {
+      "load_success": "/pages/application/loan/jsp/DisburseLoan.jsp",
+      "load_failure": "/pages/application/loan/jsp/loanaccountdetail.jsp",
+      "preview_success": "/pages/application/loan/jsp/Review_loanDisbursement.jsp",
+      "preview_failure": "/pages/application/loan/jsp/DisburseLoan.jsp",
+      "previous_success": "/pages/application/loan/jsp/DisburseLoan.jsp",
+      "update_success": "/loanAccountAction.do?method=getDetails",
+      "update_failure": "/pages/application/loan/jsp/Review_loanDisbursement.jsp",
+      "captureQuestionResponses": "/pages/application/surveys/jsp/captureQuestionResponses.jsp"
+    },
+    "jsps": [
+      "/pages/application/loan/jsp/DisburseLoan.jsp",
+      "/pages/application/loan/jsp/Review_loanDisbursement.jsp",
+      "/pages/application/loan/jsp/loanaccountdetail.jsp",
+      "/pages/application/surveys/jsp/captureQuestionResponses.jsp"
+    ]
+  },
+  {
+    "config": "accounts-struts-config.xml",
+    "path": "/repayLoanAction",
+    "class": "org.mifos.accounts.loan.struts.action.RepayLoanAction",
+    "source": "application/src/main/java/org/mifos/accounts/loan/struts/action/RepayLoanAction.java",
+    "loc": 402,
+    "form": "repayLoanActionForm",
+    "form_class": "org.mifos.accounts.loan.struts.actionforms.RepayLoanActionForm",
+    "scope": "session",
+    "dispatch_param": "method",
+    "methods": [
+      "loadRepayment",
+      "loadGroupRepayment",
+      "makeRepayment",
+      "makeGroupRepayment",
+      "makeGroupMemberRepayment",
+      "preview",
+      "previous",
+      "validate"
+    ],
+    "forwards": {
+      "load_success": "/pages/application/loan/jsp/RepayLoan.jsp",
+      "load_group_success": "/pages/application/loan/jsp/RepayLoan.jsp",
+      "preview_success": "/pages/application/loan/jsp/Review_RepayLoan.jsp",
+      "previous_success": "/pages/application/loan/jsp/RepayLoan.jsp",
+      "update_success": "/loanAccountAction.do?method=getDetails",
+      "update_failure": "/pages/application/loan/jsp/Review_RepayLoan.jsp",
+      "preview_failure": "/pages/application/loan/jsp/RepayLoan.jsp",
+      "printPaymentReceipt": "printPaymentReceipt.ftl"
+    },
+    "jsps": [
+      "/pages/application/loan/jsp/RepayLoan.jsp",
+      "/pages/application/loan/jsp/Review_RepayLoan.jsp"
+    ]
+  },
+  {
+    "config": "accounts-struts-config.xml",
+    "path": "/loanAccountAction",
+    "class": "org.mifos.accounts.loan.struts.action.LoanAccountAction",
+    "source": "application/src/main/java/org/mifos/accounts/loan/struts/action/LoanAccountAction.java",
+    "loc": 1415,
+    "form": "loanAccountActionForm",
+    "form_class": "org.mifos.accounts.loan.struts.actionforms.LoanAccountActionForm",
+    "scope": "session",
+    "dispatch_param": "method",
+    "methods": [
+      "viewAndEditAdditionalInformation",
+      "getInstallmentDetails",
+      "getAllActivity",
+      "forwardWaiveCharge",
+      "get",
+      "getLoanRepaymentSchedule",
+      "viewOriginalSchedule",
+      "viewStatusHistory",
+      "validate",
+      "redoLoanBegin",
+      "manage",
+      "managePrevious",
+      "managePreview",
+      "cancel",
+      "update",
+      "captureQuestionResponses",
+      "editQuestionResponses",
+      "getGroupLoanAccountDetails",
+      "getGroupLoanRepaymentSchedule",
+      "getDetails"
+    ],
+    "forwards": {
+      "get": "/loanAccountAction.do?method=get",
+      "getGroupLoanAccountDetails": "/loanAccountAction.do?method=getGroupLoanAccountDetails",
+      "viewInstmentDetails_success": "/pages/application/loan/jsp/nextPayment_loanAccount.jsp",
+      "getInstallmentDetails_failure": "/pages/application/loan/jsp/nextPayment_loanAccount.jsp",
+      "getAllActivity_success": "/pages/application/loan/jsp/viewloanaccountactivity.jsp",
+      "waiveChargesDue_Success": "/loanAccountAction.do?method=forwardWaiveCharge",
+      "waiveChargesOverDue_Success": "/loanAccountAction.do?method=forwardWaiveCharge",
+      "waiveChargeDue_LoanAccount_failure": "/pages/application/loan/jsp/nextPayment_loanAccount.jsp",
+      "waiveChargeOverDue_LoanAccount_failure": "/pages/application/loan/jsp/nextPayment_loanAccount.jsp",
+      "waiveLoanAccountCharges_Success": "/loanAccountAction.do?method=getInstallmentDetails",
+      "get_success": "/pages/application/loan/jsp/loanaccountdetail.jsp",
+      "get_failure": "/pages/application/customer/jsp/empty.jsp",
+      "getLoanRepaymentSchedule": "/pages/application/loan/jsp/loanRepayment.jsp",
+      "getLoanRepaymentScheduleFailure": "/pages/application/loan/jsp/loanRepayment.jsp",
+      "viewOriginalSchedule": "/pages/application/loan/jsp/viewOriginalSchedule.jsp",
+      "viewStatusHistory": "/pages/application/loan/jsp/viewLoanStatusHistory.jsp",
+      "manage_success": "/pages/application/loan/jsp/editLoanAccount.jsp",
+      "managepreview_success": "/pages/application/loan/jsp/editPreviewLoanAccount.jsp",
+      "managepreview_failure": "/pages/application/loan/jsp/editLoanAccount.jsp",
+      "update_success": "/loanAccountAction.do?method=getDetails",
+      "update_failure": "/pages/application/loan/jsp/editPreviewLoanAccount.jsp",
+      "manageprevious_success": "/pages/application/loan/jsp/editLoanAccount.jsp",
+      "loan_detail_page": "/loanAccountAction.do?method=get",
+      "viewLoanChangeLog": "/pages/application/loan/jsp/viewChangeLog.jsp",
+      "cancelLoanChangeLog": "/loanAccountAction.do?method=getDetails",
+      "viewAndEditAdditionalInformation": "/viewAndEditQuestionnaire.ftl"
+    },
+    "jsps": [
+      "/pages/application/customer/jsp/empty.jsp",
+      "/pages/application/loan/jsp/editLoanAccount.jsp",
+      "/pages/application/loan/jsp/editPreviewLoanAccount.jsp",
+      "/pages/application/loan/jsp/loanRepayment.jsp",
+      "/pages/application/loan/jsp/loanaccountdetail.jsp",
+      "/pages/application/loan/jsp/nextPayment_loanAccount.jsp",
+      "/pages/application/loan/jsp/viewChangeLog.jsp",
+      "/pages/application/loan/jsp/viewLoanStatusHistory.jsp",
+      "/pages/application/loan/jsp/viewOriginalSchedule.jsp",
+      "/pages/application/loan/jsp/viewloanaccountactivity.jsp"
+    ]
+  },
+  {
+    "config": "accounts-struts-config.xml",
+    "path": "/multipleloansaction",
+    "class": "org.mifos.accounts.loan.struts.action.MultipleLoanAccountsCreationAction",
+    "source": "application/src/main/java/org/mifos/accounts/loan/struts/action/MultipleLoanAccountsCreationAction.java",
+    "loc": 242,
+    "form": "multipleloansactionform",
+    "form_class": "org.mifos.accounts.loan.struts.actionforms.MultipleLoanAccountsCreationActionForm",
+    "scope": "session",
+    "dispatch_param": "method",
+    "methods": [
+      "load",
+      "getLoanOfficers",
+      "getCenters",
+      "getPrdOfferings",
+      "get",
+      "validate",
+      "create",
+      "cancel"
+    ],
+    "forwards": {
+      "load_success": "/pages/application/loan/jsp/CreateMultipleLoanAccounts.jsp",
+      "load_failure": "/clientsAndAccounts.ftl",
+      "get_success": "/pages/application/loan/jsp/CreateMultipleLoanAccountsSearchResults.jsp",
+      "get_failure": "/pages/application/loan/jsp/CreateMultipleLoanAccounts.jsp",
+      "create_success": "/pages/application/loan/jsp/CreateMultipleLoanAccountsConfirm.jsp",
+      "create_failure": "/pages/application/loan/jsp/CreateMultipleLoanAccountsSearchResults.jsp",
+      "cancel_success": "/clientsAndAccounts.ftl",
+      "cancel_failure": "/pages/application/loan/jsp/CreateMultipleLoanAccounts.jsp"
+    },
+    "jsps": [
+      "/pages/application/loan/jsp/CreateMultipleLoanAccounts.jsp",
+      "/pages/application/loan/jsp/CreateMultipleLoanAccountsConfirm.jsp",
+      "/pages/application/loan/jsp/CreateMultipleLoanAccountsSearchResults.jsp"
+    ]
+  },
+  {
+    "config": "accounts-struts-config.xml",
+    "path": "/reverseloandisbaction",
+    "class": "org.mifos.accounts.loan.struts.action.ReverseLoanDisbursalAction",
+    "source": "application/src/main/java/org/mifos/accounts/loan/struts/action/ReverseLoanDisbursalAction.java",
+    "loc": 135,
+    "form": "reverseloandisbactionform",
+    "form_class": "org.mifos.accounts.loan.struts.actionforms.ReverseLoanDisbursalActionForm",
+    "scope": "session",
+    "dispatch_param": "method",
+    "methods": [
+      "search",
+      "load",
+      "preview",
+      "validate",
+      "update",
+      "cancel"
+    ],
+    "forwards": {
+      "search_success": "/pages/application/loan/jsp/undoloandisbursalsearch.jsp",
+      "search_failure": "/AdminAction.do?method=load",
+      "load_success": "/pages/application/loan/jsp/undoloandisbursal.jsp",
+      "load_failure": "/pages/application/loan/jsp/undoloandisbursalsearch.jsp",
+      "preview_success": "/pages/application/loan/jsp/undoloandisbursalpreview.jsp",
+      "preview_failure": "/pages/application/loan/jsp/undoloandisbursal.jsp",
+      "update_success": "/pages/application/admin/jsp/admin.jsp",
+      "update_failure": "/pages/application/loan/jsp/undoloandisbursalpreview.jsp",
+      "cancel_success": "/pages/application/admin/jsp/admin.jsp",
+      "cancel_failure": "/pages/application/admin/jsp/admin.jsp"
+    },
+    "jsps": [
+      "/pages/application/admin/jsp/admin.jsp",
+      "/pages/application/loan/jsp/undoloandisbursal.jsp",
+      "/pages/application/loan/jsp/undoloandisbursalpreview.jsp",
+      "/pages/application/loan/jsp/undoloandisbursalsearch.jsp"
+    ]
+  },
+  {
+    "config": "accounts-struts-config.xml",
+    "path": "/groupIndividualLoanAccountAction",
+    "class": "org.mifos.accounts.loan.struts.action.GroupIndividualLoanAccountAction",
+    "source": "application/src/main/java/org/mifos/accounts/loan/struts/action/GroupIndividualLoanAccountAction.java",
+    "loc": 248,
+    "form": "loanAccountActionForm",
+    "form_class": "org.mifos.accounts.loan.struts.actionforms.LoanAccountActionForm",
+    "scope": "session",
+    "dispatch_param": "method",
+    "methods": [
+      "get"
+    ],
+    "forwards": {
+      "get_success": "/pages/application/loan/jsp/loanaccountdetail.jsp"
+    },
+    "jsps": [
+      "/pages/application/loan/jsp/loanaccountdetail.jsp"
+    ]
+  }
+]

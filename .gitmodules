@@ -1,0 +1,3 @@
+[submodule "legacy-src"]
+	path = legacy-src
+	url = https://github.com/mifos/head.git
