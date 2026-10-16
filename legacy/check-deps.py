@@ -17,10 +17,12 @@ NS = "{http://maven.apache.org/POM/4.0.0}"
 REPOS = {
     "central": "https://repo.maven.apache.org/maven2/",
     "spring-milestone": "https://repo.spring.io/milestone/",
-    "spring-release": "https://repo.spring.io/release/",
     "pentaho-omni": "https://nexus.pentaho.org/content/groups/omni/",
     "pentaho-public": "https://public.nexus.pentaho.org/repository/omni/",
+    "hv-pnt-mvn": "https://one.hitachivantara.com/artifactory/pnt-mvn/",
     "jboss": "https://repository.jboss.org/nexus/content/groups/public/",
+    "scijava": "https://maven.scijava.org/content/groups/public/",
+    "jaspersoft": "https://jaspersoft.jfrog.io/artifactory/third-party-ce-artifacts/",
 }
 DEAD = ("mifos-pseudoloc-gen", "mifos-settings-sanitizer", "lifecycle-mapping")  # stripped by patch-poms.py
 
@@ -58,17 +60,29 @@ for r in trees.values():
             wanted.add((g, a, v))
 
 
+def fetch(url: str, n: int) -> bytes | None:
+    req = urllib.request.Request(url, headers={"User-Agent": "Apache-Maven/3.8", "Range": f"bytes=0-{n}"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            return resp.read(n)
+    except Exception:
+        return None
+
+
 def check(gav):
+    """A repo 'has' an artifact only if it serves a real POM *and* a real jar (zip magic).
+    Some dead repos answer 200 with an HTML notice for every path."""
     g, a, v = gav
-    path = f"{g.replace('.', '/')}/{a}/{v}/{a}-{v}.pom"
+    base_path = f"{g.replace('.', '/')}/{a}/{v}/{a}-{v}"
     for name, base in REPOS.items():
-        try:
-            req = urllib.request.Request(base + path, method="HEAD", headers={"User-Agent": "Apache-Maven/3.8"})
-            with urllib.request.urlopen(req, timeout=15) as resp:
-                if resp.status == 200:
-                    return gav, name
-        except Exception:
-            pass
+        pom = fetch(base + base_path + ".pom", 512)
+        if not pom or b"<project" not in pom:
+            continue
+        jar = fetch(base + base_path + ".jar", 4)
+        if jar and jar.startswith(b"PK"):
+            return gav, name
+        if b"<packaging>pom</packaging>" in (fetch(base + base_path + ".pom", 20000) or b""):
+            return gav, name
     return gav, None
 
 

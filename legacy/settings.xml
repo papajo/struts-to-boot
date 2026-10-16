@@ -7,26 +7,7 @@
       <url>https://repo.maven.apache.org/maven2</url>
     </mirror>
   </mirrors>
-  <profiles>
-    <profile>
-      <id>extras</id>
-      <!-- Pentaho omni group: pentaho-* reporting libs, spring-mobile 1.0.0.M3, struts-legacy,
-           strutstest, jakarta-oro, yuicompressor plugin. Verified by legacy/check-deps.py. -->
-      <repositories>
-        <repository>
-          <id>pentaho</id>
-          <url>https://nexus.pentaho.org/content/groups/omni/</url>
-          <snapshots><enabled>false</enabled></snapshots>
-        </repository>
-      </repositories>
-      <pluginRepositories>
-        <pluginRepository>
-          <id>pentaho-plugins</id>
-          <url>https://nexus.pentaho.org/content/groups/omni/</url>
-          <snapshots><enabled>false</enabled></snapshots>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-  </profiles>
-  <activeProfiles><activeProfile>extras</activeProfile></activeProfiles>
+  <!-- Extra repos go here only after legacy/check-deps.py confirms they serve real POMs + jars.
+       nexus.pentaho.org/content/groups/omni answered 200 for poms but served non-zip jars and
+       poisoned the cache (2026-10-16), so it is out. -->
 </settings>
