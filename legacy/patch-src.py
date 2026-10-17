@@ -19,6 +19,10 @@ Only environment-compat fixes belong here; never change business behaviour.
    statussearchresults.jsp and on ChangeAccountStatus.do#update populate. Back the field with
    a list that grows the same way the indexed accessors do ("" padding), including lists
    handed to setAccountRecords(List) (AccountStatusAction.searchResults passes a plain ArrayList).
+4. LoanRepaymentTag.setIsNewGropLoan(Boolean): loanRepayment.jsp passes "${isNewGropLoan}", unset
+   for non-GLIM loans. EL 2.x (Jetty 6/Tomcat 6) coerced null to Boolean.FALSE; EL 3.0 (Jetty 9.4)
+   passes null, and `if (isNewGropLoan)` unboxes it -> NPE -> 500 on every
+   loanAccountAction.do#getLoanRepaymentSchedule, which also kills the flow (next steps "Page expired").
    Same List+indexed pattern exists in LoanAccountActionForm (clients, fees, custom fields):
    patch those only when a recording shows the failure.
 """
@@ -78,6 +82,9 @@ PATCHES = [
             this.accountRecords.addAll(accountRecords);
         }
 """),
+    ("application/src/main/java/org/mifos/accounts/loan/struts/uihelpers/LoanRepaymentTag.java",
+     """        this.isNewGropLoan = isNewGropLoan;""",
+     """        this.isNewGropLoan = isNewGropLoan != null && isNewGropLoan;   // struts-to-boot: EL 3.0 null coercion"""),
 ]
 
 root = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
