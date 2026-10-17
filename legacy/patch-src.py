@@ -13,6 +13,13 @@ Only environment-compat fixes belong here; never change business behaviour.
    JDK-proxied (tx), so the finder introduction never applied and every generated
    `retrieve*` DAO call failed ("object is not an instance of declaring class") — e.g.
    loanAccountAction.do#get via the questionnaire EventSourceDao. Restore the Java 6 match.
+3. AccountStatusActionForm.accountRecords: List getter + auto-growing indexed accessors. Java 8's
+   Introspector no longer pairs them into an IndexedPropertyDescriptor (List isn't an array),
+   so BeanUtils calls list.get/set(i) on the empty list -> IndexOutOfBounds in
+   statussearchresults.jsp and on ChangeAccountStatus.do#update populate. Back the field with
+   a list that grows the same way the indexed accessors do ("" padding).
+   Same List+indexed pattern exists in LoanAccountActionForm (clients, fees, custom fields):
+   patch those only when a recording shows the failure.
 """
 import sys
 from pathlib import Path
@@ -32,6 +39,33 @@ PATCHES = [
         }
 
         if (clazz.getName().startsWith("com.")) {"""),
+    ("application/src/main/java/org/mifos/accounts/loan/struts/actionforms/AccountStatusActionForm.java",
+     """    private List<String> accountRecords;
+""",
+     """    private List<String> accountRecords;
+
+    /** struts-to-boot: Java 8 Introspector compat; grows like getAccountRecords(int)/setAccountRecords(int,..). */
+    private static class GrowingList extends ArrayList<String> {
+        private static final long serialVersionUID = 1L;
+        @Override
+        public String get(int i) {
+            while (i >= size()) {
+                add("");
+            }
+            return super.get(i);
+        }
+        @Override
+        public String set(int i, String v) {
+            while (i >= size()) {
+                add("");
+            }
+            return super.set(i, v);
+        }
+    }
+"""),
+    ("application/src/main/java/org/mifos/accounts/loan/struts/actionforms/AccountStatusActionForm.java",
+     """accountRecords = new ArrayList<String>();""",
+     """accountRecords = new GrowingList();"""),
 ]
 
 root = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
