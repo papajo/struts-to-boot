@@ -10,3 +10,4 @@
 | 2026-10-16 | `mifos-webapp`: native2ascii "Error starting Sun's native2ascii" — 15/18 modules built | patch-poms adds JDK `tools.jar` (system scope) as native2ascii plugin dependency |
 | 2026-10-16 | `mifos-war`: release assembly wants `appdomain/target/applicationConfiguration.custom.properties` (output of stripped settings-sanitizer) — 17/18 built | Dockerfile copies the default properties there; runtime stage copies `mifos-TEMP-nonexec.war` (plain webapp) instead of `*.war` (two wars → COPY would fail) |
 | 2026-10-16 | **Build green (18/18).** Container start: `bind: address already in use` on 8080 (oldbox) | host ports configurable: `MIFOS_PORT`, `MYSQL_PORT` (defaults 8080/3306) |
+| 2026-10-16 | Webapp 503 at startup: `IllegalArgumentException: Invalid version number… greater than 255` in `com.ibm.icu.util.VersionInfo` (icu4j 4.0.1 can't parse Java 8u4xx) | patch-poms: icu4j 4.0.1 → 68.2 (fix landed in ICU 68 per BIRT dev list) |
