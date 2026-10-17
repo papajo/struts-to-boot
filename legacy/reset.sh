@@ -15,7 +15,7 @@ if [[ ! -f $SNAP || ${SNAPSHOT:-0} == 1 ]]; then
   # --no-tablespaces: app user lacks PROCESS; column-statistics off: MySQL 8 client vs 5.7 server
   # --lock-tables, not --single-transaction: a consistent-snapshot dump aborts with error 1412
   # ("Table definition has changed") when Mifos touched a table's metadata after startup.
-  opts=(--lock-tables --routines --no-tablespaces)
+  opts=(--lock-tables --routines --no-tablespaces --hex-blob)   # --hex-blob: binary cols (password hashes) survive restore
   mysqldump --help 2>/dev/null | grep -q column-statistics && opts+=(--column-statistics=0)
   for try in 1 2 3; do   # tmp file: never leave a half snapshot behind
     mysqldump "${args[@]}" "${opts[@]}" "$DB" > "$SNAP.tmp" && break
