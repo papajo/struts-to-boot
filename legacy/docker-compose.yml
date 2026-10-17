@@ -12,7 +12,7 @@ services:
     # TCP check: during first-run init the entrypoint's temp server listens on the socket only,
     # so this passes only once the real server (with schema + data loaded) accepts connections.
     healthcheck:
-      test: ["CMD", "mysql", "-h127.0.0.1", "-umifos", "-pmifos", "-e", "SELECT 1", "mifos"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -P 3306 -u mifos -pmifos --silent"]
       interval: 5s
       timeout: 5s
       retries: 60
