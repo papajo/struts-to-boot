@@ -17,7 +17,8 @@ Only environment-compat fixes belong here; never change business behaviour.
    Introspector no longer pairs them into an IndexedPropertyDescriptor (List isn't an array),
    so BeanUtils calls list.get/set(i) on the empty list -> IndexOutOfBounds in
    statussearchresults.jsp and on ChangeAccountStatus.do#update populate. Back the field with
-   a list that grows the same way the indexed accessors do ("" padding).
+   a list that grows the same way the indexed accessors do ("" padding), including lists
+   handed to setAccountRecords(List) (AccountStatusAction.searchResults passes a plain ArrayList).
    Same List+indexed pattern exists in LoanAccountActionForm (clients, fees, custom fields):
    patch those only when a recording shows the failure.
 """
@@ -66,6 +67,17 @@ PATCHES = [
     ("application/src/main/java/org/mifos/accounts/loan/struts/actionforms/AccountStatusActionForm.java",
      """accountRecords = new ArrayList<String>();""",
      """accountRecords = new GrowingList();"""),
+    # AccountStatusAction.searchResults calls setAccountRecords(new ArrayList<String>()) before the JSP
+    ("application/src/main/java/org/mifos/accounts/loan/struts/actionforms/AccountStatusActionForm.java",
+     """        this.accountRecords = accountRecords;
+""",
+     """        if (accountRecords == null || accountRecords instanceof GrowingList) {
+            this.accountRecords = accountRecords;
+        } else {
+            this.accountRecords = new GrowingList();
+            this.accountRecords.addAll(accountRecords);
+        }
+"""),
 ]
 
 root = Path(sys.argv[1] if len(sys.argv) > 1 else ".")

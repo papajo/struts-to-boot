@@ -206,6 +206,8 @@ def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
         rejected = bool(side.fail_if and re.search(side.fail_if, r.text))
         if rejected:
             print(f"WARN {sc.name}/{st.id}: response matches fail_if (request rejected)", file=sys.stderr)
+        if r.status_code >= 400:
+            print(f"WARN {sc.name}/{st.id}: HTTP {r.status_code} at {r.url.split('?')[0]}", file=sys.stderr)
         if raw_dir is not None:
             raw_dir.mkdir(parents=True, exist_ok=True)
             ext = "html" if which == "legacy" else "json"
@@ -220,6 +222,9 @@ def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
         results[st.id] = {
             "endpoint": st.endpoint,
             "status": r.status_code,
+            # where the request really ended up (Mifos redirects to Spring error pages, masking the cause)
+            "final_url": r.url.split("?")[0].removeprefix(base.rstrip("/")),
+            "redirects": [f"{h.status_code} {h.headers.get('Location', '')}" for h in r.history],
             "rejected": rejected,
             "ui_only": st.modern is None,
             "ms": ms,
