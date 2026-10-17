@@ -82,12 +82,16 @@ def blocks(seed_sql: str):
 
 
 def apply(tables, header, per, footer):
+    # Mifos must be down: its pooled connections hold metadata locks, so the dump's
+    # DROP TABLEs would wait forever ("Waiting for table metadata lock").
+    sh(DC + ["stop", "mifos"], capture_output=True)
     mysql_file(PRESEED)
     sql = "\n".join(header + [s for t in tables for s in per[t]] + footer)
     tmp = CACHE / "bisect-subset.sql"
     tmp.write_text(sql)
     mysql_file(tmp)
-    restart_mifos()
+    sh(DC + ["start", "mifos"], capture_output=True)
+    wait_up()
 
 
 def fails(tables, header, per, footer) -> bool:
@@ -114,7 +118,8 @@ def main():
     tables = list(per)
     print(f"{len(tables)} seeded tables")
     if not fails(tables, header, per, footer):
-        mysql_file(PRESEED); restart_mifos()
+        sh(DC + ["stop", "mifos"], capture_output=True); mysql_file(PRESEED)
+        sh(DC + ["start", "mifos"], capture_output=True)
         raise SystemExit("full seed did NOT break login this time — flaky; rerun")
     while len(tables) > 1:
         half = tables[: len(tables) // 2]
@@ -132,8 +137,10 @@ def main():
         print(f"\nCULPRIT: `{t}`  ({len(per[t])} statements)")
         for s in per[t][:5]:
             print("  " + s[:200])
+    sh(DC + ["stop", "mifos"], capture_output=True)
     mysql_file(PRESEED)
-    restart_mifos()
+    sh(DC + ["start", "mifos"], capture_output=True)
+    wait_up()
     print("DB back to pre-seed state.")
 
 

@@ -2,7 +2,7 @@
 # Restore DB to the post-seed snapshot (used by `harness --reset` before write scenarios).
 # First run (after seed.sh) takes the snapshot from the legacy DB; later runs restore it.
 # Same snapshot loads the modern DB (DSN=...:3307/...), so both sides start identical.
-# Needs a mysql client on PATH (mac: brew install mysql-client). RESTART=1 also restarts Mifos.
+# Needs a mysql client on PATH. Restores on the legacy side stop+start Mifos (see below).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 DSN=${DSN:-mysql://mifos:mifos@127.0.0.1:3306/mifos}
@@ -25,10 +25,15 @@ if [[ ! -f $SNAP || ${SNAPSHOT:-0} == 1 ]]; then
   mv "$SNAP.tmp" "$SNAP"
   echo "snapshot -> $SNAP ($(grep -c '^INSERT' "$SNAP") insert statements)"
 else
+  # Legacy side: stop Mifos first. Its pooled connections hold table metadata locks, so the
+  # snapshot's DROP TABLEs would otherwise hang ("Waiting for table metadata lock"); restarting
+  # also drops Hibernate caches. Set NO_RESTART=1 when Mifos is not running.
+  legacy=$([[ ${HARNESS_SIDE:-legacy} == legacy && ${NO_RESTART:-0} != 1 ]] && echo 1 || echo 0)
+  [[ $legacy == 1 ]] && docker compose -f legacy/docker-compose.yml stop mifos >/dev/null
   mysql "${args[@]}" "$DB" < "$SNAP"
-fi
-if [[ ${RESTART:-0} == 1 && ${HARNESS_SIDE:-legacy} == legacy ]]; then
-  docker compose -f legacy/docker-compose.yml restart mifos
-  PORT=$(grep -s '^MIFOS_PORT=' legacy/.env | cut -d= -f2); PORT=${MIFOS_PORT:-${PORT:-18080}}
-  until curl -sf -o /dev/null "http://localhost:$PORT/mifos/login.ftl"; do sleep 3; done
+  if [[ $legacy == 1 ]]; then
+    docker compose -f legacy/docker-compose.yml start mifos >/dev/null
+    PORT=$(grep -s '^MIFOS_PORT=' legacy/.env | cut -d= -f2); PORT=${MIFOS_PORT:-${PORT:-18080}}
+    until curl -sf -o /dev/null "http://localhost:$PORT/mifos/login.ftl"; do sleep 3; done
+  fi
 fi
