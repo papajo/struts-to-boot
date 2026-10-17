@@ -58,7 +58,8 @@ def lit(v, typ):
         return "NULL"
     if typ in NUMERIC:
         return v if re.fullmatch(r"-?\d+(\.\d+)?([eE]-?\d+)?", v) else ("1" if v.lower() == "true" else "0" if v.lower() == "false" else f"'{v}'")
-    return "'" + v.replace("\\", "\\\\").replace("'", "''") + "'"
+    # newlines escaped so every statement is exactly one line (bisect-seed.py splits by line)
+    return "'" + v.replace("\\", "\\\\").replace("'", "''").replace("\n", "\\n").replace("\r", "\\r") + "'"
 
 
 def type_default(typ):

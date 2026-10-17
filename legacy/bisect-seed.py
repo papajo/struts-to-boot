@@ -27,7 +27,11 @@ DATASET = ROOT / "legacy-src/acceptanceTests/src/test/resources/dataSets/accepta
 
 
 def sh(cmd, **kw):
-    return subprocess.run(cmd, check=True, **kw)
+    r = subprocess.run(cmd, **kw)
+    if r.returncode:
+        err = r.stderr.decode(errors="replace") if isinstance(r.stderr, bytes) else (r.stderr or "")
+        raise SystemExit(f"command failed ({r.returncode}): {' '.join(map(str, cmd))[:120]}\n{err[-2000:]}")
+    return r
 
 
 def port() -> str:
