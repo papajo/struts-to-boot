@@ -8,6 +8,11 @@ Only environment-compat fixes belong here; never change business behaviour.
    StringIndexOutOfBounds when the originating servlet path has no '/' (Jetty 9.4 hands the
    Spring "cheetah" servlet such paths on Struts->FTL forwards). Every loan page and the error
    page itself died with a 500 via BackUrlInterceptor. Guard the delete (2 sites in the file).
+2. QueryIntroductionAdvisor.matches: rejects any class named "com.*". On Java 6/7 JDK proxies
+   were named "$ProxyNN"; Java 8 names them "com.sun.proxy.$ProxyNN". The DAO targets are
+   JDK-proxied (tx), so the finder introduction never applied and every generated
+   `retrieve*` DAO call failed ("object is not an instance of declaring class") — e.g.
+   loanAccountAction.do#get via the questionnaire EventSourceDao. Restore the Java 6 match.
 """
 import sys
 from pathlib import Path
@@ -20,6 +25,13 @@ PATCHES = [
         if (slash >= 0) {
             url.deleteCharAt(slash);
         }"""),
+    ("common/src/main/java/org/mifos/platform/persistence/QueryIntroductionAdvisor.java",
+     """        if (clazz.getName().startsWith("com.")) {""",
+     """        if (clazz.getName().startsWith("com.sun.proxy.")) {   // struts-to-boot: Java 8 proxy names
+            return true;
+        }
+
+        if (clazz.getName().startsWith("com.")) {"""),
 ]
 
 root = Path(sys.argv[1] if len(sys.argv) > 1 else ".")
