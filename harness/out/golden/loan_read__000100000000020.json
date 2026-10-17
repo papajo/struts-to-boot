@@ -1,0 +1,137 @@
+{
+  "get": {
+    "endpoint": "/loanAccountAction.do#get",
+    "status": 500,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 238.3,
+    "values": {
+      "interest_rate": null,
+      "currency": null,
+      "external_id": null,
+      "disbursal_date": null,
+      "freq_of_inst": null,
+      "collateral_type": null,
+      "summary_cells": []
+    },
+    "sql": []
+  },
+  "installment_details": {
+    "endpoint": "/loanAccountAction.do#getInstallmentDetails",
+    "status": 200,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 41.6,
+    "values": {
+      "installment_cells": []
+    },
+    "sql": []
+  },
+  "all_activity": {
+    "endpoint": "/loanAccountAction.do#getAllActivity",
+    "status": 200,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 42.7,
+    "values": {
+      "rows": [
+        "",
+        "Your settings | Log Out",
+        "Home Clients & Accounts Reports Admin Financial Accounting",
+        "Home",
+        "Clients & Accounts",
+        "Reports",
+        "Admin",
+        "Financial Accounting",
+        "",
+        "",
+        "Administrative tasks Search by client name, system ID or account number",
+        "Administrative tasks",
+        "Search by client name, system ID or account number",
+        "Search by client name, system ID or account number",
+        "",
+        "",
+        "Page expired since the action is not permissible. Click on the tabs above to proceed."
+      ]
+    },
+    "sql": []
+  },
+  "repayment_schedule": {
+    "endpoint": "/loanAccountAction.do#getLoanRepaymentSchedule",
+    "status": 500,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 35.6,
+    "values": {
+      "rows": [
+        "the search tool on the left",
+        "the tabs at the top"
+      ]
+    },
+    "sql": []
+  },
+  "original_schedule": {
+    "endpoint": "/loanAccountAction.do#viewOriginalSchedule",
+    "status": 200,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 61.7,
+    "values": {
+      "rows": [
+        "",
+        "Your settings | Log Out",
+        "Home Clients & Accounts Reports Admin Financial Accounting",
+        "Home",
+        "Clients & Accounts",
+        "Reports",
+        "Admin",
+        "Financial Accounting",
+        "",
+        "",
+        "Administrative tasks Search by client name, system ID or account number",
+        "Administrative tasks",
+        "Search by client name, system ID or account number",
+        "Search by client name, system ID or account number",
+        "",
+        "",
+        "Page expired since the action is not permissible. Click on the tabs above to proceed."
+      ]
+    },
+    "sql": []
+  },
+  "status_history": {
+    "endpoint": "/loanAccountAction.do#viewStatusHistory",
+    "status": 200,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 60.5,
+    "values": {
+      "rows": [
+        "",
+        "Your settings | Log Out",
+        "Home Clients & Accounts Reports Admin Financial Accounting",
+        "Home",
+        "Clients & Accounts",
+        "Reports",
+        "Admin",
+        "Financial Accounting",
+        "",
+        "",
+        "Administrative tasks Search by client name, system ID or account number",
+        "Administrative tasks",
+        "Search by client name, system ID or account number",
+        "Search by client name, system ID or account number",
+        "",
+        "",
+        "Page expired since the action is not permissible. Click on the tabs above to proceed."
+      ]
+    },
+    "sql": [
+      [
+        [
+          "2"
+        ]
+      ]
+    ]
+  }
+}

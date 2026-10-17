@@ -1,0 +1,155 @@
+{
+  "search": {
+    "endpoint": "/reverseloandisbaction.do#search",
+    "status": 200,
+    "rejected": false,
+    "ui_only": true,
+    "ms": 779.9,
+    "values": {},
+    "sql": []
+  },
+  "load": {
+    "endpoint": "/reverseloandisbaction.do#load",
+    "status": 200,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 689.1,
+    "values": {
+      "cells": [
+        "Following are the account details for the Loan account . Specify the note and click Preview if you want to reverse the Loan disbursal and all payments made against this Loan . Click cancel to return to Admin page without any modification. * Fields marked with an asterisk are required.",
+        "InterestWaiverLoan - Account #000100000000037 Client: WeeklyClient Monday: ID 0002-000000024 Loan Officer: loan officer MyOfficeDHMFT / / Amount disbursed: 1,000 Disbursal date: 28/02/2011 No. of payments made: 0 Amount paid: 0",
+        "* note"
+      ]
+    },
+    "sql": []
+  },
+  "preview": {
+    "endpoint": "/reverseloandisbaction.do#preview",
+    "status": 200,
+    "rejected": false,
+    "ui_only": true,
+    "ms": 416.0,
+    "values": {},
+    "sql": []
+  },
+  "update": {
+    "endpoint": "/reverseloandisbaction.do#update",
+    "status": 200,
+    "rejected": false,
+    "ui_only": false,
+    "ms": 985.1,
+    "values": {},
+    "sql": [
+      [
+        [
+          "1E+1"
+        ]
+      ],
+      [
+        [
+          "1E+1",
+          "1E+3",
+          "0",
+          "-",
+          "1E+3",
+          "0",
+          "0"
+        ],
+        [
+          "19",
+          "-1E+3",
+          "0",
+          "harness: reverse disbursal",
+          "-1E+3",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "7",
+          "0",
+          "1E+3"
+        ],
+        [
+          "7",
+          "1",
+          "1E+3"
+        ],
+        [
+          "16",
+          "0",
+          "1E+3"
+        ],
+        [
+          "16",
+          "1",
+          "1E+3"
+        ]
+      ],
+      [
+        [
+          "1",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "2",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "3",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "4",
+          "0",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "2",
+          "2"
+        ],
+        [
+          "2",
+          "3"
+        ],
+        [
+          "3",
+          "5"
+        ],
+        [
+          "5",
+          "1E+1"
+        ]
+      ],
+      [
+        [
+          "Approved"
+        ],
+        [
+          "harness: reverse disbursal"
+        ]
+      ]
+    ]
+  }
+}

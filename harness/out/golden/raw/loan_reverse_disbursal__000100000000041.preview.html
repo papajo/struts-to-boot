@@ -1,0 +1,302 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+<title>Mifos</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="pages/framework/images/favicon.ico"/>
+
+<link href='pages/css/cssstyle.css' rel="stylesheet"
+	type="text/css">
+</head>
+
+<body>
+
+
+	
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
+  <tr>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=7244597890643997712">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+  </tr>
+  <tr>
+    <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
+        <tr>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl">Home</a></td>
+          <td class="tablightorange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl">Clients & Accounts </a></td>
+          <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+          <td class="taborange"><a id="header.link.admin" href="AdminAction.do?method=load&randomNUm=7244597890643997712" class="tabfontwhite">Admin</a></td>
+        	
+       		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
+		 
+					
+        </tr>
+      </table>
+        
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgorange"><img src="pages/framework/images/trans.gif" width="6" height="6"></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgwhite"><img src="pages/framework/images/trans.gif" width="100" height="2"></td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+
+		
+		
+
+<td width="174" height="500" align="left" valign="top" class="bgorangeleft">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		
+		<tr>
+          <td class="leftpanehead" colspan="2">
+          Administrative tasks
+          </td>
+        </tr>
+       
+        
+
+
+
+  <form action="searchResult.ftl">
+        <tr>
+          <td class="leftpanelinks">
+	<table width="90%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="paddingbottom03"><span class="fontnormal8ptbold">
+              Search by
+              client
+              name, system ID or account number
+</span> </td>
+            </tr>
+          </table>
+            <table width="90%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="100%" colspan="2">
+                
+                <input type="text" name="searchString" size="20" maxlength="200"/>
+				
+				
+				
+				<input type="hidden" name="searchNode(search_officeId)" value="0"> 
+				
+									
+				<input type="hidden" name="officeName" value="">													
+													
+				</td>
+              </tr>
+            </table>
+            <table width="143" border="0" cellspacing="0" cellpadding="10">
+              <tr>
+                <td align="right">                
+                
+                
+                <input type="submit" name="searchButton" class="buttn" value="Search">
+                
+                </td>
+              </tr>
+            </table>            
+            </td>
+        </tr>
+</form>
+
+       
+      </table>
+      
+</td>      
+
+
+		<td align="left" valign="top" bgcolor="#FFFFFF"
+			class="paddingleftmain" height="500" >
+		<span id="page.id" title="UndoLoanDisbursalPreview"></span>
+		<form name="reverseloandisbactionform" method="post" action="/mifos/reverseloandisbaction.do">
+		
+		<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="bluetablehead05">
+						<span class="fontnormal8pt"><a href="reverseloandisbaction.do?method=cancel&currentFlowKey=1792255843960" id="undoloandisbursalpreview.link.admin">Admin</a> / </span> <span class="fontnormal8ptbold">Reverse Loan disbursal</span>
+					</td>
+				</tr>
+			</table>
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td align="left" valign="top" class="paddingL10">
+						<br>
+						<table width="90%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td align="left" valign="top">
+									<span class="heading">Reverse Loan disbursal - </span><span class="headingorange"> Preview</span>
+								</td>
+							</tr>
+						</table>
+						<br>
+						<table width="96%" border="0" cellpadding="3" cellspacing="0">
+							<tr>
+								<td valign="top" class="fontnormal">
+									<font color="#FF0000"> Are you sure you want to adjust the Loan already disbursed? If you click submit all financial transactions made till this date will be reversed and the Loan account status will be changed to cancelled. Click cancel to return to Admin page without any modification.</font>
+								</td>
+							</tr>
+							<font class="fontnormalRedBold"> <span id="undoloandisbursalpreview.error.message"></span> </font>
+							<tr>
+								<td width="100%" valign="top" class="drawtablerow">
+									<p>
+										<span class="fontnormalbold"><br> WeeklyFlatLoanWithOneTimeFees - Account 
+										#000100000000041<br> </span>
+										<span class="fontnormalbold">
+										
+											
+											Client:
+											
+											
+										
+										</span> WeeklyClient Monday: ID 0002-000000024
+										<br>
+										<span class="fontnormalbold">Loan Officer:</span> loan officer
+										<br>
+										MyOfficeDHMFT
+										
+										 / 
+										
+										 / 
+										 
+									</p>
+									<p>
+										<span class="fontnormalbold">Amount disbursed:</span> 100,000
+										<br>
+										<span class="fontnormalbold">Disbursal date:</span> 28/02/2011
+										<br>
+										<span class="fontnormalbold">No. of payments made:</span> 1
+										<br>
+										<span class="fontnormalbold">Amount paid:</span> 10
+										<br>
+										<br>
+									</p>
+								</td>
+							</tr>
+						</table>
+						<table width="96%" border="0" cellpadding="3" cellspacing="0">
+							<tr>
+								<td colspan="3" class="drawtablerowbold">
+									Payments Made
+								</td>
+							</tr>
+							<tr>
+								<td width="15%" class="drawtablerowbold">
+									No
+									.
+								</td>
+								<td width="40%" class="drawtablerowbold">
+									Date paid
+								</td>
+								<td width="40%" class="drawtablerowbold">
+									Amount
+								</td>
+							</tr>
+							
+							
+							
+							<tr>
+								<td width="15%" class="drawtablerow">
+									1
+								</td>
+								<td width="40%" class="drawtablerow">
+									28/02/2011
+								</td>
+								<td width="40%" class="drawtablerow">
+									10
+								</td>
+							</tr>
+							
+							
+						</table>
+						<table width="95%" border="0" cellpadding="3" cellspacing="0">
+							<tr>
+								<td width="6%" valign="top" class="fontnormalbold">
+									note
+								</td>
+								<td width="94%" align="left" valign="top" class="fontnormal" style="padding-left:4px;">
+									harness: reverse disbursal
+								</td>
+							</tr>
+						</table>
+						<table width="96%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td align="center" class="blueline">
+									&nbsp;
+								</td>
+							</tr>
+						</table>
+						<br>
+						<table width="96%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td align="center">
+									<input type="submit" name="continueButton" value="Submit" id="undoloandisbursalpreview.button.submit" class="buttn">
+									&nbsp;
+
+									<input type="button" name="cancelButton" value="Cancel" onclick="location.href='reverseloandisbaction.do?method=cancel&currentFlowKey=1792255843960'" id="undoloandisbursalpreview.button.cancel" class="cancelbuttn">
+								</td>
+							</tr>
+						</table>
+						<br>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="currentFlowKey" value="1792255843960">
+			<input type="hidden" name="method" value="update">
+		</form>
+	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
+	</tr>
+</table>
+
+</body>
+</html>
+

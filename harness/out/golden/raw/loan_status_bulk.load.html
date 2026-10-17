@@ -1,0 +1,244 @@
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/singleitem.js"></script>
+
+
+	
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+<title>Mifos</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="pages/framework/images/favicon.ico"/>
+
+<link href='pages/css/cssstyle.css' rel="stylesheet"
+	type="text/css">
+</head>
+
+<body>
+
+
+	
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
+  <tr>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=-1233819865666235525">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+  </tr>
+  <tr>
+    <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
+        <tr>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl" >
+		Home</a></td>
+                 
+          
+              
+              
+                  <td class="taborange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tabfontwhite">Clients & Accounts</a></td>
+                  <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+                  <td class="tablightorange"><a id="header.link.admin" href="AdminAction.do?method=load">Admin</a></td>
+					
+       		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
+		 
+					
+              
+          
+        </tr>
+      </table>
+        
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgorange"><img src="pages/framework/images/trans.gif" width="6" height="6"></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgwhite"><img src="pages/framework/images/trans.gif" width="100" height="2"></td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+
+		
+		
+
+
+<td width="174" height="500" align="left" valign="top" class="bgorangeleft">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		
+		<tr>
+          <td class="leftpanehead" colspan="2">
+          Clients & Accounts Tasks
+          </td>
+        </tr>
+       
+       
+       
+        <tr> 
+		<td class="leftpanelinks" colspan="2"><span class="fontnormalbold" >Manage Collection Sheets</span><br><a href="collectionsheetaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.entercollectionsheetdata">Enter Collection Sheet Data</a><br>
+<br><span class="fontnormalbold" >Create new Clients</span><br><a href="centerCustAction.do?method=chooseOffice&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createnewcenter">Create new Center</a><br>
+<a href="groupCustAction.do?method=hierarchyCheck&recordOfficeId=0&recordLoanOfficerId=0&input=createGroup" id="menu.link.label.createnewgroup">Create new Group</a><br>
+<a href="groupCustAction.do?method=loadSearch&recordOfficeId=0&recordLoanOfficerId=0&input=createClient" id="menu.link.label.createnewclient">Create new Client</a><br>
+<br><span class="fontnormalbold" >Create new Accounts</span><br><a href="createSavingsAccount.ftl" id="menu.link.label.createsavingsaccount">Create Savings Account</a><br>
+<a href="createLoanAccount.ftl" id="menu.link.label.createloanaccount">Create Loan Account</a><br>
+<a href="multipleloansaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createmultipleloanaccounts">Create multiple Loan Accounts</a><br>
+<br><span class="fontnormalbold" >Manage account status</span><br><a href="ChangeAccountStatus.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.approvemultipleloans">Approve multiple loans</a><br>
+<br></td>
+        </tr>
+</table>
+</td>      
+
+
+		<td align="left" valign="top" bgcolor="#FFFFFF"
+			class="paddingleftmain" height="500" >
+	<span id="page.id" title="ChangeAccountStatus"></span>
+
+		<script>
+
+	
+  	function submitData(form) {
+		form.action="ChangeAccountStatus.do?method=searchResults";
+		form.submit();
+ 	}
+ 	function getLoanOfficers(form){
+ 		if(document.getElementsByName("officeId")[0].selectedIndex!=0) {
+	 		form.action="ChangeAccountStatus.do?method=getLoanOfficers";
+ 			form.submit();
+ 		}
+ 	}
+ 	
+	</script>
+
+
+
+		<form name="accountStatusActionForm" method="post" action="/mifos/ChangeAccountStatus.do">
+			<table width="95%" border="0" cellpadding="2" cellspacing="0" class="paddingleftmain">
+				<tr>
+					<td>
+						<span class="headingorange"> Approve multiple loans<br> <br>
+					</td>
+				</tr>
+			</table>
+
+
+
+
+			<table width="95%" border="0" cellpadding="7" cellspacing="0">
+				<tr>
+					<td valign="top">
+						<table width="100%" border="0" cellspacing="0" cellpadding="4">
+							<tr class="fontnormal">
+								<td width="100%" colspan="2" class="bglightblue">
+									<span class="heading">Search</span>
+								</td>
+							</tr>
+
+						</table>
+				<tr>
+					<td>
+						<font class="fontnormalRedBold"> <span id="changeaccountstatus.error.message"></span> </font>
+					</td>
+				</tr>
+
+				<tr class="bluetablehead">
+
+					<td valign="top" class="fontnormal">
+						<table width="50%" border="0" cellpadding="4" cellspacing="0">
+							<tr>
+								<td align="right" valign="top" class="fontnormal" width="36%">
+									<span class="mandatorytext"><font color="#FF0000">*</font></span>Branch
+								</td>
+								<td>
+									<select name="officeId" onchange="getLoanOfficers(this.form)" style="width:136px;"><option value="">--Select--</option><option value="3">branch1</option>
+										
+											<option value="4">branch2</option>
+										
+											<option value="2">MyOfficeDHMFT</option></select>
+								</td>
+							</tr>
+							<tr>
+								<td align="right" class="fontnormal">
+									<span class="mandatorytext"><font color="#FF0000">*</font></span>Loan Officer
+								</td>
+								<td>
+									<select name="personnelId" style="width:136px;"><option value="">--Select--</option></select>
+								</td>
+							</tr>
+							<tr>
+								<td align="right" class="fontnormal">
+									<span class="mandatorytext"><font color="#FF0000">*</font></span>Type
+								</td>
+								<td>
+									<select name="type" style="width:136px;"><option value="0">Loan</option></select>
+								</td>
+							</tr>
+							<tr>
+								<td align="right" class="fontnormal">
+									<span class="mandatorytext"><font color="#FF0000">*</font></span>Current Status
+								</td>
+								<td>
+									
+									<select name="currentStatus" style="width:136px;"><option value="" selected="selected">--Select--</option></select>
+								</td>
+							</tr>
+
+							<tr>
+								<td></td>
+								<td>
+									<input type="button" name="cancel" value="Search" onclick="submitData(this.form);" id="changeaccountstatus.button.search" class="buttn">
+								</td>
+							</tr>
+
+						</table>
+
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="currentFlowKey" value="1792256318756">
+		</form>
+	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
+	</tr>
+</table>
+
+</body>
+</html>
+

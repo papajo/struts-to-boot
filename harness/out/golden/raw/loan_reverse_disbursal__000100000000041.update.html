@@ -1,0 +1,608 @@
+
+
+
+
+
+
+
+
+<script language="javascript">
+ function fnAccountDetail(accountingActivationStatus){
+	if(accountingActivationStatus == true){
+		$("#accountDetailsId").show();
+	}else{
+		$("#accountDetailsId").hide();
+	}
+  }
+</script>
+
+
+
+<body onload="fnAccountDetail(true)">
+
+	
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+<title>Mifos</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="pages/framework/images/favicon.ico"/>
+
+<link href='pages/css/cssstyle.css' rel="stylesheet"
+	type="text/css">
+</head>
+
+<body>
+
+
+	
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
+  <tr>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=7244597890643997712">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+  </tr>
+  <tr>
+    <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
+        <tr>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl">Home</a></td>
+          <td class="tablightorange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl">Clients & Accounts </a></td>
+          <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+          <td class="taborange"><a id="header.link.admin" href="AdminAction.do?method=load&randomNUm=7244597890643997712" class="tabfontwhite">Admin</a></td>
+        	
+       		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
+		 
+					
+        </tr>
+      </table>
+        
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgorange"><img src="pages/framework/images/trans.gif" width="6" height="6"></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgwhite"><img src="pages/framework/images/trans.gif" width="100" height="2"></td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+
+		
+		
+
+<td width="174" height="500" align="left" valign="top" class="bgorangeleft">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		
+		<tr>
+          <td class="leftpanehead" colspan="2">
+          Administrative tasks
+          </td>
+        </tr>
+       
+        
+
+
+
+  <form action="searchResult.ftl">
+        <tr>
+          <td class="leftpanelinks">
+	<table width="90%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="paddingbottom03"><span class="fontnormal8ptbold">
+              Search by
+              client
+              name, system ID or account number
+</span> </td>
+            </tr>
+          </table>
+            <table width="90%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="100%" colspan="2">
+                
+                <input type="text" name="searchString" size="20" maxlength="200"/>
+				
+				
+				
+				<input type="hidden" name="searchNode(search_officeId)" value="0"> 
+				
+									
+				<input type="hidden" name="officeName" value="">													
+													
+				</td>
+              </tr>
+            </table>
+            <table width="143" border="0" cellspacing="0" cellpadding="10">
+              <tr>
+                <td align="right">                
+                
+                
+                <input type="submit" name="searchButton" class="buttn" value="Search">
+                
+                </td>
+              </tr>
+            </table>            
+            </td>
+        </tr>
+</form>
+
+       
+      </table>
+      
+</td>      
+
+
+		<td align="left" valign="top" bgcolor="#FFFFFF"
+			class="paddingleftmain" height="500" >
+        <span id="page.id" title="admin" ></span>
+		<form name="adminActionForm" method="post" action="/mifos/AdminAction.do?method=load">
+			<td valign="top" bgcolor="#FFFFFF"
+				style="padding-left:8px; padding-top:10px;">
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+
+				<tr>
+					<td colspan="2" valign="top"><span id="admin.label.admintasks"
+						class="headingorange">Administrative tasks</span><br>
+					<span class="fontnormal"><span id="admin.text.welcome">Welcome to mifos administrative area. Click on a link below to begin.</span></span></td>
+				</tr>
+				<tr width="100%">
+					<td valign="top" colspan="2"><font class="fontnormalRedBold"><span id="admin.error.message"></span> </font></td>
+				</tr>
+
+				<tr>
+					<td width="48%" height="240" valign="top"
+						class="paddingleft"><span class="headingorange">Manage organization
+						</span><br>
+					<span class="fontnormalbold"> <span class="fontnormalbold">System users
+					</span><br>
+					</span>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="fontnormal">
+							<td width="3%"><img
+								src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td width="97%"><a id="admin.link.viewSysUsers"
+								href="PersonAction.do?method=loadSearch&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712">
+								View system users</a> | <a id="admin.link.defineNewUsers"
+								href="PersonAction.do?method=chooseOffice&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712">
+								Define new system user</a></td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td><a href="/mifos/rolesPermission.do?method=viewRoles&name=aa&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.manageRoles">Manage roles and permissions</a></td>
+						</tr>
+					</table>
+					<br>
+					<span class="fontnormalbold"> Offices</span><br>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="fontnormal">
+							<td width="3%"><img
+								src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td width="97%"><a href="/mifos/offAction.do?method=getAllOffices&randomNUm=7244597890643997712" id="admin.link.viewOffices">View offices</a>
+							| <a href="/mifos/offAction.do?method=load&randomNUm=7244597890643997712" id="admin.link.defineNewOffice">Define a new office</a></td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+							<td>
+							<a id="admin.link.viewOfficeHierarchy" href="viewOfficeHierarchy.ftl">View office hierarchy</a>
+						</tr>
+					</table>
+					<br>
+					<span class="fontnormalbold">Organization Preferences </span><br>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="fontnormal">
+							<td width="3%"><img
+								src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td width="97%"><a id="admin.link.viewFees"
+								href="feeaction.do?method=viewAll&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712">
+								View fees</a> | <a href="/mifos/feeaction.do?method=load&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.defineNewFees">Define new fees</a></td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td>
+							<a id="admin.link.viewFunds" href="viewFunds.ftl">View funds</a>
+							| <a href="defineNewFund.ftl" id="admin.link.defineNewFund">Define new fund</a>
+							</td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td><a href="/mifos/chkListAction.do?method=loadAllChecklist&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.viewChecklists">View checklists</a>
+							| <a href="/mifos/chkListAction.do?method=load&randomNUm=7244597890643997712" id="admin.link.defineNewChecklist">Define new checklist</a></td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td>
+							<a id="admin.link.viewHolidays" href="viewHolidays.ftl">View holidays</a>
+							| <a id="admin.link.defineNewHoliday" href="defineNewHoliday.ftl">Define new holidays</a>
+							</td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td>
+							<a id="admin.link.defineAcceptedPaymentType" href="defineAcceptedPaymentTypes.ftl">Define accepted payment types</a>
+							</td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td>
+							<a id="admin.link.viewOrganizationSettings" href="viewOrganizationSettings.ftl">View organization settings</a>
+							</td>
+						</tr>
+                        <tr class="fontnormal">
+                            <td><img src="pages/framework/images/bullet_circle.gif" width="9"
+                                height="11"></td>
+                            <td>
+                            <a id="admin.link.viewPenalties" href="viewPenalties.ftl">View penalties</a>
+                            | <a href="defineNewPenalty.ftl" id="admin.link.defineNewPenalty">Define new penalties</a>
+                            </td>
+                        </tr>
+					</table>
+					 <br>
+					<span class="fontnormalbold">Data display and rules</span><br>
+						<table width="90%" border="0" cellspacing="0" cellpadding="0">
+							<tr class="fontnormal">
+								<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+								<td width="97%">
+								<a id="admin.link.customizeText" href="customizeText.ftl">Define customized text</a>								
+								</td>
+							</tr>
+							<tr class="fontnormal">
+								<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+								<td width="97%"><a href="/mifos/lookupOptionsAction.do?method=load&randomNUm=7244597890643997712" id="admin.link.defineLookupOption">Define Lookup Options</a></td>
+							</tr>
+							<tr class="fontnormal">
+								<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+								<td width="97%">
+								<a href="defineMandatoryHiddenFields.ftl" id="admin.link.defineHiddenMandatoryFields">Define mandatory/hidden fields</a>
+								</td>
+							</tr>
+						</table>
+                    <br>
+                    <span class="fontnormalbold">Accounting</span><br>
+                    <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                        <tr class="fontnormal">
+                            <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                            <td width="97%">
+                                <a id="admin.link.monthClosing" href="monthClosing.ftl">Month Closing</a>
+                            </td>
+                        </tr>
+                        <tr class="fontnormal">
+                            <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                            <td width="97%">
+                                <a id="admin.link.coaAdmin" href="coaAdmin.ftl">Manage Chart of Accounts</a>
+                            </td>
+                        </tr>
+                        <!--<tr class="fontnormal">
+			<td align="center" colspan="2">
+			 	<div id="accountDetailsId">
+				 <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                   <tr class="fontnormal">
+                      <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                      <td width="97%"><a href="generalledgeraction.do?method=load">General Ledger Transactions</a></td>
+                  </tr>
+                  <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%"><a href="journalvoucheraction.do?method=load">Journal Voucher Transactions</a></td>
+                  </tr>
+                   <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%"><a href="openbalanceaction.do?method=load">Define Open Balance</a></td>
+                  </tr>
+                  <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%"><a href="viewgltransactionsaction.do?method=load">View GLTransactions    </a></td>
+                  </tr>
+                  <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%"><a href="processaccountingtransactionsaction.do?method=load">Process Operational Data To FA</a></td>
+                  </tr>
+                  <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%"><a href="yearEndProcessAction.do?method=load">Year End Process </a></td>
+                  </tr>-->
+               </table>
+			</div>
+			</td>
+			</tr>
+                    </table>
+
+					<!-- spacer -->
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr><td>&nbsp;</td></tr>
+					</table>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td>
+							<span class="headingorange">Manage Imports and Exports</span>
+							<table width="90%" border="0" cellspacing="0" cellpadding="0">
+								<tr class="fontnormal">
+									<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+									<td width="97%">
+									<a id="admin.link.viewimportedfiles" href="viewImportedTransactions.ftl">
+                                        Undo imported files</a>
+										| <a id="admin.link.manageImports" href="manageImportAction.do?method=load">
+										Import transactions</a>
+                                        </td>
+								</tr>
+                                <tr class="fontnormal">
+                                        <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                                        <td width="97%">
+                                            <a id="admin.link.importClients" href="importClients.ftl">
+                                            Import client data</a>
+                                        </td>
+                                </tr>
+                                <tr class="fontnormal">
+                                        <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                                        <td width="97%">
+                                            <a id="admin.link.importLoans" href="importLoans.ftl">
+                                            Import Loans</a>
+                                        </td>
+                                </tr>
+                                <tr class="fontnormal">
+                                        <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                                        <td width="97%">
+                                            <a id="admin.link.importSavings" href="importSavings.ftl">
+                                            Import Savings</a>
+                                        </td>
+                                </tr>
+								<tr class="fontnormal">
+									<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+									<td width="97%">
+										<a id="admin.link.viewaccountingexports" href="renderAccountingDataCacheInfo.ftl">
+										View accounting exports</a>
+                                        </td>
+								</tr>
+								<tr class="fontnormal">
+									<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+									<td width="97%">
+										<a id="admin.link.viewaccountingexports" href="restApprovalList.ftl">
+										REST API Approval</a>
+                                        </td>
+								</tr>
+							</table>
+                            <br>
+						</td>
+					</tr>
+					</table>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td>
+							<span class="headingorange">System Administration</span>
+							<table width="90%" border="0" cellspacing="0" cellpadding="0">
+								<tr class="fontnormal">
+									<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+									<td width="97%">
+										<a id="admin.link.viewSystemInfo" href="systemInformation.ftl">
+                                        View System Information</a></td>
+								</tr>
+							</table>
+                            <table width="90%" border="0" cellspacing="0" cellpadding="0">
+								<tr class="fontnormal">
+									<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+									<td width="97%">
+										<a id="admin.link.shutdownMifos" href="shutdown.ftl">
+										Shutdown</a></td>
+								</tr>
+							</table>
+							<table width="90%" border="0" cellspacing="0" cellpadding="0">
+								<tr class="fontnormal">
+									<td width="3%"><img
+										src="pages/framework/images/bullet_circle.gif" width="9"
+										height="11"></td>
+									<td width="97%"><a id="admin.link.batchjobs"
+										href="batchjobs.ftl"> Batch Jobs</a></td>
+								</tr>
+							</table>
+							</td>
+					</tr>
+					</table>
+					<br />
+					</td>
+					<td width="52%" bgcolor="#FFFFFF" valign="top" class="paddingleft"><span
+						class="headingorange">Manage products</span><br>
+					<span class="fontnormalbold">Product rules & attributes</span><br>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="fontnormal">
+							<td width="3%"><img
+								src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td width="97%">
+								<!--
+								<a href="productCategoryAction.do?method=getAllCategories&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.viewProductCategories">View product categories</a> | <a href="productCategoryAction.do?method=load&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.defineNewProductCategory">Define new category</a>
+								-->
+								<a href="viewProductCategories.ftl" id="admin.link.viewProductCategories">View product categories</a> | <a href="defineNewCategory.ftl" id="admin.link.defineNewProductCategory">Define new category</a>								
+							</td>
+						</tr>
+						<tr class="fontnormal">
+							<td><img src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<td>
+							<a id="admin.link.viewLatenessDormancyDefinition" href="editLatenessDormancy.ftl">View lateness/dormancy definition</a>
+						</tr>
+					</table>
+					<br>
+					<!-- Manage products mix  -->
+					<span class="fontnormalbold">
+					Manage product mix
+					</span><br>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="fontnormal">
+							<td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+							<td width="97%">
+								<a href="viewProductMix.ftl">View products mix</a> | <a id="admin.link.defineProductsMix" href="defineProductMix.ftl">Define products mix</a>
+							</td>
+						</tr>
+					</table>
+					<br>
+					
+					<!--  -->
+					<span class="fontnormalbold">
+					Manage Loan Products
+					</span><br>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="fontnormal">
+							<td width="3%"><img
+								src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<!-- Bug id 28065  Added a  parameter input in the link of admin page.-->
+							<td width="97%"><a href="loanproductaction.do?method=viewAllLoanProducts&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.viewLoanProducts">View Loan products</a> | <a href="loanproductaction.do?method=load&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.defineNewLoanProduct">Define new Loan product</a></td>
+						</tr>
+					</table>
+					<br>
+					<span class="fontnormalbold">
+					Manage Savings Products
+					</span><br>
+					<table width="90%" border="0" cellspacing="0" cellpadding="0">
+						<tr class="fontnormal">
+							<td width="3%"><img
+								src="pages/framework/images/bullet_circle.gif" width="9"
+								height="11"></td>
+							<!-- Bug id 28065  Added a  parameter input in the link of admin page.-->
+							<td width="97%">
+								<!-- 
+								<a href="savingsproductaction.do?method=search&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.viewSavingsProducts"></a>
+								-->
+								<a id="admin.link.viewSavingsProducts" href="viewSavingsProducts.ftl">
+									View Savings products
+								</a> | <a id="admin.link.defineNewSavingsProduct" href="defineSavingsProduct.ftl">
+									Define new Savings product
+									</a>
+									<!--
+									<a href="savingsproductaction.do?method=load&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.defineNewSavingsProduct"></a>
+									 -->
+								</td>
+						</tr>
+					</table>
+					<br>
+					<span class="headingorange">Manage accounts </span><br>
+                <span class="fontnormalbold">Manage Loan accounts</span><br>
+                <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                  <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%"><a href="reverseloandisbaction.do?method=search&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712" id="admin.link.reverseLoanDisbursal">Reverse Loan Disbursal</a></td>
+
+                  </tr>
+                  <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%"><a href="redoLoanAccount.ftl" id="admin.link.redoLoanDisbursal"><!-- 
+						href="loanAccountAction.do?method=redoLoanBegin&recordOfficeId=1&recordLoanOfficerId=1&randomNUm=7244597890643997712">
+						 -->
+								Redo Loan Disbursal</a></td>
+                  </tr>
+                </table>
+                
+                <br />
+				   <span class="headingorange">Manage reports </span><br />
+                   <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                   <tr class="fontnormal">
+                   <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                   <td width="97%"><a id="admin.link.ViewAdminDocuments"
+								href="birtAdminDocumentUploadAction.do?method=getViewBirtAdminDocumentPage">View admin documents
+								</a> | <a href="birtAdminDocumentUploadAction.do?method=getBirtAdminDocumentUploadPage&viewPath=administerreports_path" id="admin.link.uploadAdminDocuments">Upload admin documents</a></td>
+                  </tr>
+                  
+                  <tr class="fontnormal">
+                   <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                   <td width="97%"><a id="admin.link.ViewReportsTemplates"
+								href="birtReportsUploadAction.do?method=getViewReportPage">View reports templates
+								</a> | <a href="birtReportsUploadAction.do?method=getBirtReportsUploadPage&viewPath=administerreports_path" id="admin.link.uploadReportTemplate">Upload report template</a></td>
+                  </tr>
+                   <tr class="fontnormal">
+                   <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                   <td width="97%"><a id="admin.link.ViewReportsCategory"
+								href="reportsCategoryAction.do?method=viewReportsCategory">View reports category
+								</a> | <a href="reportsCategoryAction.do?method=loadDefineNewCategoryPage" id="admin.link.defineNewCategory">Define new report category</a></td>
+                  </tr>
+                </table>
+                <br>
+
+<!-- 
+		<span class="headingorange">Manage surveys</span><br />
+                  <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                    <tr class="fontnormal">
+                      <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                      <td width="97%"><a id="admin.link.surveys" href="surveysAction.do?method=mainpage">View surveys </a></td>
+                    </tr>
+                    <tr class="fontnormal">
+                      <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                      <td width="97%"><a id="admin.link.viewQuestions" href="questionsAction.do?method=viewQuestions">View question bank </a></td>
+                  </tr>
+                </table>
+-->
+                <br>
+                <span class="headingorange">Manage Questions</span><br />
+                <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="fontnormal">
+                  <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                  <td width="97%"><a id="admin.link.questions" href="viewQuestions.ftl">View Questions</a> | <a href="createQuestion.ftl" id="admin.link.defineNewQuestion">Add New Question</a></td>
+                </tr>
+                <tr class="fontnormal">
+                  <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                  <td width="97%"><a id="admin.link.questiongroups" href="viewQuestionGroups.ftl">View Question Groups</a> | <a href="createQuestionGroup.ftl" id="admin.link.defineNewQuestionGroup">Add New Question Group</a></td>
+                </tr>
+                   <tr class="fontnormal">
+                     <td><img src="pages/framework/images/bullet_circle.gif" width="9"  height="11"></td>
+                     <td><a id="admin.link.uploadPPI" href="uploadQuestionGroup.ftl">Activate PPI / Question Group</a></td>
+                  </tr>
+                </table>
+                <br>
+                <span class="headingorange">Manage Mifos View</span><br />
+                <table width="90%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="fontnormal">
+                    <td width="3%"><img src="pages/framework/images/bullet_circle.gif" width="9" height="11"></td>
+                    <td width="97%">
+                        <a href="uploadNewLogo.ftl" id="admin.link.uploadNewLogo">Upload new logo</a></td>
+                  </tr>
+                </table>
+                
+			</td>
+			</tr>
+			</table>
+		</form>
+		</body>
+	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
+	</tr>
+</table>
+
+</body>
+</html>
+
