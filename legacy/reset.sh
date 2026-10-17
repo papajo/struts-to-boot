@@ -12,8 +12,12 @@ re='^mysql://([^:]+):([^@]*)@([^:/]+):?([0-9]*)/(.+)$'
 U=${BASH_REMATCH[1]} P=${BASH_REMATCH[2]} H=${BASH_REMATCH[3]} PORT=${BASH_REMATCH[4]:-3306} DB=${BASH_REMATCH[5]}
 args=(-h"$H" -P"$PORT" -u"$U" -p"$P" --protocol=TCP)
 if [[ ! -f $SNAP || ${SNAPSHOT:-0} == 1 ]]; then
-  mysqldump "${args[@]}" --single-transaction --routines "$DB" > "$SNAP"
-  echo "snapshot -> $SNAP"
+  # --no-tablespaces: app user lacks PROCESS; column-statistics off: MySQL 8 client vs 5.7 server
+  opts=(--single-transaction --routines --no-tablespaces)
+  mysqldump --help 2>/dev/null | grep -q column-statistics && opts+=(--column-statistics=0)
+  mysqldump "${args[@]}" "${opts[@]}" "$DB" > "$SNAP.tmp"   # tmp: never leave a half snapshot behind
+  mv "$SNAP.tmp" "$SNAP"
+  echo "snapshot -> $SNAP ($(grep -c '^INSERT' "$SNAP") insert statements)"
 else
   mysql "${args[@]}" "$DB" < "$SNAP"
 fi
