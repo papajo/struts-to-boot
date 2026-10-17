@@ -3,7 +3,7 @@
 Target: Mifos loan module, 55 endpoints. Success = published numbers, not 100%.
 
 ## Week 1 — Legacy running + golden recordings
-- [ ] Mifos builds and runs in Docker (`legacy/README.md` risks). Log every fix in `docs/build-log.md`.
+- [x] Mifos builds and runs in Docker on oldbox (x86 Linux): 18/18 modules, Liquibase at HEAD, login mifos/testmifos verified. 14 build/runtime fixes in `docs/build-log.md`.
 - [x] Seed data: `legacy/seed.sh` converts Mifos's own `acceptance_dbunit.xml` (27 loans, 5 states) to the live schema via `tools/dbunit2sql.py`. Verified on baseline schema; rerun against HEAD.
 - [x] Read scenarios: `harness/scenarios/loan_read.yaml` — 6 endpoints × 5 fixture loans.
 - [ ] Record golden; replace `# placeholder` selectors using `harness/out/golden/raw/*.html`.
