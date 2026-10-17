@@ -19,5 +19,6 @@ else
 fi
 if [[ ${RESTART:-0} == 1 && ${HARNESS_SIDE:-legacy} == legacy ]]; then
   docker compose -f legacy/docker-compose.yml restart mifos
-  until curl -sf -o /dev/null http://localhost:8080/mifos/login.ftl; do sleep 3; done
+  PORT=$(grep -s '^MIFOS_PORT=' legacy/.env | cut -d= -f2); PORT=${MIFOS_PORT:-${PORT:-18080}}
+  until curl -sf -o /dev/null "http://localhost:$PORT/mifos/login.ftl"; do sleep 3; done
 fi

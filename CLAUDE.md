@@ -20,12 +20,12 @@ python3 tools/inventory.py legacy-src --json docs/loan-inventory.json --md docs/
 # legacy app
 legacy/vendor-jars.sh                             # once: jars on no live repo, from released 2.6.4 war
 python3 legacy/check-deps.py                      # every declared artifact resolvable? (0 missing)
-cd legacy && docker compose up --build           # :8080/mifos (first start runs Liquibase)
+cd legacy && docker compose up --build           # :${MIFOS_PORT:-18080}/mifos (first start runs Liquibase); host port in legacy/.env
 legacy/seed.sh                                    # load loan fixtures, then restart mifos
 SNAPSHOT=1 legacy/reset.sh                        # snapshot post-seed DB (needs mysql client)
 # harness
 cd harness && python3 -m venv .venv && .venv/bin/pip install -e '.[test]' && .venv/bin/pytest -q
-harness record --legacy http://localhost:8080/mifos --legacy-db mysql://mifos:mifos@localhost:3306/mifos --reset legacy/reset.sh
+harness record --legacy http://localhost:18080/mifos --legacy-db mysql://mifos:mifos@localhost:3306/mifos --reset legacy/reset.sh
 harness replay --modern http://localhost:8081   --modern-db mysql://mifos:mifos@localhost:3307/mifos --reset legacy/reset.sh
 harness report
 # code mapper (index once per legacy-src change; agents use it via MCP)

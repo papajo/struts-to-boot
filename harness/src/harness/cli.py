@@ -1,6 +1,6 @@
 """harness record|replay|report
 
-  harness record  --scenarios harness/scenarios --legacy http://localhost:8080/mifos [--legacy-db mysql://...]
+  harness record  --scenarios harness/scenarios --legacy http://localhost:18080/mifos [--legacy-db mysql://...]
   harness replay  --scenarios harness/scenarios --modern http://localhost:8081 [--modern-db mysql://...]
   harness report  --inventory docs/loan-inventory.json
 

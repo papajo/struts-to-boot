@@ -6,7 +6,7 @@ Source: https://github.com/mifos/head (last commit 2019-02-04). Pinned to `legac
 ```bash
 git submodule update --init           # pulls mifos/head into legacy-src/
 cd legacy && docker compose up --build
-# http://localhost:8080/mifos  — login mifos / testmifos
+# http://localhost:18080/mifos  — login mifos / testmifos
 ```
 
 ## Known build risks (week-1 work)
