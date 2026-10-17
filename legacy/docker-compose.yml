@@ -7,7 +7,8 @@ services:
       MYSQL_DATABASE: mifos
       MYSQL_USER: mifos
       MYSQL_PASSWORD: mifos
-    command: --max_connections=300 --innodb_file_per_table=1 --lower_case_table_names=1
+    # Mifos predates 5.7 strict mode: its changesets use zero-date TIMESTAMP defaults.
+    command: --max_connections=300 --innodb_file_per_table=1 --lower_case_table_names=1 --sql-mode=NO_ENGINE_SUBSTITUTION
     ports: ["${MYSQL_PORT:-3306}:3306"]
     # TCP check: during first-run init the entrypoint's temp server listens on the socket only,
     # so this passes only once the real server (with schema + data loaded) accepts connections.
