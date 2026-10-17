@@ -5,6 +5,7 @@
 # Needs a mysql client on PATH. Restores on the legacy side stop+start Mifos (see below).
 set -euo pipefail
 cd "$(dirname "$0")/.."
+exec 9>legacy/.reset.lock; flock -n 9 || { echo "reset.sh: another reset is running" >&2; exit 3; }
 DSN=${DSN:-mysql://mifos:mifos@127.0.0.1:3306/mifos}
 SNAP=legacy/snapshot.sql
 re='^mysql://([^:]+):([^@]*)@([^:/]+):?([0-9]*)/(.+)$'

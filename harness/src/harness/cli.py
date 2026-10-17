@@ -8,7 +8,9 @@ Results land in harness/out/. `report` writes harness/out/REPORT.md with the
 endpoint-match metric (endpoints whose every step matched / total inventory endpoints).
 """
 import argparse
+import fcntl
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -38,7 +40,18 @@ def main(argv=None):
     rep.add_argument("--inventory", type=Path, default=Path("docs/loan-inventory.json"))
     a = ap.parse_args(argv)
 
+    if a.cmd in ("record", "replay"):
+        # one run at a time: two runs restoring the same DB collide (ERROR 1050 table exists)
+        OUT.mkdir(parents=True, exist_ok=True)
+        lock = open(OUT / ".lock", "w")
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            sys.exit("harness: another record/replay is running (pgrep -af 'harness ')")
+
     if a.cmd == "record":
+        # start clean so a partial run can't be mistaken for a full one (stale files from git)
+        shutil.rmtree(OUT / "golden", ignore_errors=True)
         for sc in _scenarios(a.scenarios):
             reset_db(sc, a.reset, "legacy", a.legacy_db)
             print("recorded", record(sc, a.legacy, OUT / "golden", a.legacy_db))

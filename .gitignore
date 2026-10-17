@@ -11,3 +11,4 @@ mapper/.venv/
 mapper/out/
 legacy/vendor/
 legacy/.cache/
+legacy/.reset.lock
