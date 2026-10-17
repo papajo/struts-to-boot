@@ -35,7 +35,11 @@ services:
     environment:
       MIFOS_CONF: /mifos-conf
     volumes:
-      - ./conf:/mifos-conf:ro
+      # Mifos writes into its config dir at startup (imageStore/, uploads), so the dir is a
+      # writable volume (owned by jetty, see Dockerfile) and only local.properties comes from git.
+      - mifos-conf:/mifos-conf
+      - ./conf/local.properties:/mifos-conf/local.properties:ro
 
 volumes:
   mysql-data:
+  mifos-conf:

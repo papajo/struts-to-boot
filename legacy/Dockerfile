@@ -29,5 +29,9 @@ RUN --mount=type=cache,id=m2-v2,target=/root/.m2/repository \
 FROM jetty:9.4-jre8
 # plain webapp war (mifos.war is the self-executing variant with Jetty unpacked inside)
 COPY --from=build /src/war/target/mifos-TEMP-nonexec.war /var/lib/jetty/webapps/mifos.war
+# config dir must exist and be jetty-owned so the named volume inherits a writable dir
+USER root
+RUN mkdir -p /mifos-conf && chown jetty:jetty /mifos-conf
+USER jetty
 ENV JAVA_OPTIONS="-Xms1024m -Xmx1024m"
 EXPOSE 8080
