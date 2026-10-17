@@ -13,9 +13,15 @@ U=${BASH_REMATCH[1]} P=${BASH_REMATCH[2]} H=${BASH_REMATCH[3]} PORT=${BASH_REMAT
 args=(-h"$H" -P"$PORT" -u"$U" -p"$P" --protocol=TCP)
 if [[ ! -f $SNAP || ${SNAPSHOT:-0} == 1 ]]; then
   # --no-tablespaces: app user lacks PROCESS; column-statistics off: MySQL 8 client vs 5.7 server
-  opts=(--single-transaction --routines --no-tablespaces)
+  # --lock-tables, not --single-transaction: a consistent-snapshot dump aborts with error 1412
+  # ("Table definition has changed") when Mifos touched a table's metadata after startup.
+  opts=(--lock-tables --routines --no-tablespaces)
   mysqldump --help 2>/dev/null | grep -q column-statistics && opts+=(--column-statistics=0)
-  mysqldump "${args[@]}" "${opts[@]}" "$DB" > "$SNAP.tmp"   # tmp: never leave a half snapshot behind
+  for try in 1 2 3; do   # tmp file: never leave a half snapshot behind
+    mysqldump "${args[@]}" "${opts[@]}" "$DB" > "$SNAP.tmp" && break
+    [[ $try == 3 ]] && { rm -f "$SNAP.tmp"; echo "snapshot failed" >&2; exit 1; }
+    sleep 2
+  done
   mv "$SNAP.tmp" "$SNAP"
   echo "snapshot -> $SNAP ($(grep -c '^INSERT' "$SNAP") insert statements)"
 else
