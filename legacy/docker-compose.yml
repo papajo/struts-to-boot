@@ -35,6 +35,8 @@ services:
     ports: ["${MIFOS_PORT:-18080}:8080"]
     environment:
       MIFOS_CONF: /mifos-conf
+      # acceptance mode = Mifos' own test hooks (/dateTimeUpdate.ftl); DB keys mirrored in local.properties
+      JAVA_OPTIONS: "-Xms1024m -Xmx1024m -Dmifos.mode=acceptance"
     volumes:
       # Mifos writes into its config dir at startup (imageStore/, uploads), so the dir is a
       # writable volume (owned by jetty, see Dockerfile) and only local.properties comes from git.

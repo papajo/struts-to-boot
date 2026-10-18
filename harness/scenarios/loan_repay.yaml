@@ -1,6 +1,6 @@
 # Full early repayment: get -> loadRepayment -> preview -> makeRepayment.
-# Repay amount is computed by Mifos as of server "today"; fixtures matured in 2011, so it is
-# date-independent now (verify: golden amount must be identical across two record runs).
+# Repay amount is computed by Mifos as of server "today", pinned by the harness clock
+# (core.DEFAULT_CLOCK = 2011-06-01, same as the payment date below).
 name: loan_repay
 reset: true
 login:

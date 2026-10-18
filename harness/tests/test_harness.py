@@ -28,6 +28,8 @@ def _server(body_fn, ctype):
             self.rfile.read(int(self.headers.get("Content-Length", 0)))
             self.do_GET()
 
+        do_PUT = do_POST
+
         def log_message(self, *a):
             pass
 
@@ -104,6 +106,7 @@ steps:
         for sc in scs:
             record(sc, lurl, tmp_path / "g")
         assert "/next?g=A1&k=FK123" in seen and "/next?g=B2&k=FK123" in seen
+        assert seen[0] == "/dateTimeUpdate.ftl?dateTime=20110601T120000Z"  # clock pinned before login/steps
         assert (tmp_path / "g" / "raw" / "m__A1.first.html").exists()
     finally:
         ls.shutdown()

@@ -52,7 +52,7 @@ def _jsonable(v: Any) -> Any:
     if isinstance(v, list):
         return [_jsonable(x) for x in v]
     if isinstance(v, Decimal):
-        return str(v)
+        return format(v, "f")  # 100000, not 1E+5
     return v
 
 
@@ -62,6 +62,7 @@ def extract_html(html: str, spec: dict[str, str]) -> dict[str, Any]:
     soup = BeautifulSoup(html, "html.parser")
     out = {}
     for key, sel in spec.items():
+        sel = sel.removesuffix("?")  # trailing ? = optional (absent is a valid value, no WARN)
         many = sel.endswith("[]")
         sel = sel[:-2] if many else sel
         nodes = soup.select(sel)
@@ -113,6 +114,16 @@ class Step:
     sql: list[str] = field(default_factory=list)
 
 
+# Server "today" for every scenario (ISO basic, Joda basicDateTimeNoMillis). Fixtures date from
+# 2011, so outputs like "days late" / "amount due on <today>" are stable only with a pinned clock.
+DEFAULT_CLOCK = "20110601T120000Z"
+# legacy: Mifos test hook (needs -Dmifos.mode=acceptance); modern: same contract, test profile only
+CLOCK = {
+    "legacy": lambda c: Side("GET", f"/dateTimeUpdate.ftl?dateTime={c}"),
+    "modern": lambda c: Side("PUT", "/api/test/clock", json={"dateTime": c}),
+}
+
+
 @dataclass
 class Scenario:
     name: str
@@ -120,6 +131,7 @@ class Scenario:
     login: dict | None = None  # {"legacy": Side-ish, "modern": Side-ish}
     vars: dict = field(default_factory=dict)
     reset: bool = False  # run the --reset command before this scenario (write flows)
+    clock: str | None = DEFAULT_CLOCK  # server "today" pinned for the run; None = real clock
 
 
 def load_scenarios(path: Path) -> list[Scenario]:
@@ -133,11 +145,12 @@ def load_scenarios(path: Path) -> list[Scenario]:
     ]
     base_vars = raw.get("vars", {})
     reset = bool(raw.get("reset", False))
+    clock = raw.get("clock", DEFAULT_CLOCK)
     matrix = raw.get("matrix") or {}
     if not matrix:
-        return [Scenario(raw["name"], steps, raw.get("login"), dict(base_vars), reset)]
+        return [Scenario(raw["name"], steps, raw.get("login"), dict(base_vars), reset, clock)]
     (key, values), = matrix.items()  # single-axis matrix keeps names readable
-    return [Scenario(f"{raw['name']}__{v}", steps, raw.get("login"), {**base_vars, key: v}, reset)
+    return [Scenario(f"{raw['name']}__{v}", steps, raw.get("login"), {**base_vars, key: v}, reset, clock)
             for v in values]
 
 
@@ -184,6 +197,8 @@ def _run_sql(dsn: str | None, queries: list[str]) -> list[Any]:
 def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
              raw_dir: Path | None = None) -> dict:
     sess = requests.Session()
+    if sc.clock:
+        _send(sess, base, CLOCK[which](sc.clock)).raise_for_status()
     if sc.login and which in sc.login:
         _send(sess, base, Side(**_tmpl(sc.login[which], sc.vars))).raise_for_status()
     vars = dict(sc.vars)
@@ -215,7 +230,7 @@ def run_side(sc: Scenario, which: str, base: str, dsn: str | None = None,
         if which == "legacy":
             values = extract_html(r.text, side.extract)
             for k, v in values.items():
-                if v in (None, []):
+                if v in (None, []) and not side.extract[k].endswith("?"):
                     print(f"WARN {sc.name}/{st.id}: selector for '{k}' matched nothing", file=sys.stderr)
         else:
             values = extract_json(r.json() if r.content else None, side.extract)

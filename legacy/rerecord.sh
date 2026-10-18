@@ -18,6 +18,8 @@ step "wait for login"
 for i in $(seq 1 60); do legacy/login-check.sh | grep -q OK && break; sleep 10; done
 legacy/login-check.sh | grep -q OK || { echo "Mifos not up"; exit 1; }
 
+step "smoke: pinned clock"
+curl -s -o /dev/null -w 'dateTimeUpdate HTTP %{http_code}\n' "$B/dateTimeUpdate.ftl?dateTime=20110601T120000Z"
 step "smoke: loan 039 get + repayment schedule"
 J=$(mktemp); curl -s -c "$J" -b "$J" -o /dev/null -d 'j_username=mifos&j_password=testmifos' "$B/j_spring_security_check"
 curl -s -c "$J" -b "$J" -o /tmp/get.html "$B/loanAccountAction.do?method=get&globalAccountNum=000100000000039"

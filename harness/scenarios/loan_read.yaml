@@ -29,7 +29,7 @@ steps:
         external_id: '[id="loanaccountdetail.text.externalid"]'
         disbursal_date: '[id="loanaccountdetail.details.disbursaldate"]'
         freq_of_inst: '[id="LoanAccountDetail.text.freq_of_inst"]'
-        collateral_type: '[id="loanaccountdetail.text.collateraltype"]'
+        collateral_type: '[id="loanaccountdetail.text.collateraltype"]?'   # span only rendered when set
         summary_cells: '#loanSummaryTable td[]'   # verify: includes label cells?
     modern:
       method: GET
@@ -62,20 +62,37 @@ steps:
       method: GET
       url: /loanAccountAction.do?method=getAllActivity&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
       extract:
-        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
+        rows: '#accountActivityTable td[]'
     modern:
       method: GET
       url: /api/loans/{gan}/activity
       extract:
         rows: $.rows[*]
 
+  - id: status_history
+    endpoint: /loanAccountAction.do#viewStatusHistory
+    legacy:
+      method: GET
+      url: /loanAccountAction.do?method=viewStatusHistory&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      extract:
+        rows: '#statusHistory td[]'   # mifostabletag: table id = source; verify after record
+    modern:
+      method: GET
+      url: /api/loans/{gan}/status-history
+      extract:
+        rows: $.rows[*]
+    sql:
+      - SELECT COUNT(*) FROM account_status_change_history h JOIN account a ON a.account_id=h.account_id WHERE a.global_account_num='{gan}'
   - id: repayment_schedule
     endpoint: /loanAccountAction.do#getLoanRepaymentSchedule
     legacy:
       method: GET
+      # starts a new flow: original_schedule must use this page's key, status_history runs before
       url: /loanAccountAction.do?method=getLoanRepaymentSchedule&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
+      capture:
+        flowKey: 'currentFlowKey=([^&"'']+)'
       extract:
-        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
+        rows: '#installments td[]'
     modern:
       method: GET
       url: /api/loans/{gan}/schedule
@@ -88,24 +105,10 @@ steps:
       method: GET
       url: /loanAccountAction.do?method=viewOriginalSchedule&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
       extract:
-        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
+        rows: '#originalInstallments td[]'   # mifostabletag: table id = source; verify after record
     modern:
       method: GET
       url: /api/loans/{gan}/schedule/original
       extract:
         rows: $.rows[*]
 
-  - id: status_history
-    endpoint: /loanAccountAction.do#viewStatusHistory
-    legacy:
-      method: GET
-      url: /loanAccountAction.do?method=viewStatusHistory&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
-      extract:
-        rows: 'table td[]'   # placeholder (all cells) — narrow from raw HTML after first record
-    modern:
-      method: GET
-      url: /api/loans/{gan}/status-history
-      extract:
-        rows: $.rows[*]
-    sql:
-      - SELECT COUNT(*) FROM account_status_change_history h JOIN account a ON a.account_id=h.account_id WHERE a.global_account_num='{gan}'
