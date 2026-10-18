@@ -5,7 +5,13 @@
 
 
 
-	
+
+
+
+
+
+
+
 	
 
 
@@ -34,21 +40,48 @@
 
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
   <tr>
-    <td class="logo" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
-    <td align="right" bgcolor="#FFFFFF" class="fontnormal"><a href="yourSettings.do?method=get&randomNUm=-8799402150460498194">Your settings</a>
-     &nbsp;|&nbsp; <a id="logout_link" href="j_spring_security_logout">Log Out</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=6731017509167718747">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
   </tr>
   <tr>
     <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
         <tr>
-          <td class="tablightorange"><a href="home.ftl">Home</a></td>
-          <td class="tablightorange"><a href="clientsAndAccounts.ftl">Clients & Accounts</a></td>
-          <td class="tablightorange"><a href="reportsAction.do?method=load">Reports</a></td>
-          <td class="tablightorange"><a href="AdminAction.do?method=load">Admin</a></td>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl" >
+		Home</a></td>
+                 
           
+              
+              
+                  <td class="taborange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tabfontwhite">Clients & Accounts</a></td>
+                  <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+                  <td class="tablightorange"><a id="header.link.admin" href="AdminAction.do?method=load">Admin</a></td>
+					
        		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
-		  
+		 
+					
+              
+          
         </tr>
       </table>
         
@@ -68,75 +101,234 @@
 		
 		
 
+
 <td width="174" height="500" align="left" valign="top" class="bgorangeleft">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 		
 		<tr>
           <td class="leftpanehead" colspan="2">
-          Administrative tasks
+          Clients & Accounts Tasks
           </td>
         </tr>
        
-        
+       
+ 
 
 
 
   <form action="searchResult.ftl">
         <tr>
-          <td class="leftpanelinks">
-	<table width="90%" border="0" cellspacing="0" cellpadding="0">
+          <td class="leftpanelinks"><table width="90%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="paddingbottom03"><span class="fontnormal8ptbold">
-              Search by
-              client
-              name, system ID or account number
-</span> </td>
+              <td class="paddingbottom03"><span class="fontnormal8ptbold">Search by name, system ID, phone number or account number</span> </td>
             </tr>
           </table>
             <table width="90%" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td width="100%" colspan="2">
-                
                 <input type="text" name="searchString" size="20" maxlength="200"/>
 				
 				
 				
-				<input type="hidden" name="searchNode(search_officeId)" value="0"> 
+				<input type="hidden" name="officeId" value="0"> 
 				
-									
-				<input type="hidden" name="officeName" value="">													
-													
-				</td>
-              </tr>
-            </table>
-            <table width="143" border="0" cellspacing="0" cellpadding="10">
-              <tr>
-                <td align="right">                
-                
-                
-                <input type="submit" name="searchButton" class="buttn" value="Search">
-                
+					
                 </td>
               </tr>
-            </table>            
+            </table>
+            <table width="136" border="0" cellspacing="0" cellpadding="3">
+              <tr>
+                <td align="right">
+                 <input type="submit" name="searchButton" class="buttn" value="Search"/>
+                </td>
+              </tr>
+            </table> 
             </td>
-        </tr>
-</form>
+            </tr>
+            </form>
 
        
-      </table>
-      
+        <tr> 
+		<td class="leftpanelinks" colspan="2"><span class="fontnormalbold" >Manage Collection Sheets</span><br><a href="collectionsheetaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.entercollectionsheetdata">Enter Collection Sheet Data</a><br>
+<br><span class="fontnormalbold" >Create new Clients</span><br><a href="centerCustAction.do?method=chooseOffice&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createnewcenter">Create new Center</a><br>
+<a href="groupCustAction.do?method=hierarchyCheck&recordOfficeId=0&recordLoanOfficerId=0&input=createGroup" id="menu.link.label.createnewgroup">Create new Group</a><br>
+<a href="groupCustAction.do?method=loadSearch&recordOfficeId=0&recordLoanOfficerId=0&input=createClient" id="menu.link.label.createnewclient">Create new Client</a><br>
+<br><span class="fontnormalbold" >Create new Accounts</span><br><a href="createSavingsAccount.ftl" id="menu.link.label.createsavingsaccount">Create Savings Account</a><br>
+<a href="createLoanAccount.ftl" id="menu.link.label.createloanaccount">Create Loan Account</a><br>
+<a href="multipleloansaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createmultipleloanaccounts">Create multiple Loan Accounts</a><br>
+<br><span class="fontnormalbold" >Manage account status</span><br><a href="ChangeAccountStatus.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.approvemultipleloans">Approve multiple loans</a><br>
+<br></td>
+        </tr>
+</table>
 </td>      
 
 
 		<td align="left" valign="top" bgcolor="#FFFFFF"
 			class="paddingleftmain" height="500" >
+    <span id="format.decimalSeparator" title="."></span>
+<span id="format.groupingSeparator" title=","></span>
+<span id="format.groupingSize" title="3"></span>
 
-		<font class="fontnormalRedBold"> Page expired since the action is not permissible. Click on the tabs above to proceed. </font>
+    <span id="transfer.id" title="4"></span>
+	<span id="page.id" title="DisburseLoan"></span>
+
+	<SCRIPT SRC="pages/framework/js/date.js"></SCRIPT>
+    <script type="text/javascript" src="pages/js/applyPayment.js"></script>
+		
+	
+	
+	<body onload="disableFields()">
+		<script>
+			function fun_return(){
+				goBackToLoanAccountDetails.submit();
+			}
+			
+			function disableFields(){
+        			if (true == false) {
+                	 		document.getElementsByName("transactionDateDD")[0].disabled=true;
+                	 		document.getElementsByName("transactionDateMM")[0].disabled=true;
+                	 		document.getElementsByName("transactionDateYY")[0].disabled=true;
+        	 		}
+	 		}
+
+
+
+	</script>
+
+        
+        
+		
+		
+		<form name="goBackToLoanAccountDetails" method="get" action ="viewLoanAccountDetails.ftl">
+			<input type="hidden" name='globalAccountNum' value="000100000000020"/>
+		</form>
+		<form name="loanDisbursementActionForm" method="post" action="/mifos/loanDisbursementAction.do?method=preview&globalAccountNum=000100000000020" onsubmit="return (validateMyForm(transactionDate,transactionDateFormat,transactionDateYY) && validateMyForm(receiptDate,receiptDateFormat,receiptDateYY))">
+			<input type="hidden" name="currentFlowKey" value="1306929604861">
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="bluetablehead05"><span class="fontnormal8pt">
+					<a href="clientsAndAccounts.ftl?officeId=2&officeName=MyOfficeDHMFT&randomNum=6731017509167718747">MyOfficeDHMFT</a> / <a href="viewClientDetails.ftl?globalCustNum=0002-000000003&randomNum=6731017509167718747">Stu1233266063395 Client1233266063395</a> / <a href="viewLoanAccountDetails.ftl?globalAccountNum=000100000000020&randomNum=6731017509167718747">WeeklyFlatLoanWithOneTimeFees</a> </span></td>
+				</tr>
+			</table>
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="70%" height="24" align="left" valign="top"
+						class="paddingL15T15">
+					<table width="96%" border="0" cellpadding="3" cellspacing="0">
+						<tr>
+							<td width="70%" class="headingorange"><span class="heading">
+							&nbsp;#&nbsp;
+							000100000000020
+							&nbsp;-&nbsp; </span> 
+							Disburse Loan</td>
+						</tr>
+						<tr>
+							<td class="fontnormal"><span class="mandatorytext"><font color="#FF0000">*</font></span>Fields marked with an asterisk are required.</td>
+						</tr>
+					</table>
+					<br>
+					<table width="95%" border="0" cellspacing="0" cellpadding="3">
+
+						<font class="fontnormalRedBold"> <span id="DisburseLoan.error.message"></span> </font>
+						<tr>
+							<td colspan="2" align="right" class="fontnormal"><img
+								src="pages/framework/images/trans.gif" width="10" height="2"></td>
+						</tr>
+						<tr>
+							<td align="right" class="fontnormal">Disbursal Date:</td>
+							<td class="fontnormal">
+
+							 <BDO dir='LTR'><!-- normal style --><input type="text" id="transactionDateDD" name="transactionDateDD" maxlength="2" size="2" value="28" onBlur="makeDateString('transactionDateDD','transactionDateMM','transactionDateYY','transactionDate','/')" style="width:1.5em" /> DD <input type="text" id="transactionDateMM" name="transactionDateMM" maxlength="2" size="2" value="02" onBlur="makeDateString('transactionDateDD','transactionDateMM','transactionDateYY','transactionDate','/')" style="width:1.5em" /> MM <input type="text" id="transactionDateYY" name="transactionDateYY" maxlength="4" size="4" value="2011" onBlur="makeDateString('transactionDateDD','transactionDateMM','transactionDateYY','transactionDate','/')" style="width:3em" /> YYYY <input type="hidden" id="transactionDate" name="transactionDate" value="28/02/2011" /><input type="hidden" id="transactionDateFormat" name="transactionDateFormat" value="D/M/Y" /><input type="hidden" id="datePattern" name="datePattern" value="dd/MM/yy" /></BDO>
+							 
+							 </td>
+							 							 
+						</tr>
+						<tr>
+							<td align="right" class="fontnormal"><span id="DisburseLoan.label.receiptId">Receipt ID:</span></td>
+							<td class="fontnormal"><script src="pages/framework/js/func.js"></script><script src="pages/framework/js/func_en_GB.js"></script><input type="text" name="receiptId" maxlength="25" value="" onkeypress="return FnCheckNumCharsOnPress(event,this);" onblur="return FnCheckNumChars(event,this);return FnEscape(event,this)" id="DisburseLoan.input.receiptId"></td>
+						</tr>
+						<tr>
+							<td align="right" class="fontnormal">Receipt Date</td>
+							<td class="fontnormal"><BDO dir='LTR'><!-- normal style --><input type="text" id="receiptDateDD" name="receiptDateDD" maxlength="2" size="2" value="" onBlur="makeDateString('receiptDateDD','receiptDateMM','receiptDateYY','receiptDate','/')" style="width:1.5em" /> DD <input type="text" id="receiptDateMM" name="receiptDateMM" maxlength="2" size="2" value="" onBlur="makeDateString('receiptDateDD','receiptDateMM','receiptDateYY','receiptDate','/')" style="width:1.5em" /> MM <input type="text" id="receiptDateYY" name="receiptDateYY" maxlength="4" size="4" value="" onBlur="makeDateString('receiptDateDD','receiptDateMM','receiptDateYY','receiptDate','/')" style="width:3em" /> YYYY <input type="hidden" id="receiptDate" name="receiptDate" value="" /><input type="hidden" id="receiptDateFormat" name="receiptDateFormat" value="D/M/Y" /><input type="hidden" id="datePattern" name="datePattern" value="dd/MM/yy" /></BDO></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="fontnormalbold">Disbursement details</td>
+						</tr>
+						<tr>
+							<td width="29%" align="right" class="fontnormal">
+								<span id="DisburseLoan.label.disbursementAmount">
+									Loan amount
+								</span>:&nbsp;</td>
+							<td width="71%"><input type="text" name="loanAmount" value="100000.0" disabled="disabled" id="DisburseLoan.input.disbursementAmount"></td>
+						</tr>
+						<tr>
+							<td align="right" class="fontnormal"><span class="mandatorytext"><font color="#FF0000">*</font></span>Mode of payment:&nbsp;</td>
+							<td><select name="paymentTypeId" id="DisburseLoan.input.paymentType" style="width:136px;"><option value="">--Select--</option><option value="1">Cash</option>
+								
+									<option value="2">Voucher</option></select></td>
+						</tr>
+					</table>
+					<table width="95%" border="0" cellspacing="0" cellpadding="3">
+						<tr>
+							<td colspan="2" align="right" class="fontnormal"><img
+								src="pages/framework/images/trans.gif" width="10" height="2"></td>
+						</tr>
+						<tr>
+							<td colspan="2" class="fontnormalbold">Payment details</td>
+						</tr>
+						<tr>
+							<td width="29%" align="right" class="fontnormal"><span id="DisburseLoan.label.paymentAmount">Amount</span>:&nbsp;</td>
+							<td width="71%"><input type="text" name="amount" value="10.0" disabled="disabled" id="DisburseLoan.input.paymentAmount"></td>
+						</tr>
+						<tr>
+							<td align="right" class="fontnormal"><span class="mandatorytext"><font color="#FF0000">*</font></span>Mode of payment:&nbsp;</td>
+							<td>
+							    
+							    <select name="paymentModeOfPayment" id="applypayment.input.paymentType" style="width:136px;"><option value="">--Select--</option><option value="1">Cash</option>
+										
+											<option value="4">Transfer from Savings</option>
+										
+											<option value="3">Cheque</option>
+										
+											<option value="2">Voucher</option>
+										
+											<option value="4">Transfer from Savings</option></select>
+								</td>
+						</tr>
+                        <tr id="applypayment.row.savingsForTransfer">
+                            <td align="right" class="fontnormal"><span class="mandatorytext"><font color="#FF0000">*</font></span>Account for transfer:</td>
+
+                            <td class="fontnormal"><select name="accountForTransfer" id="applypayment.input.accountForTransfer"><option value="">--Select--</option></select></td>
+                        </tr>
+                        
+					</table>
+					<table width="96%" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td align="center" class="blueline">&nbsp;</td>
+						</tr>
+						<tr>
+							<td align="center">&nbsp;</td>
+						</tr>
+						<tr>
+							<td align="center"><input type="submit" value="Review Transaction" id="DisburseLoan.button.reviewTransaction" class="buttn"> &nbsp; <input type="button" name="cancelButton" value="Cancel" onclick="javascript:fun_return()" id="DisburseLoan.button.cancel" class="cancelbuttn"></td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<input type="hidden" name="prdOfferingName" value="">
+			<input type="hidden" name="globalAccountNum" value="000100000000020">
+			<input type="hidden" name="accountId" value="20">
+            <input type="hidden" name="transferPaymentTypeId" value="4">
+			<input type="hidden" name="method" value="">
+		</form>
+
 	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
 	</tr>
 </table>
 
 </body>
 </html>
+
 

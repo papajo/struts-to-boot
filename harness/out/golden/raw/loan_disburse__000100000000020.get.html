@@ -1,141 +1,1807 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html dir="auto">
-    <head>
-    <title id="title">Mifos</title>
-    <link href="pages/css/maincss.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/gazelle.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/screen.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/main.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/app.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/screen-custom.css" rel="stylesheet" type="text/css" />
-    <STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
-    <STYLE TYPE="text/css"><!-- @import url(pages/css/datepicker/datepicker.css); --></STYLE>
-    
-    <link rel="shortcut icon" href="pages/framework/images/favicon.ico"/>
-    
-    <script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.ui.datepicker.min.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery-ui-i18n.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.datePicker.configuration.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.datePicker.min-2.1.2.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="pages/framework/js/CommonUtilities.js"></script>
-    <script type="text/javascript" src="pages/js/lab.js"></script>
-    <script type="text/javascript" src="pages/js/separator.js"></script>
-    <script type="text/javascript" src="pages/js/datejs/date.js"></script>
-    <!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
-    </head>
-    <body>
-<div id="header">
-<div class="site_logo">
-    <span class="logo"><img src="getMifosLogo.ftl" /></span>
-    <a id="changeLanguagLink" href="#">Change Preferred Language</a>
-    <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>&nbsp;|&nbsp;
-    <a href="yourSettings.do?method=get" title="Your settings">Your settings</a>&nbsp;|&nbsp;
-    <a id="logout_link" href="j_spring_security_logout" title="Log Out">Log Out</a>
-</div>
-    <div class="top_menu">
-        <ul>
-         <li><a id="header.link.home" href="home.ftl" class="tablightorange" title="Home">Home</a>
-         </li> <li> <a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tablightorange" title="Clients & Accounts">Clients & Accounts</a>
-         </li> <li> <a id="header.link.reports" href="reportsAction.do?method=load" class="tablightorange" title="Reports">Reports</a>
-         </li> <li><a id="header.link.admin" href="AdminAction.do?method=load" class="taborange" title="Admin">Admin</a></li>
-          </li> 
-          <li><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load" class="tablightorange" title="Financial Accounting">Financial Accounting</a></li>
-     </ul>
-    </div>
 
-</div>
-    <div class="colmask leftmenu">
-        <div class="colleft">
-            <div class="col1wrap">
-                <div class="col1">
-                <div class="main_content">
-<span id="page.id" title="Exception"></span>
-<script src="pages/js/uncaughtException.js" type="text/javascript"></script>
-<div class="content_panel">
-    <p class="error">An unhandled error has occurred. Please contact your system administrator.</p>
-        <a class="stackTrace" href="javascript:void();">View stack trace</a>
-        <a class="stackTrace" href="javascript:void();" style="display:none">Hide stack trace</a>
-    <br/>
-    <br/>
-    <div class="stackTrace" style="display:none">
-            <pre>java.lang.StringIndexOutOfBoundsException: String index out of range: -1
-	at java.lang.AbstractStringBuilder.deleteCharAt(AbstractStringBuilder.java:824)
-	at java.lang.StringBuilder.deleteCharAt(StringBuilder.java:258)
-	at org.mifos.ui.core.controller.util.helpers.UrlHelper.constructCurrentPageUrl(UrlHelper.java:37)
-	at org.mifos.interceptors.BackUrlInterceptor.preHandle(BackUrlInterceptor.java:50)
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:891)
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:827)
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:882)
-	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:778)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:687)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
-	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1459)
-	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:799)
-	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1656)
-	at org.mifos.servlet.filters.CharacterEncodingFilter.doFilter(CharacterEncodingFilter.java:70)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:201)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1626)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:552)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:618)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:127)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:235)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1624)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1440)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:188)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:505)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1594)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:186)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1355)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:229)
-	at org.eclipse.jetty.server.Dispatcher.error(Dispatcher.java:86)
-	at org.eclipse.jetty.server.handler.ErrorHandler.doError(ErrorHandler.java:119)
-	at org.eclipse.jetty.server.handler.ErrorHandler.handle(ErrorHandler.java:95)
-	at org.eclipse.jetty.server.HttpChannel.lambda$handle$3(HttpChannel.java:536)
-	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:732)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:534)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:277)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:311)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
-	at org.eclipse.jetty.io.ChannelEndPoint$1.run(ChannelEndPoint.java:104)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:338)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:315)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:173)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:131)
-	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:409)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:883)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1034)
-	at java.lang.Thread.run(Thread.java:750)
-</pre>
-    </div>
-</div>
-                </div>
-             </div>
-            </div>
-            <div class="col2">
-                <div>
- <div  class="sidebar ht550">
-  <div>
-  <form method="post" action="searchResult.ftl">
-    <p class="orangetab">Administrative tasks</p>
-    <p class="leftpanelform fontnormal8ptbold">Search by client name, system ID or account number<br />
-    <input type="text" class="t_box" name="searchString" maxlength="200" size="20" value="" style="margin-left:0px;margin-top:4px;">
-      <br />
-      <input type="submit" name="searchButton" value="Search" class="buttn floatRight" style="margin-right:16px;
-margin-top:5px;">
-    </p>
-    </form>
-  </div>
-</div>                </div>
-            </div>
-        </div>
-    </div>
-    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+
+    #changeOrder {
+        font-size: 11px;
+        color: #000166;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    
+   #personalInformation.changing #changeOrder {
+        font-size: 13px;
+        color: green;
+        font-weight: bold;
+    }
+    
+    .changeOrderArrows {
+        display: none;
+    }
+    
+    .changeOrderArrows img {
+        cursor: pointer;
+    }
+    
+    #personalInformation.changing .changeOrderArrows {
+        display: inline;
+    }
+    
+    #personalInformation.changing #personalInformationInner > tbody > tr {
+        cursor: pointer;
+    }
+    
+    #personalInformation.changing #personalInformationInner > tbody > tr:hover {
+        background-color: #FFFFA7;
+    }
+        
+    #personalInformationInner td {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+    
+</style>
+
+
+     	
+
+	
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+<title>Mifos</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="pages/framework/images/favicon.ico"/>
+
+<link href='pages/css/cssstyle.css' rel="stylesheet"
+	type="text/css">
+</head>
+
+<body>
+
+
+	
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
+  <tr>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=6731017509167718747">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+  </tr>
+  <tr>
+    <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
+        <tr>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl" >
+		Home</a></td>
+                 
+          
+              
+              
+                  <td class="taborange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tabfontwhite">Clients & Accounts</a></td>
+                  <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+                  <td class="tablightorange"><a id="header.link.admin" href="AdminAction.do?method=load">Admin</a></td>
+					
+       		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
+		 
+					
+              
+          
+        </tr>
+      </table>
+        
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgorange"><img src="pages/framework/images/trans.gif" width="6" height="6"></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgwhite"><img src="pages/framework/images/trans.gif" width="100" height="2"></td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+
+		
+		
+
+
+<td width="174" height="500" align="left" valign="top" class="bgorangeleft">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		
+		<tr>
+          <td class="leftpanehead" colspan="2">
+          Clients & Accounts Tasks
+          </td>
+        </tr>
+       
+       
+ 
+
+
+
+  <form action="searchResult.ftl">
+        <tr>
+          <td class="leftpanelinks"><table width="90%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="paddingbottom03"><span class="fontnormal8ptbold">Search by name, system ID, phone number or account number</span> </td>
+            </tr>
+          </table>
+            <table width="90%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="100%" colspan="2">
+                <input type="text" name="searchString" size="20" maxlength="200"/>
+				
+				
+				
+				<input type="hidden" name="officeId" value="0"> 
+				
+					
+                </td>
+              </tr>
+            </table>
+            <table width="136" border="0" cellspacing="0" cellpadding="3">
+              <tr>
+                <td align="right">
+                 <input type="submit" name="searchButton" class="buttn" value="Search"/>
+                </td>
+              </tr>
+            </table> 
+            </td>
+            </tr>
+            </form>
+
+       
+        <tr> 
+		<td class="leftpanelinks" colspan="2"><span class="fontnormalbold" >Manage Collection Sheets</span><br><a href="collectionsheetaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.entercollectionsheetdata">Enter Collection Sheet Data</a><br>
+<br><span class="fontnormalbold" >Create new Clients</span><br><a href="centerCustAction.do?method=chooseOffice&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createnewcenter">Create new Center</a><br>
+<a href="groupCustAction.do?method=hierarchyCheck&recordOfficeId=0&recordLoanOfficerId=0&input=createGroup" id="menu.link.label.createnewgroup">Create new Group</a><br>
+<a href="groupCustAction.do?method=loadSearch&recordOfficeId=0&recordLoanOfficerId=0&input=createClient" id="menu.link.label.createnewclient">Create new Client</a><br>
+<br><span class="fontnormalbold" >Create new Accounts</span><br><a href="createSavingsAccount.ftl" id="menu.link.label.createsavingsaccount">Create Savings Account</a><br>
+<a href="createLoanAccount.ftl" id="menu.link.label.createloanaccount">Create Loan Account</a><br>
+<a href="multipleloansaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createmultipleloanaccounts">Create multiple Loan Accounts</a><br>
+<br><span class="fontnormalbold" >Manage account status</span><br><a href="ChangeAccountStatus.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.approvemultipleloans">Approve multiple loans</a><br>
+<br></td>
+        </tr>
+</table>
+</td>      
+
+
+		<td align="left" valign="top" bgcolor="#FFFFFF"
+			class="paddingleftmain" height="500" >
+
+    <script type="text/javascript">
+    
+    $(document).ready(function() {
+    
+        $("#changeOrder").click(function() {
+            if ($("#personalInformation").hasClass("changing")) {
+                
+                $("#personalInformationInner > tbody").sortable('disable').enableSelection();
+                
+                var order = {};
+                
+                $('#personalInformationInner > tbody > tr').each(function() {
+                    order[$(this).attr("data-order-id")] = $('#personalInformationInner > tbody > tr').index(this);
+                });
+                
+                $.ajax({
+                     contentType: "application/json",
+                        type: "POST",
+                        url: "saveInformationOrder.ftl",
+                        data: JSON.stringify(order),
+                        dataType: "json"
+                });
+                
+                $("#personalInformation").removeClass("changing");
+                $(this).html("Change fields order");
+            } else {
+                $("#personalInformation").addClass("changing");
+                $(this).html("Save changes");
+                
+                $("#personalInformationInner > tbody").sortable({
+                    helper: function(e, ui) {
+                        ui.children().each(function() {
+                            $(this).width($(this).width());
+                        });
+                        return ui;
+                    }
+                }).disableSelection();
+                $("#personalInformationInner > tbody").sortable("enable");
+            }
+        });
+        
+        $(".moveUp").click(function() {
+            var parentTr = $(this).parents("tr:first"); 
+            parentTr.insertBefore(parentTr.prev());
+        });
+        
+        $(".moveDown").click(function() {
+            var parentTr = $(this).parents("tr:first"); 
+            parentTr.insertAfter(parentTr.next());
+        });
+        
+        $("select.loanAccountAdminDocOutputType").change(function() {
+        	var url = $(this).next("a#loanaccountdetail\\.link\\.viewAdminReport").attr("href");
+        	var paramNameStr = "outputTypeId=";
+        	var outputTypeParamIndex = url.indexOf(paramNameStr) + paramNameStr.length;
+        	var outputTypeParamOldValue = url.substr(outputTypeParamIndex, outputTypeParamIndex + 1);
+        	var outputTypeParamNewValue = $(this).val();
+        	url = url.replace(paramNameStr + outputTypeParamOldValue, paramNameStr + outputTypeParamNewValue);
+        	
+        	$(this).next("a#loanaccountdetail\\.link\\.viewAdminReport").attr("href", url);
+        	
+        	// HTML, as seen in PentahoOutputType.java
+        	if (outputTypeParamNewValue == 3) {
+        		$(this).next("a#loanaccountdetail\\.link\\.viewAdminReport").attr("target", "_blank");
+        	}
+        	else {
+        		$(this).next("a#loanaccountdetail\\.link\\.viewAdminReport").removeAttr("target");
+        	}
+        });
+    });
+    
+    </script>
+
+
+
+	<span id="page.id" title="LoanAccountDetail" ></span>
+	
+		
+		
+		
+		<form name="loanAccountActionForm" method="post" action="/mifos/loanAccountAction.do">		
+			
+			
+			
+			
+			
+			
+			
+			
+            
+            
+            
+
+			
+            
+            	
+            
+
+			<input type="hidden" name="currentFlowKey" value="1306929604861">
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="bluetablehead05"><span class="fontnormal8pt">
+					<a href="clientsAndAccounts.ftl?officeId=2&officeName=MyOfficeDHMFT&randomNum=6731017509167718747">MyOfficeDHMFT</a> / <a href="viewClientDetails.ftl?globalCustNum=0002-000000003&randomNum=6731017509167718747">Stu1233266063395 Client1233266063395</a> / <b>WeeklyFlatLoanWithOneTimeFees</b> </span></td>
+				</tr>
+			</table>
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="70%" align="left" valign="top" class="paddingL15T15">
+					<table width="96%" border="0" cellpadding="3" cellspacing="0">
+						<tr>
+							<td width="62%" class="headingorange">WeeklyFlatLoanWithOneTimeFees&nbsp;# <span id="loanaccountdetail.text.loanid">000100000000020</span> <br>
+							</td>
+                            
+                            
+							<td width="38%" rowspan="2" align="right" valign="top"
+								class="fontnormal">
+								<a href="editStatusAction.do?method=load&accountId=20&randomNUm=6731017509167718747&currentFlowKey=1306929604861" id="loanaccountdetail.link.editAccountStatus">Edit account status</a>
+							<br>
+							</td>
+							
+							
+						</tr>
+					</table>
+					<table width="100%" border="0" cellpadding="3" cellspacing="0">
+						<tr>
+							<td><font class="fontnormalRedBold"><span id="loanaccountdetail.error.message"></span></font></td>
+						</tr>
+					</table>
+					<table width="96%" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td class="fontnormalbold"><span class="fontnormal">
+							<html><body><img src="pages/framework/images/status_activegreen.gif" /></body></html>
+ <span id="loanaccountdetail.text.status">Application Approved&nbsp; 
+								 </span></td>
+						</tr>
+						<tr>
+							<td class="fontnormal">Disbursal date: <span id="loanaccountdetail.details.disbursaldate">28/02/2011</span>
+							</td>
+						</tr>
+						<tr id="Loan.PurposeOfLoan">
+							<td class="fontnormal">Purpose of Loan:
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							</td>
+						</tr>
+					</table>
+					<table width="50%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td><img src="pages/framework/images/trans.gif" width="10"
+								height="10"></td>
+						</tr>
+					</table>
+					<table width="96%" border="0" cellpadding="3" cellspacing="0">
+						<tr>
+							<td width="33%" class="headingorange">Account summary</td>
+							<td width="33%" align="right" class="fontnormal">
+								<a href="viewLoanAccountRepaymentSchedule.ftl?globalAccountNum=000100000000020&randomNUm=6731017509167718747&currentFlowKey=1306929604861" id="loanaccountdetail.link.viewRepaymentSchedule">View repayment schedule</a>
+							</td>
+						</tr>
+					</table>
+
+					 
+					<table width="96%" border="0" cellpadding="3" cellspacing="0" id="loanSummaryTable">
+						<tr class="drawtablerow">
+							<td width="24%">&nbsp;</td>
+							<td width="20%" align="right" class="drawtablerowboldnoline">
+							Original Loan</td>
+							<td width="28%" align="right" class="drawtablerowboldnoline">
+							Amount paid</td>
+							<td width="28%" align="right" class="drawtablerowboldnoline">
+							Loan balance</td>
+						</tr>
+						<tr>
+							<td class="drawtablerow">Principal</td>
+							<td align="right" class="drawtablerow">100,000</td>
+							<td align="right" class="drawtablerow">0</td>
+							<td align="right" class="drawtablerow">100,000</td>
+						</tr>
+						<tr>
+							<td class="drawtablerow">Interest</td>
+							<td align="right" class="drawtablerow">4,603</td>
+							<td align="right" class="drawtablerow">0</td>
+							<td align="right" class="drawtablerow">4,603</td>
+						</tr>
+						<tr>
+							<td class="drawtablerow">Fees</td>
+							<td align="right" class="drawtablerow" id="LoanAccountDetail.text.loanFees">10</td>
+							<td align="right" class="drawtablerow">0</td>
+							<td align="right" class="drawtablerow">10</td>
+						</tr>
+						<tr>
+							<td class="drawtablerow">Penalty</td>
+							<td align="right" class="drawtablerow">0</td>
+							<td align="right" class="drawtablerow">0</td>
+							<td align="right" class="drawtablerow">0</td>
+						</tr>
+						<tr>
+							<td class="drawtablerow">Total</td>
+							<td align="right" class="drawtablerow">104,613</td>
+							<td align="right" class="drawtablerow">0</td>
+							<td align="right" class="drawtablerow">104,613</td>
+						</tr>
+						<tr>
+							<td colspan="4">&nbsp;</td>
+						</tr>
+					</table>
+					<table width="96%" border="0" cellpadding="3" cellspacing="0">
+						<tr>
+							<td width="35%" class="headingorange">
+								Recent activity
+							</td>
+							
+							<td width="65%" align="right" class="fontnormal">&nbsp; </td>
+						</tr>
+					</table>
+					
+						
+						<table width="96%" border="0" cellpadding="3" cellspacing="0">
+							<tr>
+								<td colspan="3">&nbsp;</td>
+							</tr>
+						</table>
+					
+					<table width="96%" border="0" cellpadding="3" cellspacing="0" id="personalInformation">
+						<tr>
+							<td width="69%" class="headingorange">Account details</td>
+                            <td width="31%" align="right" valign="top" class="fontnormal">
+                            
+                            
+							
+								<a href="/mifos/loanAccountAction.do?method=manage&customerId=3&globalAccountNum=000100000000020&randomNUm=6731017509167718747&currentFlowKey=1306929604861" id="loanaccountdetail.link.editAccountInformation">Edit account information</a>
+                            <br />
+                                
+							
+							
+							
+                            
+                                    <span id="changeOrder"><span id="changeOrder">Change fields order</span></span>
+                                
+                            </td>
+						</tr>
+                        <tr>
+                            <td colspan="2">
+                                <table width="96%" id="personalInformationInner" cellpadding="0" cellspacing="0" class="fontnormal" >
+                                <tbody class="fontnormal">
+                                    
+                                        
+                                        
+                                            
+                                                <tr data-order-id="15">
+                                                   <td>
+                                                        <span class="fontnormal">
+                                                     Interest Rate Type:&nbsp; Flat 
+                                                    </td>
+                                                    
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                             <tr data-order-id="16">
+                                                   <td>
+                                            Interest rate:&nbsp;<span class="fontnormal"><span id="loanaccountdetail.text.interestRate">24</span>%&nbsp;APR </span>
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                             <tr data-order-id="17">
+                                                   <td>
+                                            Interest deducted at disbursement:
+                                             
+                                             
+                                                 No
+                                             
+                                         
+                                         
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            <tr data-order-id="18">
+                                                   <td>
+                                            Currency : <span class ="fontnormal"><span id="loanaccountdetail.text.currency">
+                                                 INR </span></span>
+                                                 
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            <tr data-order-id="19">
+                                                   <td>
+                                                   Frequency of Installments:&nbsp;
+                                                   <span id="LoanAccountDetail.text.freq_of_inst">1 
+                                                   </span> 
+                                               
+                                                   
+                                                       Week(s)
+                                                   
+                                                   
+                                                   
+                                               
+                                                   
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            <tr data-order-id="20">
+                                                   <td>
+                                                   Principal due on last installment:
+                                                   
+                                                   
+                                                       No
+                                                   
+                                               
+                                               
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            <tr data-order-id="21">
+                                                   <td>
+                                                   Grace Period Type:&nbsp; None
+                                                    
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            <tr data-order-id="22">
+                                                   <td>
+                                                   Grace period for repayments:&nbsp;0&nbsp;Installments
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            <tr data-order-id="23">
+                                                   <td>
+                                                   No. of installments:&nbsp;<span id="loanaccountdetail.text.noOfInst">10</span> (Allowed Number of Installments:&nbsp;1
+                                            -&nbsp;10)
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            <tr data-order-id="24">
+                                                   <td>
+                                                   Source of fund:&nbsp; 
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                            
+                                                
+                                                        <!--  -->
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                            <tr data-order-id="26">
+                                                   <td>
+                                            <table width="96%" border="0" cellpadding="0" cellspacing="0">
+                                              <tr id="collateral">
+                                                  <td class="fontnormal"><br>
+                                                  <span class="fontnormalbold">Collateral details</span></td>
+                                              </tr>
+                                              <tr id="Loan.CollateralType">
+                                                  <td class="fontnormal">Collateral type:&nbsp;
+                                                  
+                                                      
+                                                  
+                                                      
+                                                  </td>
+                                              </tr>
+                                              <tr id="Loan.CollateralNotes">
+                                                  <td class="fontnormal">
+                                                  Collateral Notes:&nbsp;<br>
+                                                  <span id="loanaccountdetail.text.collateralnote"></span>
+                                                  <br /></td>
+                                              </tr>
+                                              <script>
+                                                  if(document.getElementById("Loan.CollateralType").style.display=="none" &&
+                                                      document.getElementById("Loan.CollateralNotes").style.display=="none")
+                                                          document.getElementById("collateral").style.display="none";
+                                              </script>
+                                          </table>
+                                            
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            <tr id="Loan.ExternalId" data-order-id="27">
+                                                   <td>
+                                                  External Id:
+                                                  &nbsp; <span class="fontnormal"><span id="loanaccountdetail.text.externalid"></span> </span>
+                                            
+                                               
+                                            
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                              
+                                            <tr id="Loan.ExternalId" data-order-id="28">
+                                                   <td><br />
+                                           
+                                           
+                                                 <span class="fontnormalbold"> 
+                                                Administrative documents 
+                                                    <br></span>
+                                                
+                                                                                                
+                                          
+                                            <br />
+                                           <script type="text/javascript" src="pages/application/admindocument/js/adminDocument.js"></script>
+                                           <script type="text/javascript">syncAdminDocumentLinkWithComboBox("adminDocOutputType", "adminDocOutputTypeLink");</script>
+                                           
+                                               
+                                            
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                            <tr data-order-id="29">
+                                                   <td><br />
+                                                      <span class="fontnormalbold"> Recurring account fees<br>
+                                                </span> 
+                                                    
+                                                
+                                              
+                                            
+                                                
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                            <tr data-order-id="30">
+                                                   <td><br />
+                                                   <span class="fontnormalbold"> One time account fees<br>
+                                               </span> 
+                                                   
+                                                       <span id="loanAccountDetail.text.oneTimeFeeName_1">
+                                                           disbursementFee</span>:
+                                                           <span class="fontnormal"> 10&nbsp;
+                                                           <!-- if account state is LOAN_PARTIAL_APPLICATION or LOAN_PENDING_APPROVAL then enable removal -->
+                                                        <br>
+                                                       </span>
+                                                   
+                                               
+                                                   <br>
+                                              
+                                            
+                                              
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            <tr data-order-id="31">
+                                                   <td><br />
+                                                    <span class="fontnormalbold">
+                                                  Recurring account penalties
+                                                  <br>
+                                              </span>
+                                              
+                                                     <br />
+                                              
+                                            
+                                            
+                                             
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                            <tr data-order-id="32">
+                                                   <td><br />
+                                                <span class="fontnormalbold">
+                                                 One time account penalties
+                                                 <br>
+                                             </span>
+                                             
+                                                     <br />
+                                              
+                                            
+                                             
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                        
+                                        
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                             
+                                            
+                                             
+                                            
+                                             
+                                             
+                                                
+                                              
+                                            
+                                             
+                                             
+                                            <tr data-order-id="72">
+                                                   <td>
+                                                   
+                        <table width="96%" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td width="50%" height="23" class="fontnormalbold">
+                                    List of guaranties:
+                                </td></br>
+                                
+                                    
+                                    <td width="50%" align="right" class="fontnormal"> 
+                                        <a href="linkGuarantor.ftl?currentFlowKey=1306929604861&globalCustNum=0002-000000003&accountId=20&prdOfferingName=WeeklyFlatLoanWithOneTimeFees&globalAccountNum=000100000000020&backPageUrl=viewLoanAccountDetails.ftl%3fglobalAccountNum%3d000100000000020" id="loanaccountdetail.link.applyGuaranty">Apply guaranty</a>
+                                    </td>
+                               
+                            </tr>
+                        </table>
+                        
+                    
+                                                    
+                                            
+                                         
+                                         
+                                            </td>
+                                            <td>
+                                               
+                                                   <span class="changeOrderArrows">
+                                                       <img class="moveUp" src="pages/framework/images/smallarrowtop.gif" />&nbsp;
+                                                       <img class="moveDown" src="pages/framework/images/smallarrowdown.gif" />
+                                                   </span>
+                                               
+                                            </td>
+                                            </tr>
+                                        
+                                    
+                                </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        					
+					</table>
+
+					<table width="96%" border="0" cellpadding="3" cellspacing="0">
+						<tr>
+							<td width="66%" class="headingorange">More account and transaction details</td>
+						</tr>
+						<tr>
+							<td class="fontnormal"> 
+									<span class="fontnormal">
+                                        
+                                        <a id="loanaccountdetail.link.accountpayments" href="viewLoanAccountPayments.ftl?globalAccountNum=000100000000020">
+                                            View Loan Account Payments
+                                        </a> <br/>
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        <a id="loanaccountdetail.link.questionGroups" href="viewAndEditQuestionnaire.ftl?creatorId=1&entityId=20&event=Create&source=Loan&backPageUrl=viewLoanAccountDetails.ftl%3fglobalAccountNum%3d000100000000020">
+                                            View Additional Information
+                                        </a> <br/>
+                                        
+                                        
+                                           
+                                        
+                                        
+                                        <a id="viewClientDetails.link.uploadedFiles" href="viewUploadedFiles.ftl?entityId=20&entityType=LOAN&backPageUrl=viewLoanAccountDetails.ftl%3fglobalAccountNum%3d000100000000020" >
+                                            View uploaded files
+                                        </a><br/>
+									    <a href="loanAccountAction.do?method=viewStatusHistory&globalAccountNum=000100000000020&randomNUm=6731017509167718747&currentFlowKey=1306929604861" id="loanaccountdetail.link.viewStatusHistory">View status history</a>
+							            <br>
+										<a href="loanAccountAction.do?method=loadChangeLog&entityType=Loan&entityId=20&currentFlowKey=1306929604861" id="loanaccountdetail.link.viewChangeLog">View change log</a>
+										<br>
+										<a href="viewLoanAccountTransactionHistory.ftl?globalAccountNum=000100000000020&accountId=20&prdOfferingName=WeeklyFlatLoanWithOneTimeFees&randomNUm=6731017509167718747&currentFlowKey=1306929604861" id="loanaccountdetail.link.viewTransactionHistory">View transaction history</a> 
+									</span>
+							</td>
+						</tr>
+					</table>
+					</td>
+					<td width="30%" align="left" valign="top" class="paddingleft1">
+					
+					<table width="100%" border="0" cellpadding="2" cellspacing="0"
+						class="orangetableborder">
+						<tr>
+							<td class="orangetablehead05"><span class="fontnormalbold">Transactions</span></td>
+						</tr>
+						<tr>
+							<td class="paddingL10">
+							
+								
+							 
+								
+												
+										<span class="fontnormal8pt"> <a href="applyChargeAction.do?method=load&accountId=20&randomNUm=6731017509167718747&currentFlowKey=1306929604861" id="loanaccountdetail.link.applyCharges">Apply charges</a><br>
+										</span>
+									
+								
+							
+							
+								
+									<tr>
+										<td class="paddingL10"><span class="fontnormal8pt">
+										
+										<a href="loanDisbursementAction.do?method=load&accountId=20&globalAccountNum=000100000000020&prdOfferingName=WeeklyFlatLoanWithOneTimeFees&randomNUm=6731017509167718747&currentFlowKey=1306929604861" id="loanaccountdetail.link.disburseLoan">Disburse Loan</a> <br>
+										</span></td>
+									</tr>
+								
+							 
+						
+                        
+							
+								
+							</td>
+						<tr>
+					</table>
+					
+					<table width="95%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td><img src="pages/framework/images/trans.gif" width="7"
+								height="8"></td>
+						</tr>
+					</table>
+					
+					<table width="100%" border="0" cellpadding="2" cellspacing="0"
+						class="bluetableborder">
+						<tr>
+							<td class="bluetablehead05"><span class="fontnormalbold">
+							Performance history </span></td>
+						</tr>
+						<tr>
+							<td class="paddingL10"><span class="fontnormal8pt"># of payments: 0</span></td>
+						</tr>
+						<tr>
+							<td class="paddingL10"><span class="fontnormal8pt"># of missed payments: 0</span></td>
+						</tr>
+						<tr>
+							<td class="paddingL10"><span class="fontnormal8pt">Days in arrears:0 </span></td>
+						</tr>
+						<tr>
+							<td class="paddingL10"><span class="fontnormal8pt">Loan maturity date:
+							</span></td>
+						</tr>
+					</table>
+					
+					
+					
+					<table width="95%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td><img src="pages/framework/images/trans.gif" width="7"
+								height="8"></td>
+						</tr>
+					</table>
+                        
+                        
+						<table width="100%" border="0" cellpadding="2" cellspacing="0"
+							class="bluetableborder">
+							<tr>
+								<td colspan="2" class="bluetablehead05"><span
+									class="fontnormalbold"> Question Groups </span></td>
+							</tr>
+							<tr>
+								<td colspan="2" class="paddingL10"><img
+									src="pages/framework/images/trans.gif" width="10" height="2"></td>
+							</tr>
+								
+							<tr>
+								<td colspan="2" align="right" class="paddingleft05">
+								<span class="fontnormal8pt">
+				                  	
+                                    <a id="loanaccountdetail.link.attachSurvey" href="questionnaire.ftl?creatorId=1&entityId=20&event=View&source=Loan&backPageUrl=">
+                                        Attach a Question Group
+                                    </a><br>
+								</span>
+						</table>
+			             
+						
+						<table width="95%" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td><img src="pages/framework/images/trans.gif" width="7"
+									height="8"></td>
+							</tr>
+						</table>
+					<table width="100%" border="0" cellpadding="2" cellspacing="0"
+						class="bluetableborder">
+						<tr>
+							<td class="bluetablehead05"><span class="fontnormalbold">
+							Recent notes </span></td>
+						</tr>
+						<tr>
+							<td class="paddingL10"><img
+								src="pages/framework/images/trans.gif" width="10" height="2"></td>
+						</tr>
+						<tr>
+							<td class="paddingL10" id="recentNotes">
+								
+									
+										<span class="fontnormal8ptbold"> 22/02/2011:</span>
+										<span class="fontnormal8pt"> Application Approved-<em> mifos</em><br>
+										<br>
+										</span>
+									
+								
+								
+							</td>
+						</tr>
+						<tr>
+							<td align="right" class="paddingleft05"><span
+								class="fontnormal8pt"> 
+								<a href="notesAction.do?method=search&accountId=20&globalAccountNum=000100000000020&accountTypeId=1&currentFlowKey=1306929604861&randomNUm=6731017509167718747" id="loanaccountdetail.link.seeAllNotes">See all notes</a>
+							 <br>
+							<a href="notesAction.do?method=load&accountId=20&currentFlowKey=1306929604861&randomNUm=6731017509167718747" id="loanaccountdetail.link.addNote">Add a note</a> </span></td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+			</table>
+			<!-- This hidden variable is being used in the next page -->
+			<input type="hidden" name="accountTypeId" value="1">
+			<input type="hidden" name="accountId" value="20">
+			<input type="hidden" name="globalAccountNum" value="000100000000020">
+		</form>
+	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
+	</tr>
+</table>
+
+</body>
 </html>
+

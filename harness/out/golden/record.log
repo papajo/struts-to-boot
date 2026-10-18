@@ -1,0 +1,71 @@
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_disburse__000100000000020.json
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_disburse__000100000000011.json
+recorded harness/out/golden/loan_read__000100000000039.json
+recorded harness/out/golden/loan_read__000100000000012.json
+recorded harness/out/golden/loan_read__000100000000042.json
+WARN loan_read__000100000000020/original_schedule: selector for 'rows' matched nothing
+recorded harness/out/golden/loan_read__000100000000020.json
+WARN loan_read__000100000000043/original_schedule: selector for 'rows' matched nothing
+recorded harness/out/golden/loan_read__000100000000043.json
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_repay__000100000000039.json
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_repay__000100000000040.json
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_repay__000100000000010.json
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_reverse_disbursal__000100000000041.json
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_reverse_disbursal__000100000000037.json
+ Container legacy-mifos-1  Stopping
+ Container legacy-mifos-1  Stopped
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ Container legacy-mysql-1  Waiting
+ Container legacy-mysql-1  Healthy
+ Container legacy-mifos-1  Starting
+ Container legacy-mifos-1  Started
+recorded harness/out/golden/loan_status_bulk.json

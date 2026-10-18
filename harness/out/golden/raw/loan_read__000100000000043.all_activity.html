@@ -5,7 +5,11 @@
 
 
 
-	
+
+
+
+
+
 	
 
 
@@ -34,21 +38,48 @@
 
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
   <tr>
-    <td class="logo" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
-    <td align="right" bgcolor="#FFFFFF" class="fontnormal"><a href="yourSettings.do?method=get&randomNUm=2448583815877393298">Your settings</a>
-     &nbsp;|&nbsp; <a id="logout_link" href="j_spring_security_logout">Log Out</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=-6900550514476236029">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
   </tr>
   <tr>
     <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
         <tr>
-          <td class="tablightorange"><a href="home.ftl">Home</a></td>
-          <td class="tablightorange"><a href="clientsAndAccounts.ftl">Clients & Accounts</a></td>
-          <td class="tablightorange"><a href="reportsAction.do?method=load">Reports</a></td>
-          <td class="tablightorange"><a href="AdminAction.do?method=load">Admin</a></td>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl" >
+		Home</a></td>
+                 
           
+              
+              
+                  <td class="taborange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tabfontwhite">Clients & Accounts</a></td>
+                  <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+                  <td class="tablightorange"><a id="header.link.admin" href="AdminAction.do?method=load">Admin</a></td>
+					
        		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
-		  
+		 
+					
+              
+          
         </tr>
       </table>
         
@@ -68,75 +99,170 @@
 		
 		
 
+
 <td width="174" height="500" align="left" valign="top" class="bgorangeleft">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 		
 		<tr>
           <td class="leftpanehead" colspan="2">
-          Administrative tasks
+          Clients & Accounts Tasks
           </td>
         </tr>
        
-        
+       
+ 
 
 
 
   <form action="searchResult.ftl">
         <tr>
-          <td class="leftpanelinks">
-	<table width="90%" border="0" cellspacing="0" cellpadding="0">
+          <td class="leftpanelinks"><table width="90%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="paddingbottom03"><span class="fontnormal8ptbold">
-              Search by
-              client
-              name, system ID or account number
-</span> </td>
+              <td class="paddingbottom03"><span class="fontnormal8ptbold">Search by name, system ID, phone number or account number</span> </td>
             </tr>
           </table>
             <table width="90%" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td width="100%" colspan="2">
-                
                 <input type="text" name="searchString" size="20" maxlength="200"/>
 				
 				
 				
-				<input type="hidden" name="searchNode(search_officeId)" value="0"> 
+				<input type="hidden" name="officeId" value="0"> 
 				
-									
-				<input type="hidden" name="officeName" value="">													
-													
-				</td>
-              </tr>
-            </table>
-            <table width="143" border="0" cellspacing="0" cellpadding="10">
-              <tr>
-                <td align="right">                
-                
-                
-                <input type="submit" name="searchButton" class="buttn" value="Search">
-                
+					
                 </td>
               </tr>
-            </table>            
+            </table>
+            <table width="136" border="0" cellspacing="0" cellpadding="3">
+              <tr>
+                <td align="right">
+                 <input type="submit" name="searchButton" class="buttn" value="Search"/>
+                </td>
+              </tr>
+            </table> 
             </td>
-        </tr>
-</form>
+            </tr>
+            </form>
 
        
-      </table>
-      
+        <tr> 
+		<td class="leftpanelinks" colspan="2"><span class="fontnormalbold" >Manage Collection Sheets</span><br><a href="collectionsheetaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.entercollectionsheetdata">Enter Collection Sheet Data</a><br>
+<br><span class="fontnormalbold" >Create new Clients</span><br><a href="centerCustAction.do?method=chooseOffice&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createnewcenter">Create new Center</a><br>
+<a href="groupCustAction.do?method=hierarchyCheck&recordOfficeId=0&recordLoanOfficerId=0&input=createGroup" id="menu.link.label.createnewgroup">Create new Group</a><br>
+<a href="groupCustAction.do?method=loadSearch&recordOfficeId=0&recordLoanOfficerId=0&input=createClient" id="menu.link.label.createnewclient">Create new Client</a><br>
+<br><span class="fontnormalbold" >Create new Accounts</span><br><a href="createSavingsAccount.ftl" id="menu.link.label.createsavingsaccount">Create Savings Account</a><br>
+<a href="createLoanAccount.ftl" id="menu.link.label.createloanaccount">Create Loan Account</a><br>
+<a href="multipleloansaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createmultipleloanaccounts">Create multiple Loan Accounts</a><br>
+<br><span class="fontnormalbold" >Manage account status</span><br><a href="ChangeAccountStatus.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.approvemultipleloans">Approve multiple loans</a><br>
+<br></td>
+        </tr>
+</table>
 </td>      
 
 
 		<td align="left" valign="top" bgcolor="#FFFFFF"
 			class="paddingleftmain" height="500" >
-
-		<font class="fontnormalRedBold"> Page expired since the action is not permissible. Click on the tabs above to proceed. </font>
-	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
+	<span id="page.id" title="ViewLoanAccountActivity"></span>
+	<form method="get" action="viewLoanAccountDetails.ftl" >
+	<SCRIPT SRC="pages/application/loan/js/LoanAccountActivity.js"></SCRIPT>
+	
+      <table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="bluetablehead05">
+						<span class="fontnormal8pt"> <a href="clientsAndAccounts.ftl?officeId=2&officeName=MyOfficeDHMFT&randomNum=-6900550514476236029">MyOfficeDHMFT</a> / <a href="viewClientDetails.ftl?globalCustNum=0002-000000024&randomNum=-6900550514476236029">WeeklyClient Monday</a> / <a href="viewLoanAccountDetails.ftl?globalAccountNum=000100000000043&randomNum=-6900550514476236029">WeeklyClientFlatLoanWithNoFee</a> </span>
+					</td>
+				</tr>
+	  </table>
+      <table width="95%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="left" valign="top" class="paddingL15T15" >
+            <table width="95%" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="83%" class="headingorange">
+                	<span class="heading">
+                	 # 000100000000043 - 
+                	</span> 
+                	Account statement as of
+                	01/06/2011
+                </td>
+              </tr>
+              <tr><td>
+	              <font class="fontnormalRedBold">
+	              	<span id="viewloanaccountactivity.error.message"></span>
+	              </font></td>
+              </tr>
+            </table>
+            
+					<table width="95%" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td>
+							<p><br>
+							</p>
+							</td>
+						</tr>
+					</table>
+		
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td bgcolor="#F0D4A5" style="padding-left:10px; padding-bottom:3px;">
+								<span class="fontnormalbold">
+									Apply transactions:
+								</span>&nbsp;&nbsp;&nbsp;&nbsp;	
+								
+								
+								
+								
+								
+								
+								
+								
+                            
+															
+								
+								
+									
+								
+								
+								
+        						 <a href="applyChargeAction.do?method=load&accountId=&randomNUm=-6900550514476236029&currentFlowKey=1306929600508" id="viewloanaccountactivity.link.applyCharges">Apply charges</a>
+								
+								
+								
+							
+								
+								
+							</td>
+						</tr>
+					</table>
+				
+       <br>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="accountActivityTable"><tr><td colspan="8"></td><td colspan="4" class="drawtablerowboldnoline">Running balance</td></tr><tr class="drawtablerowbold"><td width="9%" class="drawtablerowbold">Transaction Date</td><td width="19%" class="drawtablerowbold">Activity</td><td width="8%" align="right" class="drawtablerowbold">Principal</td><td width="8%" align="right" class="drawtablerowbold">Interest</td><td width="8%" align="right" class="drawtablerowbold">Fees</td><td width="8%" align="right" class="drawtablerowbold">Penalty</td><td width="6%" align="right" class="drawtablerowbold">Total</td><td width="4" align="right" class="fontnormalbold"></td><td width="8%" align="right" class="drawtablerowbold">Principal</td><td width="8%" align="right" class="drawtablerowbold">Interest</td><td width="8%" align="right" class="drawtablerowbold">Fees</td><td width="6%" align="right" class="drawtablerowbold">Total</td></tr></table>
+            <br>
+            
+            <table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td align="center">
+					   <input type="button" name="returnToAccountDetailsbutton" value="Return to account details" onclick="javascript:fun_return(this.form, )" id="viewloanaccountactivity.button.return" class="buttn">
+					</td>
+				</tr>
+    		</table>
+          </td>
+        </tr>
+      </table>
+      <input type="hidden" name="accountId" value="">
+      <input type="hidden" name="prdOfferingName" value="">
+      <input type="hidden" name="accountStateId" value="">
+	  <input type="hidden" name="accountTypeId" value="">
+	  <input type="hidden" name="recordOfficeId" value="">
+	  <input type="hidden" name="recordLoanOfficerId" value="">
+      <input type="hidden" name="globalAccountNum" value="000100000000043">
+      <input type="hidden" name="input" value="reviewTransactionPage">
+</form>
+ <input type="hidden" name="h_user_locale" value="en_GB"></td>
 	</tr>
 </table>
 
 </body>
 </html>
-
+        

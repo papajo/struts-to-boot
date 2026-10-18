@@ -1,49 +1,107 @@
 {
   "get": {
     "endpoint": "/loanAccountAction.do#get",
-    "status": 500,
+    "status": 200,
+    "final_url": "/loanAccountAction.do",
+    "redirects": [],
     "rejected": false,
     "ui_only": true,
-    "ms": 754.2,
+    "ms": 2739.0,
     "values": {},
     "sql": []
   },
   "load": {
     "endpoint": "/loanDisbursementAction.do#load",
     "status": 200,
+    "final_url": "/loanDisbursementAction.do",
+    "redirects": [],
     "rejected": false,
     "ui_only": false,
-    "ms": 600.3,
+    "ms": 733.4,
     "values": {
-      "amount": null
+      "amount": "10"
     },
     "sql": []
   },
   "preview": {
     "endpoint": "/loanDisbursementAction.do#preview",
-    "status": 500,
+    "status": 200,
+    "final_url": "/loanDisbursementAction.do",
+    "redirects": [],
     "rejected": false,
     "ui_only": true,
-    "ms": 38.4,
+    "ms": 593.4,
     "values": {},
     "sql": []
   },
   "update": {
     "endpoint": "/loanDisbursementAction.do#update",
     "status": 200,
+    "final_url": "/loanDisbursementAction.do",
+    "redirects": [],
     "rejected": false,
     "ui_only": false,
-    "ms": 79.6,
+    "ms": 897.9,
     "values": {},
     "sql": [
       [
         [
-          "3"
+          "5"
         ]
       ],
-      [],
-      [],
-      [],
+      [
+        [
+          "1",
+          "99990",
+          "DISB-1",
+          "2011-02-28",
+          "2011-02-28"
+        ]
+      ],
+      [
+        [
+          "4",
+          "10",
+          "2011-02-28",
+          "0",
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        [
+          "10",
+          "100000",
+          "2011-02-28",
+          "0",
+          "100000",
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      [
+        [
+          "7",
+          "0",
+          "10"
+        ],
+        [
+          "7",
+          "1",
+          "100000"
+        ],
+        [
+          "20",
+          "0",
+          "100000"
+        ],
+        [
+          "50",
+          "1",
+          "10"
+        ]
+      ],
       [
         [
           "1",
@@ -154,7 +212,7 @@
           null
         ],
         [
-          "1E+1",
+          "10",
           "2011-05-09",
           "10002.7",
           "460.3",
@@ -168,12 +226,12 @@
       ],
       [
         [
-          "1E+5",
+          "100000",
           "4603",
-          "1E+1",
+          "10",
           "0",
           "0",
-          "0",
+          "10",
           "0"
         ]
       ],
@@ -185,6 +243,10 @@
         [
           "2",
           "3"
+        ],
+        [
+          "3",
+          "5"
         ]
       ]
     ]

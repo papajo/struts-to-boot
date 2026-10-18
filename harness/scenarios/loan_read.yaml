@@ -75,7 +75,7 @@ steps:
       method: GET
       url: /loanAccountAction.do?method=viewStatusHistory&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
       extract:
-        rows: '#statusHistory td[]'   # mifostabletag: table id = source; verify after record
+        rows: '#statusHistory td[]'
     modern:
       method: GET
       url: /api/loans/{gan}/status-history
@@ -105,7 +105,7 @@ steps:
       method: GET
       url: /loanAccountAction.do?method=viewOriginalSchedule&accountId={accountId}&globalAccountNum={gan}&randomNUm={randomNUm}&currentFlowKey={flowKey}
       extract:
-        rows: '#originalInstallments td[]'   # mifostabletag: table id = source; verify after record
+        rows: '#originalInstallments td[]?'   # no table before disbursal (020, 043)
     modern:
       method: GET
       url: /api/loans/{gan}/schedule/original

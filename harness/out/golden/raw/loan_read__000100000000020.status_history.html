@@ -5,7 +5,18 @@
 
 
 
-	
+
+
+
+<script language="javascript">
+	function fun_return(form, url)
+		{
+			form.action=url;
+			form.method="get";
+			form.submit();
+		}
+</script>
+
 	
 
 
@@ -34,21 +45,48 @@
 
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
   <tr>
-    <td class="logo" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
-    <td align="right" bgcolor="#FFFFFF" class="fontnormal"><a href="yourSettings.do?method=get&randomNUm=4652839826984294995">Your settings</a>
-     &nbsp;|&nbsp; <a id="logout_link" href="j_spring_security_logout">Log Out</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=-3857806352013744382">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
   </tr>
   <tr>
     <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
         <tr>
-          <td class="tablightorange"><a href="home.ftl">Home</a></td>
-          <td class="tablightorange"><a href="clientsAndAccounts.ftl">Clients & Accounts</a></td>
-          <td class="tablightorange"><a href="reportsAction.do?method=load">Reports</a></td>
-          <td class="tablightorange"><a href="AdminAction.do?method=load">Admin</a></td>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl" >
+		Home</a></td>
+                 
           
+              
+              
+                  <td class="taborange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tabfontwhite">Clients & Accounts</a></td>
+                  <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+                  <td class="tablightorange"><a id="header.link.admin" href="AdminAction.do?method=load">Admin</a></td>
+					
        		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
-		  
+		 
+					
+              
+          
         </tr>
       </table>
         
@@ -68,71 +106,107 @@
 		
 		
 
+
 <td width="174" height="500" align="left" valign="top" class="bgorangeleft">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 		
 		<tr>
           <td class="leftpanehead" colspan="2">
-          Administrative tasks
+          Clients & Accounts Tasks
           </td>
         </tr>
        
-        
+       
+ 
 
 
 
   <form action="searchResult.ftl">
         <tr>
-          <td class="leftpanelinks">
-	<table width="90%" border="0" cellspacing="0" cellpadding="0">
+          <td class="leftpanelinks"><table width="90%" border="0" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="paddingbottom03"><span class="fontnormal8ptbold">
-              Search by
-              client
-              name, system ID or account number
-</span> </td>
+              <td class="paddingbottom03"><span class="fontnormal8ptbold">Search by name, system ID, phone number or account number</span> </td>
             </tr>
           </table>
             <table width="90%" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td width="100%" colspan="2">
-                
                 <input type="text" name="searchString" size="20" maxlength="200"/>
 				
 				
 				
-				<input type="hidden" name="searchNode(search_officeId)" value="0"> 
+				<input type="hidden" name="officeId" value="0"> 
 				
-									
-				<input type="hidden" name="officeName" value="">													
-													
-				</td>
-              </tr>
-            </table>
-            <table width="143" border="0" cellspacing="0" cellpadding="10">
-              <tr>
-                <td align="right">                
-                
-                
-                <input type="submit" name="searchButton" class="buttn" value="Search">
-                
+					
                 </td>
               </tr>
-            </table>            
+            </table>
+            <table width="136" border="0" cellspacing="0" cellpadding="3">
+              <tr>
+                <td align="right">
+                 <input type="submit" name="searchButton" class="buttn" value="Search"/>
+                </td>
+              </tr>
+            </table> 
             </td>
-        </tr>
-</form>
+            </tr>
+            </form>
 
        
-      </table>
-      
+        <tr> 
+		<td class="leftpanelinks" colspan="2"><span class="fontnormalbold" >Manage Collection Sheets</span><br><a href="collectionsheetaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.entercollectionsheetdata">Enter Collection Sheet Data</a><br>
+<br><span class="fontnormalbold" >Create new Clients</span><br><a href="centerCustAction.do?method=chooseOffice&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createnewcenter">Create new Center</a><br>
+<a href="groupCustAction.do?method=hierarchyCheck&recordOfficeId=0&recordLoanOfficerId=0&input=createGroup" id="menu.link.label.createnewgroup">Create new Group</a><br>
+<a href="groupCustAction.do?method=loadSearch&recordOfficeId=0&recordLoanOfficerId=0&input=createClient" id="menu.link.label.createnewclient">Create new Client</a><br>
+<br><span class="fontnormalbold" >Create new Accounts</span><br><a href="createSavingsAccount.ftl" id="menu.link.label.createsavingsaccount">Create Savings Account</a><br>
+<a href="createLoanAccount.ftl" id="menu.link.label.createloanaccount">Create Loan Account</a><br>
+<a href="multipleloansaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createmultipleloanaccounts">Create multiple Loan Accounts</a><br>
+<br><span class="fontnormalbold" >Manage account status</span><br><a href="ChangeAccountStatus.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.approvemultipleloans">Approve multiple loans</a><br>
+<br></td>
+        </tr>
+</table>
 </td>      
 
 
 		<td align="left" valign="top" bgcolor="#FFFFFF"
 			class="paddingleftmain" height="500" >
+		<span id="page.id" title="ViewLoanStatusHistory"></span>
+		<form name="loanAccountActionForm" method="post" action="/mifos/loanAccountAction.do">
+		<input type="hidden" name="currentFlowKey" value="1306929600656">	
+		
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="bluetablehead05"><span class="fontnormal8pt"> <a href="clientsAndAccounts.ftl?officeId=2&officeName=MyOfficeDHMFT&randomNum=-3857806352013744382">MyOfficeDHMFT</a> / <a href="viewClientDetails.ftl?globalCustNum=0002-000000003&randomNum=-3857806352013744382">Stu1233266063395 Client1233266063395</a> / <a href="viewLoanAccountDetails.ftl?globalAccountNum=000100000000020&randomNum=-3857806352013744382">WeeklyFlatLoanWithOneTimeFees</a>
+					</span></td>
+				</tr>
+			</table>
+			<table width="95%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="70%" height="24" align="left" valign="top"
+						class="paddingL15T15">
+					<table width="96%" border="0" cellpadding="3" cellspacing="0">
+						<tr>
+							<td class="headingorange"><span class="heading"> WeeklyFlatLoanWithOneTimeFees
+							#000100000000020 -
+							</span> Status history</td>
+						</tr>
 
-		<font class="fontnormalRedBold"> Page expired since the action is not permissible. Click on the tabs above to proceed. </font>
+					</table>
+					<br>
+					<table id="statusHistory" width="100%" border="0" cellpadding="3" cellspacing="0" ><tr  class="drawtablerowbold"  ><td  width="8%" align="left" ><b>Date</b></td><td  width="8%" align="left" ><b>Old Status</b></td><td  width="8%" align="left" ><b>New Status</b></td><td  width="8%" align="left" ><b>User</b></td></tr><tr><td class="drawtablerow"   align="left" > 22/02/2011</td><td class="drawtablerow"   align="left" > -</td><td class="drawtablerow"   align="left" > Application Pending Approval</td><td class="drawtablerow"   align="left" > mifos</td></tr><tr><td class="drawtablerow"   align="left" > 22/02/2011</td><td class="drawtablerow"   align="left" > Application Pending Approval</td><td class="drawtablerow"   align="left" > Application Approved</td><td class="drawtablerow"   align="left" > mifos</td></tr></table> <br>
+					
+					<table width="96%" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td align="center"><input type="button" name="btn" value="Return to account details" onclick="fun_return(this.form, 'viewLoanAccountDetails.ftl');" id="viewLoanStatusHistory.button.return" class="buttn"></td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<input type="hidden" name="globalAccountNum" value="000100000000020">
+			<input type="hidden" name="accountTypeId" value="1">
+		</form>
 	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
 	</tr>
 </table>

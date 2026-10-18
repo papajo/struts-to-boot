@@ -1,141 +1,497 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html dir="auto">
-    <head>
-    <title id="title">Mifos</title>
-    <link href="pages/css/maincss.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/gazelle.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/screen.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/main.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/app.css" rel="stylesheet" type="text/css" />
-    <link href="pages/css/screen-custom.css" rel="stylesheet" type="text/css" />
-    <STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
-    <STYLE TYPE="text/css"><!-- @import url(pages/css/datepicker/datepicker.css); --></STYLE>
-    
-    <link rel="shortcut icon" href="pages/framework/images/favicon.ico"/>
-    
-    <script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.ui.datepicker.min.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery-ui-i18n.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.datePicker.configuration.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.datePicker.min-2.1.2.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
-    <script type="text/javascript" src="pages/js/jquery/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="pages/framework/js/CommonUtilities.js"></script>
-    <script type="text/javascript" src="pages/js/lab.js"></script>
-    <script type="text/javascript" src="pages/js/separator.js"></script>
-    <script type="text/javascript" src="pages/js/datejs/date.js"></script>
-    <!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
-    </head>
-    <body>
-<div id="header">
-<div class="site_logo">
-    <span class="logo"><img src="getMifosLogo.ftl" /></span>
-    <a id="changeLanguagLink" href="#">Change Preferred Language</a>
-    <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>&nbsp;|&nbsp;
-    <a href="yourSettings.do?method=get" title="Your settings">Your settings</a>&nbsp;|&nbsp;
-    <a id="logout_link" href="j_spring_security_logout" title="Log Out">Log Out</a>
-</div>
-    <div class="top_menu">
-        <ul>
-         <li><a id="header.link.home" href="home.ftl" class="tablightorange" title="Home">Home</a>
-         </li> <li> <a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tablightorange" title="Clients & Accounts">Clients & Accounts</a>
-         </li> <li> <a id="header.link.reports" href="reportsAction.do?method=load" class="tablightorange" title="Reports">Reports</a>
-         </li> <li><a id="header.link.admin" href="AdminAction.do?method=load" class="taborange" title="Admin">Admin</a></li>
-          </li> 
-          <li><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load" class="tablightorange" title="Financial Accounting">Financial Accounting</a></li>
-     </ul>
-    </div>
 
-</div>
-    <div class="colmask leftmenu">
-        <div class="colleft">
-            <div class="col1wrap">
-                <div class="col1">
-                <div class="main_content">
-<span id="page.id" title="Exception"></span>
-<script src="pages/js/uncaughtException.js" type="text/javascript"></script>
-<div class="content_panel">
-    <p class="error">An unhandled error has occurred. Please contact your system administrator.</p>
-        <a class="stackTrace" href="javascript:void();">View stack trace</a>
-        <a class="stackTrace" href="javascript:void();" style="display:none">Hide stack trace</a>
-    <br/>
-    <br/>
-    <div class="stackTrace" style="display:none">
-            <pre>java.lang.StringIndexOutOfBoundsException: String index out of range: -1
-	at java.lang.AbstractStringBuilder.deleteCharAt(AbstractStringBuilder.java:824)
-	at java.lang.StringBuilder.deleteCharAt(StringBuilder.java:258)
-	at org.mifos.ui.core.controller.util.helpers.UrlHelper.constructCurrentPageUrl(UrlHelper.java:37)
-	at org.mifos.interceptors.BackUrlInterceptor.preHandle(BackUrlInterceptor.java:50)
-	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:891)
-	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:827)
-	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:882)
-	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:789)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
-	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
-	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1459)
-	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:799)
-	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1656)
-	at org.mifos.servlet.filters.CharacterEncodingFilter.doFilter(CharacterEncodingFilter.java:70)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:201)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1626)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:552)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:143)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:618)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:127)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:235)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1624)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:233)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1440)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:188)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:505)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1594)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:186)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1355)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:141)
-	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:229)
-	at org.eclipse.jetty.server.Dispatcher.error(Dispatcher.java:86)
-	at org.eclipse.jetty.server.handler.ErrorHandler.doError(ErrorHandler.java:119)
-	at org.eclipse.jetty.server.handler.ErrorHandler.handle(ErrorHandler.java:95)
-	at org.eclipse.jetty.server.HttpChannel.lambda$handle$3(HttpChannel.java:536)
-	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:732)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:534)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:277)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:311)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
-	at org.eclipse.jetty.io.ChannelEndPoint$1.run(ChannelEndPoint.java:104)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:338)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:315)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:173)
-	at org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:131)
-	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:409)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:883)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1034)
-	at java.lang.Thread.run(Thread.java:750)
-</pre>
-    </div>
-</div>
-                </div>
-             </div>
-            </div>
-            <div class="col2">
-                <div>
- <div  class="sidebar ht550">
-  <div>
-  <form method="post" action="searchResult.ftl">
-    <p class="orangetab">Administrative tasks</p>
-    <p class="leftpanelform fontnormal8ptbold">Search by client name, system ID or account number<br />
-    <input type="text" class="t_box" name="searchString" maxlength="200" size="20" value="" style="margin-left:0px;margin-top:4px;">
-      <br />
-      <input type="submit" name="searchButton" value="Search" class="buttn floatRight" style="margin-right:16px;
-margin-top:5px;">
-    </p>
-    </form>
-  </div>
-</div>                </div>
-            </div>
-        </div>
-    </div>
-    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+<title>Mifos</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="shortcut icon" href="pages/framework/images/favicon.ico"/>
+
+<link href='pages/css/cssstyle.css' rel="stylesheet"
+	type="text/css">
+</head>
+
+<body>
+
+
+	
+
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<STYLE TYPE="text/css"><!-- @import url(pages/css/jquery/jquery-ui.css); --></STYLE>
+<script type="text/javascript" src="pages/js/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="pages/js/datejs/date.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery-ui.min.js"></script>
+<script type="text/javascript" src="pages/js/jquery/jquery.keyfilter-1.7.js"></script>
+<!--[if IE]><script type="text/javascript" src="pages/js/jquery/jquery.bgiframe.js"></script><![endif]-->
+<script type="text/javascript" src="pages/js/lab.js"></script>
+  <tr>
+    <td class="logo" bgcolor="#FFFFFF" width="200" rowspan="2"><img src="getMifosLogo.ftl" /></td>
+    <td align="right" bgcolor="#FFFFFF" class="fontnormal">
+		
+         <a id="changeLanguagLink" href="#">Change Preferred Language</a>
+         <span id="dialog" title="Change Preferred Language" style="display:none;">Change Preferred Language</span>
+     &nbsp;|&nbsp;
+         <a id="homeheader.link.yourSettings" href="yourSettings.do?method=get&randomNUm=-8037886263138393256">
+            Your settings
+         </a>
+     &nbsp;|&nbsp; 
+         <a id="logout_link" href="j_spring_security_logout">
+            Log Out
+         </a>
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td>
+  </tr>
+  <tr>
+    <td align="left" valign="bottom" bgcolor="#FFFFFF"><table border="0" cellspacing="1" cellpadding="0">
+        <tr>
+          <td class="tablightorange"><a id="header.link.home" href="home.ftl" >
+		Home</a></td>
+                 
+          
+              
+              
+                  <td class="taborange"><a id="header.link.clientsAndAccounts" href="clientsAndAccounts.ftl" class="tabfontwhite">Clients & Accounts</a></td>
+                  <td class="tablightorange"><a id="header.link.reports" href="reportsAction.do?method=load">Reports</a></td>
+                  <td class="tablightorange"><a id="header.link.admin" href="AdminAction.do?method=load">Admin</a></td>
+					
+       		<td class="tablightorange"><a id="header.link.financialaccounting" href="FinancialAccountingAction.do?method=load">Financial Accounting</a></td>	
+		 
+					
+              
+          
+        </tr>
+      </table>
+        
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgorange"><img src="pages/framework/images/trans.gif" width="6" height="6"></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="bgwhite"><img src="pages/framework/images/trans.gif" width="100" height="2"></td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+
+		
+		
+
+
+<td width="174" height="500" align="left" valign="top" class="bgorangeleft">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		
+		<tr>
+          <td class="leftpanehead" colspan="2">
+          Clients & Accounts Tasks
+          </td>
+        </tr>
+       
+       
+       
+        <tr> 
+		<td class="leftpanelinks" colspan="2"><span class="fontnormalbold" >Manage Collection Sheets</span><br><a href="collectionsheetaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.entercollectionsheetdata">Enter Collection Sheet Data</a><br>
+<br><span class="fontnormalbold" >Create new Clients</span><br><a href="centerCustAction.do?method=chooseOffice&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createnewcenter">Create new Center</a><br>
+<a href="groupCustAction.do?method=hierarchyCheck&recordOfficeId=0&recordLoanOfficerId=0&input=createGroup" id="menu.link.label.createnewgroup">Create new Group</a><br>
+<a href="groupCustAction.do?method=loadSearch&recordOfficeId=0&recordLoanOfficerId=0&input=createClient" id="menu.link.label.createnewclient">Create new Client</a><br>
+<br><span class="fontnormalbold" >Create new Accounts</span><br><a href="createSavingsAccount.ftl" id="menu.link.label.createsavingsaccount">Create Savings Account</a><br>
+<a href="createLoanAccount.ftl" id="menu.link.label.createloanaccount">Create Loan Account</a><br>
+<a href="multipleloansaction.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.createmultipleloanaccounts">Create multiple Loan Accounts</a><br>
+<br><span class="fontnormalbold" >Manage account status</span><br><a href="ChangeAccountStatus.do?method=load&recordOfficeId=0&recordLoanOfficerId=0" id="menu.link.label.approvemultipleloans">Approve multiple loans</a><br>
+<br></td>
+        </tr>
+</table>
+</td>      
+
+
+		<td align="left" valign="top" bgcolor="#FFFFFF"
+			class="paddingleftmain" height="500" >
+	<span id="page.id" title="StatusSearchResults"></span>
+
+		<script>
+  	function submitData(form) {
+ 		form.action="ChangeAccountStatus.do?method=update";
+		form.submit();
+ 	}
+	function selectAll(x) {
+		for(var i=0,l=x.form.length; i<l; i++)
+		{
+			if(x.form[i].type == 'checkbox' && x.form[i].name != 'selectAll1'){
+				x.form[i].checked=x.checked
+			}
+		}
+	}
+
+	function selectAllCheck(x){
+		var checked = true;
+		for(var i=0,l=x.form.length; i<l; i++){
+			if(x.form[i].type == 'checkbox' && x.form[i].name != 'selectAll1'){
+				if(x.form[i].checked == false){
+					checked = false;
+				}
+			}
+		}
+		for(var i=0,l=x.form.length; i<l; i++){
+			if(x.form[i].type == 'checkbox' && x.form[i].name == 'selectAll1'){
+				x.form[i].checked = checked;
+			}
+		}
+		
+		
+	}
+ 	
+ 	</script>
+
+		<form name="accountStatusActionForm" method="post" action="/mifos/ChangeAccountStatus.do">
+
+			<table width="95%" border="0" cellpadding="0" cellspacing="0" class="paddingleftmain">
+				<tr>
+					<td>
+						<span class="headingorange">Approve multiple loans <br> <br>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="headingorange">  
+								
+							
+								
+							
+								
+							
+								
+							 <span class="headingorange">4 results in </span> <span class="heading">  </span> <span class="headingorange"> found for </span> <span class="heading"> Loans </span> <span class="headingorange"> in </span> <span class="heading">  Application Pending Approval </span> <br>
+					</td>
+				</tr>
+				<!--  here -->
+				<tr>
+					<td valign="middle">
+						<font class="fontnormalRedBold"> <span id="statussearchresults.error.message"></span> </font>
+					</td>
+				</tr>
+				<tr>
+
+					<td align="left" valign="top" class="fontnormal">
+						<table width="95%" border="0" cellpadding="5" cellspacing="0" class="fontnormal">
+
+							<tr class="bglightblue" valign="middle" height="35">
+								<td width="5%" class="drawtablerowboldnolinebg">
+									<input id="statussearchresults.input.selectAll" type="checkbox" onclick="selectAll(this)" name="selectAll1" />
+								</td>
+
+								<td width="15%" class="drawtablerowboldnolinebg">
+									<b>Current Status</b>
+								</td>
+
+								<td width="15%" class="drawtablerowboldnolinebg">
+									<b>Acct ID</b>
+								</td>
+
+								<td width="15%" class="drawtablerowboldnolinebg">
+									<b>Loan Amount</b>
+								</td>
+
+								<td width="15%" class="drawtablerowboldnolinebg">
+									<b>Disbursal Dt</b>
+								</td>
+
+								<td class="drawtablerowboldnolinebg"">
+									<b>Account Owner</b>
+								</td>
+							</tr>
+
+
+							
+								
+
+								<tr>
+									<td width="5%" valign="top" class="drawtablerow">
+										<input type="checkbox" name="accountRecords[0]" value="43" onclick="selectAllCheck(this)" id="statussearchresults.input.select">
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<html><body><img src="pages/framework/images/status_yellow.gif" /></body></html>
+
+										Application Pending Approval
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<a href="loanAccountAction.do?method=get&globalAccountNum=000100000000043" id="statussearchresults.link.viewLoanAccount">Account #
+											000100000000043</a>
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										10,000
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										28/02/2011
+									</td>
+
+
+									<td valign="top" class="drawtablerow">
+										
+											<span class="fontnormalbold"> Client: </span>
+										
+										
+										WeeklyClient Monday
+										: ID
+										0002-000000024
+										<br>
+										<span class="fontnormalbold"> Loan Officer: </span>
+										loan officer
+										<br>
+
+
+										MyOfficeDHMFT
+										
+										
+											
+										
+										
+										
+										<br>
+
+									</td>
+								</tr>
+
+							
+								
+
+								<tr>
+									<td width="5%" valign="top" class="drawtablerow">
+										<input type="checkbox" name="accountRecords[1]" value="53" onclick="selectAllCheck(this)" id="statussearchresults.input.select">
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<html><body><img src="pages/framework/images/status_yellow.gif" /></body></html>
+
+										Application Pending Approval
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<a href="loanAccountAction.do?method=get&globalAccountNum=000100000000053" id="statussearchresults.link.viewLoanAccount">Account #
+											000100000000053</a>
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										10,000
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										04/03/2011
+									</td>
+
+
+									<td valign="top" class="drawtablerow">
+										
+											<span class="fontnormalbold"> Client: </span>
+										
+										
+										Stu1233171716380 Client1233171716380
+										: ID
+										0002-000000006
+										<br>
+										<span class="fontnormalbold"> Loan Officer: </span>
+										loan officer
+										<br>
+
+
+										MyOfficeDHMFT
+										
+										
+											
+										
+										
+										
+										<br>
+
+									</td>
+								</tr>
+
+							
+								
+
+								<tr>
+									<td width="5%" valign="top" class="drawtablerow">
+										<input type="checkbox" name="accountRecords[2]" value="54" onclick="selectAllCheck(this)" id="statussearchresults.input.select">
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<html><body><img src="pages/framework/images/status_yellow.gif" /></body></html>
+
+										Application Pending Approval
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<a href="loanAccountAction.do?method=get&globalAccountNum=000100000000054" id="statussearchresults.link.viewLoanAccount">Account #
+											000100000000054</a>
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										10,000
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										04/03/2011
+									</td>
+
+
+									<td valign="top" class="drawtablerow">
+										
+											<span class="fontnormalbold"> Client: </span>
+										
+										
+										Stu1233171716380 Client1233171716380
+										: ID
+										0002-000000006
+										<br>
+										<span class="fontnormalbold"> Loan Officer: </span>
+										loan officer
+										<br>
+
+
+										MyOfficeDHMFT
+										
+										
+											
+										
+										
+										
+										<br>
+
+									</td>
+								</tr>
+
+							
+								
+
+								<tr>
+									<td width="5%" valign="top" class="drawtablerow">
+										<input type="checkbox" name="accountRecords[3]" value="55" onclick="selectAllCheck(this)" id="statussearchresults.input.select">
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<html><body><img src="pages/framework/images/status_yellow.gif" /></body></html>
+
+										Application Pending Approval
+									</td>
+
+									<td width="15%" valign="top" class="drawtablerow">
+										<a href="loanAccountAction.do?method=get&globalAccountNum=000100000000055" id="statussearchresults.link.viewLoanAccount">Account #
+											000100000000055</a>
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										10,000
+									</td>
+									<td width="15%" valign="top" class="drawtablerow">
+										04/03/2011
+									</td>
+
+
+									<td valign="top" class="drawtablerow">
+										
+											<span class="fontnormalbold"> Client: </span>
+										
+										
+										Stu1233171716380 Client1233171716380
+										: ID
+										0002-000000006
+										<br>
+										<span class="fontnormalbold"> Loan Officer: </span>
+										loan officer
+										<br>
+
+
+										MyOfficeDHMFT
+										
+										
+											
+										
+										
+										
+										<br>
+
+									</td>
+								</tr>
+
+							
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<br>
+						<br>
+						<br>
+
+
+						<table width="95%" border="0" cellpadding="3" cellspacing="0">
+							<tr>
+								<td align="right" width="11%" valign="top" class="fontnormal">
+									<span class="mandatorytext"><font color="#FF0000">*</font></span>New Status:
+								</td>
+								<td align="left" width="89%" valign="top">
+									<select name="newStatus" style="width:136px;"><option value="3">Approved</option></select>
+								</td>
+							</tr>
+							<tr>
+								<td align="right" valign="top" width="11%" class="fontnormal">
+									<span id="statussearchresults.label.note">
+									<span class="mandatorytext"><font color="#FF0000">*</font></span>Note:</span>
+								</td>
+								<td>
+									<textarea name="comments" id="statussearchresults.input.note" style="width:320px; height:110px;"></textarea>
+								</td>
+							</tr>
+
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table width="96%" border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td align="center" class="blueline">
+									&nbsp;
+								</td>
+							</tr>
+						</table>
+						<br>
+					</td>
+				</tr>
+				<tr>
+
+					<td align="center">
+						<input type="button" name="cancel" value="Submit" onclick="submitData(this.form);" id="statussearchresults.button.submit" class="buttn">
+					</td>
+				</tr>
+
+			</table>
+			<input type="hidden" name="currentFlowKey" value="1306929604665">
+		</form>
+	 <input type="hidden" name="h_user_locale" value="en_GB"></td>
+	</tr>
+</table>
+
+</body>
 </html>
+
+
